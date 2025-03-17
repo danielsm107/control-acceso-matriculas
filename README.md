@@ -8,21 +8,6 @@
 
 ---
 
-## **Índice**
-
-1. [[#**1. Introducción**|Introducción]]
-
-2. [[#**2. Finalidad**|Finalidad]]
-
-3. [[#**3. Objetivos**|Objetivos]]
- 
-4. [[#**4. Medios Necesarios**|Medios Necesarios]]
-
-5. [[#**5. Planificación**|Planificación]]
-
-
----
-
 ## **1. Introducción**
 
 Este proyecto consiste en un **sistema de control de acceso** basado en el reconocimiento automático de matrículas (LPR - License Plate Recognition).
