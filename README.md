@@ -98,6 +98,7 @@ Para llevar a cabo este proyecto, se necesitará:
 ---
 ## **6. Estructura del repositorio**
 
+```
 /control-acceso-matriculas
 │── 📁 docs/     # Documentación del Proyecto
 │── 📁 backend/               # API Flask (VPS DigitalOcean)
@@ -136,4 +137,6 @@ Para llevar a cabo este proyecto, se necesitará:
 │── .gitignore                 # Archivos a ignorar en Git
 │── README.md                  # Documentación del proyecto
 │── .github/workflows/deploy.yml # GitHub Actions para despliegue automático (Revisar)
+```
+
 
