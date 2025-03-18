@@ -8,7 +8,7 @@ def conectar_db():
     return mysql.connector.connect(
         host="localhost",
         user="flask_user",
-        password="flask_user",  # Cambia esto si tienes contraseña en MySQL
+        password="flask_user",
         database="control_acceso"
     )
 
