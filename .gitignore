@@ -1,2 +1,73 @@
 # Ignorar todos los archivos .obsidian
 *.obsidian
+
+# Entorno virtual
+venv/
+env/
+.venv/
+ENV/
+
+# Archivos de configuración de entornos virtuales
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de configuración de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de configuración de Python
+*.egg-info/
+*.egg
+dist/
+build/
+*.manifest
+*.spec
+
+# Archivos de caché y logs
+*.log
+*.pot
+*.sqlite3
+*.db
+*.cache
+*.coverage
+*.mo
+*.pot
+
+# Archivos de entorno
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Jupyter Notebook
+.ipynb_checkpoints/
+
+# Archivos de pruebas y coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Archivos de paquetes
+*.whl
+*.tar.gz
+*.zip
