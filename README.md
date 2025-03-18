@@ -95,3 +95,45 @@ Para llevar a cabo este proyecto, se necesitará:
 | **1 semana**  | - Configuración del sistema de notificaciones por Telegram o email. (Opcional)<br>- Implementación del registro de accesos con fotos.<br>- Pruebas de acceso restringido por horario.                                       |
 | **2 semanas** | - Integración final del sistema en la Raspberry Pi.<br>- Pruebas de rendimiento con diferentes condiciones de luz y ángulos de cámara.<br>- Documentación final y optimización del sistema.                                 |
 
+---
+## **6. Estructura del repositorio**
+
+/control-acceso-matriculas
+│── 📁 docs/     # Documentación del Proyecto
+│── 📁 backend/               # API Flask (VPS DigitalOcean)
+│   │── app.py                # Servidor Flask principal
+│   │── database.py            # Conexión a la base de datos
+│   │── config.py              # Configuración de la app
+│   │── requirements.txt       # Dependencias de Python
+│   │── wsgi.py                # Entrada para Gunicorn
+│   ├── 📁 static/             # Archivos estáticos (CSS, JS, imágenes)
+│   ├── 📁 templates/          # Plantillas HTML (Jinja2)
+│   ├── 📁 routes/             # Rutas de la API Flask
+│       ├── auth.py            # Rutas de autenticación
+│       ├── matriculas.py      # Rutas para gestionar matrículas
+│       ├── admin.py           # Rutas de administrador
+│
+│── 📁 frontend/               # Interfaz Web (VPS DigitalOcean)
+│   │── index.html             # Página principal
+│   │── panel.html             # Panel de administración
+│   ├── 📁 assets/             # CSS, imágenes, JS
+│       ├── style.css          # Estilos CSS
+│       ├── app.js             # Código JavaScript
+│
+│── 📁 raspberry-pi/           # Código en la Raspberry Pi
+│   │── procesar_matricula.py  # Captura de imagen y envío al servidor
+│   │── detectar_matricula.py  # Reconocimiento con OpenALPR
+│   │── config.py              # Configuración de la Raspberry
+│
+│── 📁 scripts/                # Scripts útiles para despliegue
+│   │── deploy.sh              # Script para actualizar código en el VPS
+│   │── setup.sh               # Instalación automática en la Raspberry
+│
+│── 📁 docker/                 # Configuración Docker (Opcional)
+│   │── Dockerfile             # Contenedor Flask API
+│   │── docker-compose.yml     # Orquestación (si se usa Docker)
+│
+│── .gitignore                 # Archivos a ignorar en Git
+│── README.md                  # Documentación del proyecto
+│── .github/workflows/deploy.yml # GitHub Actions para despliegue automático (Revisar)
+
