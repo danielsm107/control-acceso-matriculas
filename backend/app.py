@@ -19,18 +19,29 @@ def recibir_matricula():
     matricula = data.get("matricula")
 
     if not matricula:
-        return jsonify({"error": "No se proporcionó matrícula"}), 400
+        return jsonify({"error": "No se ha proporcionado ninguna matricula"}), 400
 
     conexion = conectar_db()
     cursor = conexion.cursor()
+    
+    # Verificar si la matrícula está en la base de datos
     cursor.execute("SELECT autorizado FROM matriculas WHERE matricula = %s", (matricula,))
     resultado = cursor.fetchone()
+
+    if resultado is None:  # Si no existe, devolvemos error y no insertamos nada
+        conexion.close()
+        return jsonify({"error": "Matricula no registrada"}), 404
+
+    autorizado = resultado[0]  # Si la matrícula existe, obtenemos su estado
+
+    # Registrar el acceso en la base de datos
+    cursor.execute("INSERT INTO registros_accesos (matricula, autorizado) VALUES (%s, %s)", (matricula, autorizado))
+    conexion.commit()
+    
     conexion.close()
 
-    if resultado:
-        return jsonify({"acceso": resultado[0]})
-    else:
-        return jsonify({"error": "Matrícula no registrada"}), 404
+    return jsonify({"acceso": autorizado})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
