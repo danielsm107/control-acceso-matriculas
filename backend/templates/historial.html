@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Accesos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h2 class="mb-4">Historial de Accesos</h2>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Matrícula</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Mensaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for acceso in historial %}
+            <tr>
+                <td>{{ acceso[0] }}</td>
+                <td>{{ acceso[1] }}</td>
+                <td>
+                    {% if acceso[2] %}
+                        <span class="text-success">✅ Autorizado</span>
+                    {% else %}
+                        <span class="text-danger">❌ Denegado</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if acceso[2] %}
+                        <span class="text-success">Acceso permitido</span>
+                    {% else %}
+                        <span class="text-danger">Acceso denegado</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/" class="btn btn-primary">Volver</a>
+</body>
+</html>

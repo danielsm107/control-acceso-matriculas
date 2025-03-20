@@ -6,7 +6,6 @@
 **Administración de Sistemas Informáticos en Red**
 **Curso: 2024/2025**
 
----
 
 ## **1. Introducción**
 
@@ -16,8 +15,6 @@ El sistema capturará imágenes de matrículas mediante una **cámara conectada 
 
 Además, los usuarios podrán **solicitar el registro de su matrícula** mediante una aplicación web, y un administrador podrá aprobar o rechazar el acceso.
 
-
----
 
 ## **2. Finalidad**
 
@@ -33,8 +30,6 @@ El objetivo principal es mejorar la **seguridad y automatización del acceso** m
 
 - **Registro detallado** de todos los accesos, con fechas y horas.
 
-
----
 
 ## **3. Objetivos**
 
@@ -54,8 +49,6 @@ Desde un punto de vista técnico, el proyecto se centrará en:
 
 - **Implementar un panel de administración** donde se aprueben o rechacen matrículas.
 
-
----
 
 ## **4. Medios Necesarios**
 
@@ -84,7 +77,6 @@ Para llevar a cabo este proyecto, se necesitará:
     
 - Bot de Telegram para alertas de accesos no autorizados (opcional).
 
----
 
 ## **5. Planificación**
 
@@ -95,7 +87,7 @@ Para llevar a cabo este proyecto, se necesitará:
 | **1 semana**  | - Configuración del sistema de notificaciones por Telegram o email. (Opcional)<br>- Implementación del registro de accesos con fotos.<br>- Pruebas de acceso restringido por horario.                                       |
 | **2 semanas** | - Integración final del sistema en la Raspberry Pi.<br>- Pruebas de rendimiento con diferentes condiciones de luz y ángulos de cámara.<br>- Documentación final y optimización del sistema.                                 |
 
----
+
 ## **6. Estructura del repositorio**
 
 ```
