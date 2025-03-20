@@ -147,7 +147,7 @@ plate0: 10 resultados
 
 Puedes automatizar el análisis de matrículas usando Python para llamar a OpenALPR. Aquí tienes un ejemplo de script:
 
-```bash
+```python
 import subprocess
 
 def analizar_matricula(imagen):
