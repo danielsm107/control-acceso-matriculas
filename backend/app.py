@@ -12,6 +12,13 @@ def conectar_db():
         database="control_acceso"
     )
 
+
+# Ruta principal (index)
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
 # Endpoint para recibir matrículas desde la Raspberry Pi
 @app.route("/recibir_matricula", methods=["POST"])
 def recibir_matricula():
