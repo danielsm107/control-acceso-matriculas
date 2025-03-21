@@ -4,7 +4,7 @@ import requests
 import time
 
 # Dirección del servidor en DigitalOcean
-SERVIDOR = "http://209.38.115.116:5000/recibir_matricula"
+SERVIDOR = "https://matriculas.dsermar0808.tech/recibir_matricula"
 
 def capturar_imagen():
     imagen = "captura.jpg"
