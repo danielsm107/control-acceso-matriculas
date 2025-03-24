@@ -8,10 +8,6 @@
 </head>
 <body class="container mt-5">
   <h2 class="mb-4">Historial de Accesos <span id="estado-ws" class="badge bg-secondary">Conectando...</span></h2>
-  <div class="mb-4">
-  <h5>📸 Última imagen capturada</h5>
-  <img id="vista-captura" src="/static/captura.jpg" width="480" height="360" alt="Captura actual" class="border">
-  </div>
   <table class="table table-bordered">
     <thead class="table-dark">
       <tr>
@@ -29,10 +25,6 @@
   <a href="/" class="btn btn-primary">Volver</a>
 
   <script>
-<div class="mb-4">
-  <h5>📸 Última imagen capturada</h5>
-  <img id="vista-captura" src="/static/captura.jpg" width="480" height="360" alt="Captura actual" class="border">
-</div>
     const estadoWS = document.getElementById("estado-ws");
     const tabla = document.getElementById("tabla-accesos");
 
@@ -64,11 +56,6 @@
       `;
 
       tabla.prepend(fila); // añade la nueva fila al principio
-      
-      
-      // Forzar recarga de la imagen sin caché
-      img.src = "/static/captura.jpg?t=" + new Date().getTime();    
-     });
   </script>
 </body>
 </html>
