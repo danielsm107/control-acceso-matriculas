@@ -49,6 +49,16 @@ def recibir_matricula():
 
     return jsonify({"acceso": autorizado})
 
+
+@app.route("/historial")
+def historial():
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("SELECT matricula, fecha, autorizado FROM registros_accesos ORDER BY fecha DESC")
+    historial = cursor.fetchall()
+    conexion.close()
+    return render_template("historial.html")
+
 @app.route("/api/historial")
 def api_historial():
     conexion = conectar_db()
