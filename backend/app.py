@@ -3,7 +3,7 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# Conexión a la base de datos
+# Conexion a la base de datos
 def conectar_db():
     return mysql.connector.connect(
         host="localhost",
@@ -19,7 +19,7 @@ def index():
     return render_template("index.html")
 
 
-# Endpoint para recibir matrículas desde la Raspberry Pi
+# Endpoint para recibir matriculas desde la raspberry pi
 @app.route("/recibir_matricula", methods=["POST"])
 def recibir_matricula():
     data = request.json
@@ -31,7 +31,7 @@ def recibir_matricula():
     conexion = conectar_db()
     cursor = conexion.cursor()
     
-    # Verificar si la matrícula está en la base de datos
+    # Verificar si la matricula esta en la base de datos
     cursor.execute("SELECT autorizado FROM matriculas WHERE matricula = %s", (matricula,))
     resultado = cursor.fetchone()
 
@@ -39,7 +39,7 @@ def recibir_matricula():
         conexion.close()
         return jsonify({"error": "Matricula no registrada"}), 404
 
-    autorizado = resultado[0]  # Si la matrícula existe, obtenemos su estado
+    autorizado = resultado[0]  # Si la matricula existe, obtenemos su estado
 
     # Registrar el acceso en la base de datos
     cursor.execute("INSERT INTO registros_accesos (matricula, autorizado) VALUES (%s, %s)", (matricula, autorizado))
@@ -49,14 +49,24 @@ def recibir_matricula():
 
     return jsonify({"acceso": autorizado})
 
-@app.route("/historial")
-def historial():
+@app.route("/api/historial")
+def api_historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT matricula, fecha, autorizado FROM registros_accesos ORDER BY fecha DESC")
+    cursor.execute("SELECT matricula, fecha, autorizado FROM registros_accesos ORDER BY fecha DESC LIMIT 20")
     historial = cursor.fetchall()
     conexion.close()
-    return render_template("historial.html", historial=historial)
+
+    datos = []
+    for fila in historial:
+        datos.append({
+            "matricula": fila[0],
+            "fecha": fila[1].strftime("%Y-%m-%d %H:%M:%S"),
+            "autorizado": fila[2]
+        })
+
+    return jsonify(datos)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
