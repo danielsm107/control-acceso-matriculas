@@ -71,3 +71,6 @@ coverage.xml
 *.whl
 *.tar.gz
 *.zip
+
+# Archivos .jpg Raspberry-pi
+raspberry-pi/**/*.jpg
