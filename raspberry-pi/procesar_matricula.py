@@ -7,7 +7,7 @@ import time
 SERVIDOR = "https://matriculas.dsermar0808.tech/recibir_matricula"
 
 def capturar_imagen():
-    imagen = "/home/dsermar/control-acceso-matriculas/backend/static/captura.jpg"
+    imagen = "captura.jpg"
     os.system(f"fswebcam -r 1280x720 --no-banner {imagen}")  # Captura imagen con fswebcam
     return imagen
 
