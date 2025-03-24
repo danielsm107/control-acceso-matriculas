@@ -1,7 +1,11 @@
 from flask import Flask, request, jsonify, render_template
+from flask_socketio import SocketIO, emit
 import mysql.connector
+import time
+
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 # Conexion a la base de datos
 def conectar_db():
@@ -44,9 +48,15 @@ def recibir_matricula():
     # Registrar el acceso en la base de datos
     cursor.execute("INSERT INTO registros_accesos (matricula, autorizado) VALUES (%s, %s)", (matricula, autorizado))
     conexion.commit()
-    
-    conexion.close()
 
+    # Emitir evento WebSocket
+    socketio.emit("nuevo_acceso", {
+    	"matricula": matricula,
+    	"autorizado": autorizado,
+    	"fecha": time.strftime("%Y-%m-%d %H:%M:%S")
+    })
+
+    conexion.close()
     return jsonify({"acceso": autorizado})
 
 
@@ -79,5 +89,5 @@ def api_historial():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    socketio.run(app, host="0.0.0.0", port=5000)
 
