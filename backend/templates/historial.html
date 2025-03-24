@@ -8,6 +8,13 @@
 </head>
 <body class="container mt-5">
   <h2 class="mb-4">Historial de Accesos <span id="estado-ws" class="badge bg-secondary">Conectando...</span></h2>
+  
+  <div class="mb-3">
+    <a href="/historial?filtro=todos" class="btn btn-outline-primary {{ 'active' if filtro == 'todos' else '' }}">Todos</a>
+    <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
+    <a href="/historial?filtro=hoy" class="btn btn-outline-success {{ 'active' if filtro == 'hoy' else '' }}">Hoy</a>
+  </div>
+
   <table class="table table-bordered">
     <thead class="table-dark">
       <tr>
@@ -18,8 +25,20 @@
       </tr>
     </thead>
     <tbody id="tabla-accesos">
-      <!-- Las filas se insertarán automáticamente con Socket.IO -->
-    </tbody>
+     {% for acceso in historial %}
+       <tr>
+         <td>{{ acceso[0] }}</td>
+         <td>{{ acceso[1] }}</td>
+         <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
+           {{ '✅ Autorizado' if acceso[2] else '❌ Denegado' }}
+         </td>
+         <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
+           {{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}
+         </td>
+       </tr>
+     {% endfor %}
+   </tbody>
+
   </table>
 
   <a href="/" class="btn btn-primary">Volver</a>
@@ -56,7 +75,7 @@
       `;
 
       tabla.prepend(fila); // añade la nueva fila al principio
-       });
+    });
   </script>
 </body>
 </html>

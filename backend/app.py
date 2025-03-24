@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
+from datetime import datetime
 import mysql.connector
 import time
-
+import pytz
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -53,7 +54,7 @@ def recibir_matricula():
     socketio.emit("nuevo_acceso", {
     	"matricula": matricula,
     	"autorizado": autorizado,
-    	"fecha": time.strftime("%Y-%m-%d %H:%M:%S")
+    	"fecha": datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
     })
 
     conexion.close()
@@ -62,12 +63,34 @@ def recibir_matricula():
 
 @app.route("/historial")
 def historial():
+    filtro = request.args.get("filtro", "todos")  # por defecto "todos"
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT matricula, fecha, autorizado FROM registros_accesos ORDER BY fecha DESC")
+
+    if filtro == "hoy":
+        cursor.execute("""
+            SELECT matricula, fecha, autorizado
+            FROM registros_accesos
+            WHERE DATE(fecha) = CURDATE()
+            ORDER BY fecha DESC
+        """)
+    elif filtro == "ultimos7":
+        cursor.execute("""
+            SELECT matricula, fecha, autorizado
+            FROM registros_accesos
+            WHERE fecha >= NOW() - INTERVAL 7 DAY
+            ORDER BY fecha DESC
+        """)
+    else:
+        cursor.execute("""
+            SELECT matricula, fecha, autorizado
+            FROM registros_accesos
+            ORDER BY fecha DESC
+            LIMIT 50
+	 """)
     historial = cursor.fetchall()
     conexion.close()
-    return render_template("historial.html")
+    return render_template("historial.html", historial=historial, filtro=filtro)
 
 @app.route("/api/historial")
 def api_historial():
