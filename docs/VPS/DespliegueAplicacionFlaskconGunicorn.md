@@ -148,7 +148,6 @@ http://matriculas.dsermar0808.tech
 
 ---
 
-**==PENDIENTE==**
 ## 3. Configurar HTTPS con Let's Encrypt y Certbot 
 
 **3.1 Instalar Certbot** 
