@@ -1,12 +1,20 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from datetime import datetime
+from routes.auth import auth as auth_blueprint
 import mysql.connector
+from flask_login import LoginManager
 import time
 import pytz
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+app.register_blueprint(auth_blueprint, url_prefix="/auth")
+
+# Configuracion de login
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.init_app(app)
 
 # Conexion a la base de datos
 def conectar_db():
@@ -27,8 +35,8 @@ def index():
 # Endpoint para recibir matriculas desde la raspberry pi
 @app.route("/recibir_matricula", methods=["POST"])
 def recibir_matricula():
-    data = request.json
-    matricula = data.get("matricula")
+    datos = request.json
+    matricula = datos.get("matricula")
 
     if not matricula:
         return jsonify({"error": "No se ha proporcionado ninguna matricula"}), 400
