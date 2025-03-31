@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
 import mysql.connector
-from flask_login import LoginManager
+from flask_login import LoginManager, UserMixin
 import time
 import pytz
 
@@ -30,6 +30,25 @@ def conectar_db():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+# Interfaz de login
+class User(UserMixin):
+    def __init__(self, id, nombre, email, password):
+        self.id = id
+        self.nombre = nombre
+        self.email = email
+        self.password = password
+
+@login_manager.user_loader
+def load_user(user_id):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id, nombre, email, password FROM usuarios WHERE id = %s", (user_id,))
+    usuario = cursor.fetchone()
+    conexion.close()
+    if usuario:
+        return User(*usuario)
+    return None
 
 
 # Endpoint para recibir matriculas desde la raspberry pi

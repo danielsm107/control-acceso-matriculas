@@ -1,27 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db, login_manager, conectar_db
+from app import conectar_db, User
 
 auth = Blueprint('auth', __name__)
-
-class User(UserMixin):
-    def __init__(self, id, nombre, email, password):
-        self.id = id
-        self.nombre = nombre
-        self.email = email
-        self.password = password
-
-@login_manager.user_loader
-def load_user(user_id):
-    conexion = conectar_db()
-    cursor = conexion.cursor()
-    cursor.execute("SELECT id, nombre, email, password FROM usuarios WHERE id = %s", (user_id,))
-    usuario = cursor.fetchone()
-    conexion.close()
-    if usuario:
-        return User(*usuario)
-    return None
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
