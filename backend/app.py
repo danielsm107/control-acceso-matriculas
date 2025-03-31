@@ -2,8 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
-import mysql.connector
-from flask_login import LoginManager, UserMixin
+from utils.db_utils import conectar_db, User
 import time
 import pytz
 
@@ -16,14 +15,6 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
 
-# Conexion a la base de datos
-def conectar_db():
-    return mysql.connector.connect(
-        host="localhost",
-        user="flask_user",
-        password="flask_user",
-        database="control_acceso"
-    )
 
 
 # Ruta principal (index)
@@ -31,13 +22,6 @@ def conectar_db():
 def index():
     return render_template("index.html")
 
-# Interfaz de login
-class User(UserMixin):
-    def __init__(self, id, nombre, email, password):
-        self.id = id
-        self.nombre = nombre
-        self.email = email
-        self.password = password
 
 @login_manager.user_loader
 def load_user(user_id):
