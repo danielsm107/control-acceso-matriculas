@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Historial de Accesos</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-</head>
-<body class="container mt-5">
+{% extends "base.html" %}
+
+{% block title %}Historial de Accesos{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
   <h2 class="mb-4">Historial de Accesos <span id="estado-ws" class="badge bg-secondary">Conectando...</span></h2>
-  
+
   <div class="mb-3">
     <a href="/historial?filtro=todos" class="btn btn-outline-primary {{ 'active' if filtro == 'todos' else '' }}">Todos</a>
     <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
@@ -25,58 +22,60 @@
       </tr>
     </thead>
     <tbody id="tabla-accesos">
-     {% for acceso in historial %}
-       <tr>
-         <td>{{ acceso[0] }}</td>
-         <td>{{ acceso[1] }}</td>
-         <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
-           {{ '✅ Autorizado' if acceso[2] else '❌ Denegado' }}
-         </td>
-         <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
-           {{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}
-         </td>
-       </tr>
-     {% endfor %}
-   </tbody>
-
+      {% for acceso in historial %}
+      <tr>
+        <td>{{ acceso[0] }}</td>
+        <td>{{ acceso[1] }}</td>
+        <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
+          {{ '✅ Autorizado' if acceso[2] else '❌ Denegado' }}
+        </td>
+        <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
+          {{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
 
   <a href="/" class="btn btn-primary">Volver</a>
+</div>
+{% endblock %}
 
-  <script>
-    const estadoWS = document.getElementById("estado-ws");
-    const tabla = document.getElementById("tabla-accesos");
+{% block scripts %}
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+  const estadoWS = document.getElementById("estado-ws");
+  const tabla = document.getElementById("tabla-accesos");
 
-    const socket = io({
-      path: "/socket.io"
-    });
+  const socket = io({
+    path: "/socket.io",
+    transports: ["websocket"]
+  });
 
-    socket.on("connect", () => {
-      estadoWS.textContent = "🟢 Conectado";
-      estadoWS.className = "badge bg-success";
-    });
+  socket.on("connect", () => {
+    estadoWS.textContent = "🟢 Conectado";
+    estadoWS.className = "badge bg-success";
+  });
 
-    socket.on("disconnect", () => {
-      estadoWS.textContent = "🔴 Desconectado";
-      estadoWS.className = "badge bg-danger";
-    });
+  socket.on("disconnect", () => {
+    estadoWS.textContent = "🔴 Desconectado";
+    estadoWS.className = "badge bg-danger";
+  });
 
-    socket.on("nuevo_acceso", (acceso) => {
-      const fila = document.createElement("tr");
+  socket.on("nuevo_acceso", (acceso) => {
+    const fila = document.createElement("tr");
 
-      const estadoTexto = acceso.autorizado ? "✅ Autorizado" : "❌ Denegado";
-      const mensaje = acceso.autorizado ? "Acceso permitido" : "Acceso denegado";
+    const estadoTexto = acceso.autorizado ? "✅ Autorizado" : "❌ Denegado";
+    const mensaje = acceso.autorizado ? "Acceso permitido" : "Acceso denegado";
 
-      fila.innerHTML = `
-        <td>${acceso.matricula}</td>
-        <td>${acceso.fecha}</td>
-        <td class="${acceso.autorizado ? 'text-success' : 'text-danger'}">${estadoTexto}</td>
-        <td class="${acceso.autorizado ? 'text-success' : 'text-danger'}">${mensaje}</td>
-      `;
+    fila.innerHTML = `
+      <td>${acceso.matricula}</td>
+      <td>${acceso.fecha}</td>
+      <td class="${acceso.autorizado ? 'text-success' : 'text-danger'}">${estadoTexto}</td>
+      <td class="${acceso.autorizado ? 'text-success' : 'text-danger'}">${mensaje}</td>
+    `;
 
-      tabla.prepend(fila); // añade la nueva fila al principio
-    });
-  </script>
-</body>
-</html>
-
+    tabla.prepend(fila);
+  });
+</script>
+{% endblock %}
