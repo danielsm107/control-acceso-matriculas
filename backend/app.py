@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
 from utils.db_utils import conectar_db, User
+from flask_login import LoginManager
 import time
 import pytz
 
