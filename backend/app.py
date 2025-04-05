@@ -3,12 +3,14 @@ from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
 from utils.db_utils import conectar_db, User
+from flask_login import LoginManager
 import time
 import pytz
 
 app = Flask(__name__)
+app.secret_key = "clave_segura"
 socketio = SocketIO(app)
-app.register_blueprint(auth_blueprint, url_prefix="/auth")
+app.register_blueprint(auth_blueprint)
 
 # Configuracion de login
 login_manager = LoginManager()
