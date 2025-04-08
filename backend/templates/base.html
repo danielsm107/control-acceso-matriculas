@@ -4,54 +4,39 @@
   <meta charset="UTF-8">
   <title>{% block title %}Control de Acceso{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CSS -->
+  <!-- Icono de la web -->
+  <link rel="icon" href="{{ url_for('static', filename='icons/iconopaginaweb.png') }}" type="image/png">
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom CSS -->
-  <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
   <!-- Socket.IO -->
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 <body>
 
-  <!-- Barra de navegación mejorada -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-    <div class="container">
-      <a class="navbar-brand navbar-brand-custom" href="/">🚗 Control Acceso</a>
-      
-      <!-- Toggler button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" 
-              aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarMain">
+  <!-- Barra de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><img src="static/icons/iconopaginaweb45.png" width="48" height="48" class="d-inline-block align-text-top" alt="Icono Página Web"></a>
+      <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link nav-link-custom {% if request.path == '/solicitar' %}active{% endif %}" href="/solicitar">
-                Solicitar Matrícula
-              </a>
+              <a class="nav-link" href="/solicitar">Solicitar Matrícula</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nav-link-custom {% if request.path == '/historial' %}active{% endif %}" href="/historial">
-                Historial
-              </a>
+              <a class="nav-link" href="/historial">Historial</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nav-link-custom nav-link-logout" href="/logout">
-                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-              </a>
+              <a class="nav-link text-danger" href="/logout">Cerrar sesión</a>
             </li>
           {% else %}
             <li class="nav-item">
-              <a class="nav-link nav-link-custom {% if request.path == '/login' %}active{% endif %}" href="/login">
-                Iniciar sesión
-              </a>
+              <a class="nav-link" href="/login">Iniciar sesión</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nav-link-custom {% if request.path == '/register' %}active{% endif %}" href="/register">
-                Registrarse
-              </a>
+              <a class="nav-link" href="/register">Registrarse</a>
             </li>
           {% endif %}
         </ul>
@@ -59,7 +44,8 @@
     </div>
   </nav>
 
-  <!-- Mensajes flash mejorados -->
+
+  <!-- Mensajes flash -->
   <div class="container mt-3">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -74,14 +60,12 @@
   </div>
 
   <!-- Contenido específico de cada página -->
-  <div class="container mt-4">
+  <div class="container mt-4 pg-content" style="background-color: #0c1822;">
     {% block content %}{% endblock %}
   </div>
 
   {% block scripts %}{% endblock %}
 
-  <!-- Font Awesome (for icons) -->
-  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
