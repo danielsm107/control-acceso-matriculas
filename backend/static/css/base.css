@@ -129,7 +129,7 @@ a:hover {
     box-shadow: 0 2px 8px rgba(0, 129, 255, 0.3);
   }
   
-  /* Connection status */
+  /* Estado de la conexión */
   .connection-badge {
     font-size: 12px;
     font-weight: normal;
