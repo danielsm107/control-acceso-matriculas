@@ -43,7 +43,7 @@ a:hover {
   color: #aecbfa;
 }
 
-/* Modern table styling */
+/* Estilos de la tabla de */
 .table-modern {
     width: 100%;
     border-collapse: separate;
@@ -85,7 +85,7 @@ a:hover {
     border-bottom: none;
   }
   
-  /* Status badges */
+  /* Insgnias del estado */
   .status-badge {
     padding: 4px 10px;
     border-radius: 50px;
@@ -109,7 +109,7 @@ a:hover {
     margin-right: 5px;
   }
   
-  /* Filter buttons */
+  /* Botones de filtros */
   .filter-buttons {
     margin-bottom: 20px;
   }
