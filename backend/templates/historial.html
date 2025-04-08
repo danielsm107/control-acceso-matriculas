@@ -4,16 +4,18 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h2 class="mb-4">Historial de Accesos <span id="estado-ws" class="badge bg-secondary">Conectando...</span></h2>
+  <h2 class="mb-4 text-white">Historial de Accesos 
+    <span id="estado-ws" class="badge connection-badge bg-secondary">Conectando...</span>
+  </h2>
 
-  <div class="mb-3">
+  <div class="mb-3 filter-buttons">
     <a href="/historial?filtro=todos" class="btn btn-outline-primary {{ 'active' if filtro == 'todos' else '' }}">Todos</a>
     <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
     <a href="/historial?filtro=hoy" class="btn btn-outline-success {{ 'active' if filtro == 'hoy' else '' }}">Hoy</a>
   </div>
 
-  <table class="table table-bordered">
-    <thead class="table-dark">
+  <table class="table-modern">
+    <thead>
       <tr>
         <th>Matrícula</th>
         <th>Fecha</th>
@@ -26,12 +28,16 @@
       <tr>
         <td>{{ acceso[0] }}</td>
         <td>{{ acceso[1] }}</td>
-        <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
-          {{ '✅ Autorizado' if acceso[2] else '❌ Denegado' }}
+        <td>
+          <span class="status-badge {{ 'authorized' if acceso[2] else 'denied' }}">
+            {% if acceso[2] %}
+              <i class="fas fa-check-circle"></i> Autorizado
+            {% else %}
+              <i class="fas fa-times-circle"></i> Denegado
+            {% endif %}
+          </span>
         </td>
-        <td class="{{ 'text-success' if acceso[2] else 'text-danger' }}">
-          {{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}
-        </td>
+        <td>{{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -54,25 +60,27 @@
 
   socket.on("connect", () => {
     estadoWS.textContent = "🟢 Conectado";
-    estadoWS.className = "badge bg-success";
+    estadoWS.className = "badge connection-badge bg-success";
   });
 
   socket.on("disconnect", () => {
     estadoWS.textContent = "🔴 Desconectado";
-    estadoWS.className = "badge bg-danger";
+    estadoWS.className = "badge connection-badge bg-danger";
   });
 
   socket.on("nuevo_acceso", (acceso) => {
     const fila = document.createElement("tr");
-
-    const estadoTexto = acceso.autorizado ? "✅ Autorizado" : "❌ Denegado";
+    
+    const statusClass = acceso.autorizado ? 'authorized' : 'denied';
+    const statusIcon = acceso.autorizado ? 'fas fa-check-circle' : 'fas fa-times-circle';
+    const estadoTexto = acceso.autorizado ? "Autorizado" : "Denegado";
     const mensaje = acceso.autorizado ? "Acceso permitido" : "Acceso denegado";
 
     fila.innerHTML = `
       <td>${acceso.matricula}</td>
       <td>${acceso.fecha}</td>
-      <td class="${acceso.autorizado ? 'text-success' : 'text-danger'}">${estadoTexto}</td>
-      <td class="${acceso.autorizado ? 'text-success' : 'text-danger'}">${mensaje}</td>
+      <td><span class="status-badge ${statusClass}"><i class="${statusIcon}"></i> ${estadoTexto}</span></td>
+      <td>${mensaje}</td>
     `;
 
     tabla.prepend(fila);

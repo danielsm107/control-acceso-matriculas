@@ -42,3 +42,99 @@ a {
 a:hover {
   color: #aecbfa;
 }
+
+/* Modern table styling */
+.table-modern {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+  }
+  
+  .table-modern thead th {
+    background-color: #1a374d;
+    color: #ffffff;
+    padding: 12px 15px;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    border: none;
+  }
+  
+  .table-modern tbody tr {
+    background-color: #172a3a;
+    transition: background-color 0.3s;
+  }
+  
+  .table-modern tbody tr:hover {
+    background-color: #213743;
+  }
+  
+  .table-modern td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #213743;
+    color: #e9ecef;
+  }
+  
+  .table-modern tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Status badges */
+  .status-badge {
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .status-badge.authorized {
+    background-color: rgba(25, 135, 84, 0.15);
+    color: #1de9b6;
+  }
+  
+  .status-badge.denied {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: #ff5c75;
+  }
+  
+  .status-badge i {
+    margin-right: 5px;
+  }
+  
+  /* Filter buttons */
+  .filter-buttons {
+    margin-bottom: 20px;
+  }
+  
+  .filter-buttons .btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+    margin-right: 10px;
+    transition: all 0.3s;
+  }
+  
+  .filter-buttons .btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .filter-buttons .btn.active {
+    box-shadow: 0 2px 8px rgba(0, 129, 255, 0.3);
+  }
+  
+  /* Connection status */
+  .connection-badge {
+    font-size: 12px;
+    font-weight: normal;
+    padding: 6px 12px;
+    margin-left: 10px;
+    vertical-align: middle;
+    border-radius: 50px;
+  }
