@@ -2,14 +2,17 @@ import os
 import subprocess
 import requests
 import time
+from datetime import datetime
 
 # Dirección del servidor en DigitalOcean
 SERVIDOR = "https://matriculas.dsermar0808.tech/recibir_matricula"
 
 def capturar_imagen():
-    imagen = "captura.jpg"
-    os.system(f"fswebcam -r 1280x720 --no-banner {imagen}")  # Captura imagen con fswebcam
-    return imagen
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    nombre_archivo = f"captura_{timestamp}.jpg"
+    ruta = os.path.join("imagenes", nombre_archivo)
+    os.system(f"fswebcam -r 1280x720 --no-banner {ruta}")
+    return ruta
 
 def detectar_matricula(imagen):
     resultado = subprocess.run(["alpr", "-c", "eu", imagen], capture_output=True, text=True)
@@ -19,7 +22,10 @@ def detectar_matricula(imagen):
     return None
 
 def enviar_matricula(matricula):
-    datos = {"matricula": matricula}
+    datos = {
+        "matricula": matricula,
+        "imagen": os.path.basename(imagen),
+        }
     try:
         respuesta = requests.post(SERVIDOR, json=datos, timeout=5)
         print("📡 Respuesta del servidor:", respuesta.json())
@@ -45,5 +51,9 @@ if __name__ == "__main__":
             print("⚠️ No se detectó ninguna matrícula.")
             ultimo_matricula = None
 
+<<<<<<< HEAD
         time.sleep(1)  # Espera 1 segundos antes de volver a capturar
+=======
+        time.sleep(1)  # Espera 1 segundo antes de volver a capturar
+>>>>>>> 50aa593bd2b567af16a8cd257b86669ff5c6200a
 
