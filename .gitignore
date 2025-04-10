@@ -71,3 +71,6 @@ coverage.xml
 
 # Archivos .jpg Raspberry-pi
 raspberry-pi/**/*.jpg
+
+# Archivos imagenes .jpg 
+static/imagenes/**/*.jpg
