@@ -45,5 +45,5 @@ if __name__ == "__main__":
             print("⚠️ No se detectó ninguna matrícula.")
             ultimo_matricula = None
 
-        time.sleep(2)  # Espera 5 segundos antes de volver a capturar
+        time.sleep(1)  # Espera 1 segundos antes de volver a capturar
 
