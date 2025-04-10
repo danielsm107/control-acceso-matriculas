@@ -21,6 +21,7 @@
         <th>Fecha</th>
         <th>Estado</th>
         <th>Mensaje</th>
+        <th>Imagen</th>
       </tr>
     </thead>
     <tbody id="tabla-accesos">
@@ -38,12 +39,17 @@
           </span>
         </td>
         <td>{{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}</td>
+        <td>
+          {% if acceso[3] %}
+            <img src="{{ url_for('static', filename='imagenes/' + acceso[3]) }}" width="120">
+          {% else %}
+            Sin imagen
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-
-  <!-- <a href="/" class="btn btn-primary">Volver</a> -->
 </div>
 {% endblock %}
 
@@ -70,20 +76,16 @@
 
   socket.on("nuevo_acceso", (acceso) => {
     const fila = document.createElement("tr");
-    
+
     const statusClass = acceso.autorizado ? 'authorized' : 'denied';
     const statusIcon = acceso.autorizado ? 'fas fa-check-circle' : 'fas fa-times-circle';
     const estadoTexto = acceso.autorizado ? "Autorizado" : "Denegado";
     const mensaje = acceso.autorizado ? "Acceso permitido" : "Acceso denegado";
+    const imagenHtml = acceso.imagen
+      ? `<img src="/static/imagenes/${acceso.imagen}" width="120">`
+      : `Sin imagen`;
 
     fila.innerHTML = `
       <td>${acceso.matricula}</td>
       <td>${acceso.fecha}</td>
-      <td><span class="status-badge ${statusClass}"><i class="${statusIcon}"></i> ${estadoTexto}</span></td>
-      <td>${mensaje}</td>
-    `;
-
-    tabla.prepend(fila);
-  });
-</script>
-{% endblock %}
+      <td><span class="status-badge ${statusClass}"><i class="${statusIcon}"></i> ${estado
