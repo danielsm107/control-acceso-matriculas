@@ -88,4 +88,12 @@
     fila.innerHTML = `
       <td>${acceso.matricula}</td>
       <td>${acceso.fecha}</td>
-      <td><span class="status-badge ${statusClass}"><i class="${statusIcon}"></i> ${estado
+      <td><span class="status-badge ${statusClass}"><i class="${statusIcon}"></i> ${estadoTexto}</span></td>
+      <td>${mensaje}</td>
+      <td>${imagenHtml}</td>
+    `;
+
+    tabla.prepend(fila);
+  });
+</script>
+{% endblock %}
