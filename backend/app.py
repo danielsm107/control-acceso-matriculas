@@ -44,7 +44,6 @@ def recibir_matricula():
         matricula = request.form.get("matricula")
         imagen = request.files.get("imagen")
     else:
-        # Petición JSON sin imagen
         datos = request.get_json()
         matricula = datos.get("matricula")
         imagen = None
@@ -67,30 +66,30 @@ def recibir_matricula():
     # Guardar imagen si se recibió
     nombre_imagen = None
     if imagen:
-        from datetime import datetime
-        import os
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         nombre_imagen = f"{matricula}_{timestamp}.jpg"
         ruta_imagen = os.path.join("static/imagenes", nombre_imagen)
         imagen.save(ruta_imagen)
 
+    # Guardar la fecha explícitamente
+    fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
+
     # Registrar acceso
     cursor.execute(
-        "INSERT INTO registros_accesos (matricula, autorizado, imagen) VALUES (%s, %s, %s)",
-        (matricula, autorizado, nombre_imagen)
+        "INSERT INTO registros_accesos (matricula, autorizado, imagen, fecha) VALUES (%s, %s, %s, %s)",
+        (matricula, autorizado, nombre_imagen, fecha_actual)
     )
     conexion.commit()
 
     socketio.emit("nuevo_acceso", {
         "matricula": matricula,
         "autorizado": autorizado,
-        "fecha": datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S"),
+        "fecha": fecha_actual,
         "imagen": nombre_imagen
     })
 
     conexion.close()
     return jsonify({"acceso": autorizado, "imagen": nombre_imagen})
-
 
 @app.route("/historial")
 def historial():
