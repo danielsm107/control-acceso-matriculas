@@ -27,6 +27,8 @@ def enviar_matricula(matricula):
         print("❌ Error enviando matrícula:", e)
 
 if __name__ == "__main__":
+    ultimo_matricula = None
+    
     while True:
         print("📸 Capturando imagen...")
         imagen = capturar_imagen()
@@ -37,8 +39,11 @@ if __name__ == "__main__":
         if matricula_detectada:
             print(f"🚗 Matrícula detectada: {matricula_detectada}")
             enviar_matricula(matricula_detectada)
+            ultimo_matricula = matricula_detectada
+            
         else:
             print("⚠️ No se detectó ninguna matrícula.")
+            ultimo_matricula = None
 
-        time.sleep(5)  # Espera 5 segundos antes de volver a capturar
+        time.sleep(2)  # Espera 5 segundos antes de volver a capturar
 
