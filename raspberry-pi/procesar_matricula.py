@@ -2,39 +2,34 @@ import os
 import subprocess
 import requests
 import time
-from datetime import datetime
 
-# Dirección del servidor en DigitalOcean
 SERVIDOR = "https://matriculas.dsermar0808.tech/recibir_matricula"
+CAPTURA = "captura.jpg"
 
 def capturar_imagen():
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    nombre_archivo = f"captura_{timestamp}.jpg"
-    ruta = os.path.join("imagenes", nombre_archivo)
-    os.system(f"fswebcam -r 1280x720 --no-banner {ruta}")
-    return ruta
+    os.system(f"fswebcam -r 1280x720 --no-banner {CAPTURA}")
+    return CAPTURA
 
 def detectar_matricula(imagen):
     resultado = subprocess.run(["alpr", "-c", "eu", imagen], capture_output=True, text=True)
     lineas = resultado.stdout.split("\n")
     if len(lineas) > 1 and len(lineas[1].split()) > 1:
-        return lineas[1].split()[1]  # Extrae la matrícula detectada
+        return lineas[1].split()[1]
     return None
 
-def enviar_matricula(matricula):
-    datos = {
-        "matricula": matricula,
-        "imagen": os.path.basename(imagen),
-        }
+def enviar_matricula(matricula, imagen):
     try:
-        respuesta = requests.post(SERVIDOR, json=datos, timeout=5)
-        print("📡 Respuesta del servidor:", respuesta.json())
-    except requests.exceptions.RequestException as e:
-        print("❌ Error enviando matrícula:", e)
+        with open(imagen, "rb") as archivo_imagen:
+            archivos = {'imagen': archivo_imagen}
+            datos = {'matricula': matricula}
+            respuesta = requests.post(SERVIDOR, files=archivos, data=datos, timeout=5)
+            print("📡 Respuesta del servidor:", respuesta.json())
+    except Exception as e:
+        print("❌ Error enviando datos:", e)
 
 if __name__ == "__main__":
-    ultimo_matricula = None
-    
+    ultima_matricula = None
+
     while True:
         print("📸 Capturando imagen...")
         imagen = capturar_imagen()
@@ -44,12 +39,13 @@ if __name__ == "__main__":
 
         if matricula_detectada:
             print(f"🚗 Matrícula detectada: {matricula_detectada}")
-            enviar_matricula(matricula_detectada)
-            ultimo_matricula = matricula_detectada
-            
+            if matricula_detectada != ultima_matricula:
+                enviar_matricula(matricula_detectada, imagen)
+                ultima_matricula = matricula_detectada
+            else:
+                print("⏩ Matrícula repetida, no se envía de nuevo.")
         else:
             print("⚠️ No se detectó ninguna matrícula.")
-            ultimo_matricula = None
+            ultima_matricula = None
 
-        time.sleep(1)  # Espera 1 segundo antes de volver a capturar
-
+        time.sleep(1)
