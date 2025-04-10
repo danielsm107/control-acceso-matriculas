@@ -94,34 +94,43 @@ def recibir_matricula():
 
 @app.route("/historial")
 def historial():
-    filtro = request.args.get("filtro", "todos")  # por defecto "todos"
+    filtro = request.args.get("filtro", "todos")
     conexion = conectar_db()
     cursor = conexion.cursor()
 
     if filtro == "hoy":
         cursor.execute("""
-            SELECT matricula, fecha, autorizado
+            SELECT matricula, fecha, autorizado, imagen
             FROM registros_accesos
             WHERE DATE(fecha) = CURDATE()
             ORDER BY fecha DESC
         """)
     elif filtro == "ultimos7":
         cursor.execute("""
-            SELECT matricula, fecha, autorizado
+            SELECT matricula, fecha, autorizado, imagen
             FROM registros_accesos
             WHERE fecha >= NOW() - INTERVAL 7 DAY
             ORDER BY fecha DESC
         """)
     else:
         cursor.execute("""
-            SELECT matricula, fecha, autorizado
+            SELECT matricula, fecha, autorizado, imagen
             FROM registros_accesos
             ORDER BY fecha DESC
             LIMIT 50
-	 """)
+        """)
+
     historial = cursor.fetchall()
     conexion.close()
-    return render_template("historial.html", historial=historial, filtro=filtro)
+
+    # Formatear fechas
+    historial_format = []
+    for fila in historial:
+        matricula, fecha, autorizado, imagen = fila
+        fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
+        historial_format.append((matricula, fecha_str, autorizado, imagen))
+
+    return render_template("historial.html", historial=historial_format, filtro=filtro)
 
 @app.route("/api/historial")
 def api_historial():
