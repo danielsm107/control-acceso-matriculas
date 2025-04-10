@@ -40,38 +40,56 @@ def load_user(user_id):
 # Endpoint para recibir matriculas desde la raspberry pi
 @app.route("/recibir_matricula", methods=["POST"])
 def recibir_matricula():
-    datos = request.json
-    matricula = datos.get("matricula")
+    if request.content_type.startswith("multipart/form-data"):
+        matricula = request.form.get("matricula")
+        imagen = request.files.get("imagen")
+    else:
+        # Petición JSON sin imagen
+        datos = request.get_json()
+        matricula = datos.get("matricula")
+        imagen = None
 
     if not matricula:
-        return jsonify({"error": "No se ha proporcionado ninguna matricula"}), 400
+        return jsonify({"error": "No se ha proporcionado ninguna matrícula"}), 400
 
     conexion = conectar_db()
     cursor = conexion.cursor()
-    
-    # Verificar si la matricula esta en la base de datos
+
     cursor.execute("SELECT autorizado FROM matriculas WHERE matricula = %s", (matricula,))
     resultado = cursor.fetchone()
 
-    if resultado is None:  # Si no existe, devolvemos error y no insertamos nada
+    if resultado is None:
         conexion.close()
-        return jsonify({"error": "Matricula no registrada"}), 404
+        return jsonify({"error": "Matrícula no registrada"}), 404
 
-    autorizado = resultado[0]  # Si la matricula existe, obtenemos su estado
+    autorizado = resultado[0]
 
-    # Registrar el acceso en la base de datos
-    cursor.execute("INSERT INTO registros_accesos (matricula, autorizado) VALUES (%s, %s)", (matricula, autorizado))
+    # Guardar imagen si se recibió
+    nombre_imagen = None
+    if imagen:
+        from datetime import datetime
+        import os
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        nombre_imagen = f"{matricula}_{timestamp}.jpg"
+        ruta_imagen = os.path.join("static/imagenes", nombre_imagen)
+        imagen.save(ruta_imagen)
+
+    # Registrar acceso
+    cursor.execute(
+        "INSERT INTO registros_accesos (matricula, autorizado, imagen) VALUES (%s, %s, %s)",
+        (matricula, autorizado, nombre_imagen)
+    )
     conexion.commit()
 
-    # Emitir evento WebSocket
     socketio.emit("nuevo_acceso", {
-    	"matricula": matricula,
-    	"autorizado": autorizado,
-    	"fecha": datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
+        "matricula": matricula,
+        "autorizado": autorizado,
+        "fecha": datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S"),
+        "imagen": nombre_imagen
     })
 
     conexion.close()
-    return jsonify({"acceso": autorizado})
+    return jsonify({"acceso": autorizado, "imagen": nombre_imagen})
 
 
 @app.route("/historial")
