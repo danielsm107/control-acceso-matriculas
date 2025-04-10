@@ -46,17 +46,6 @@ if __name__ == "__main__":
                 print("⏩ Matrícula repetida, no se envía de nuevo.")
         else:
             print("⚠️ No se detectó ninguna matrícula.")
-<<<<<<< HEAD
-            ultimo_matricula = None
-
-        time.sleep(1)  # Espera 1 segundo antes de volver a capturar
-<<<<<<< Updated upstream
->>>>>>> 50aa593bd2b567af16a8cd257b86669ff5c6200a
-=======
             ultima_matricula = None
->>>>>>> f4c5170571944ee3a6a9ea25a881d2af156018f6
-=======
-
->>>>>>> Stashed changes
 
         time.sleep(1)
