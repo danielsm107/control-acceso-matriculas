@@ -37,7 +37,7 @@ def register():
             flash('Las contraseñas no coinciden', 'danger')
             return redirect(url_for('auth.register'))
         
-        password_hashed = generate_password_hash(password, method='sha256')
+        password_hashed = generate_password_hash(password)
 
         conexion = conectar_db()
         cursor = conexion.cursor()
