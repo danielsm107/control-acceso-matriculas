@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
 from utils.db_utils import conectar_db, User
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user, login_required
 import os
 import time
 import pytz
@@ -22,8 +22,10 @@ login_manager.init_app(app)
 
 # Ruta principal (index)
 @app.route("/")
+@login_required
 def index():
     return render_template("index.html")
+
 
 
 @login_manager.user_loader
