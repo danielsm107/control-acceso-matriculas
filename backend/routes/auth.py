@@ -30,16 +30,18 @@ def register():
     if request.method == 'POST':
         nombre = request.form['nombre']
         email = request.form['email']
-        password = generate_password_hash(request.form['password'])
-        confirm_password = generate_password_hash(request.form['confirm_password'])
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
         
         if password != confirm_password:
             flash('Las contraseñas no coinciden', 'danger')
             return redirect(url_for('auth.register'))
+        
+        password_hashed = generate_password_hash(password, method='sha256')
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute("INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)", (nombre, email, password))
+        cursor.execute("INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)", (nombre, email, password_hashed))
         conexion.commit()
         conexion.close()
 
