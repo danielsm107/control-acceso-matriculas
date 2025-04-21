@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
@@ -74,7 +74,7 @@ def recibir_matricula():
         ruta_imagen = os.path.join("static/imagenes", nombre_imagen)
         imagen.save(ruta_imagen)
 
-    # Guardar la fecha explícitamente
+    # Guardar la fecha
     fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
 
     # Registrar acceso
@@ -100,6 +100,7 @@ def historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
+    # Filtrar historial
     if filtro == "hoy":
         cursor.execute("""
             SELECT matricula, fecha, autorizado, imagen
@@ -152,6 +153,26 @@ def api_historial():
 
     return jsonify(datos)
 
+# Ruta para solicitar matrícula (formulario)
+@app.route('/solicitar_matricula', methods=['GET', 'POST'])
+@login_required
+def solicitar_matricula():
+    if request.method == 'POST':
+        matricula = request.form['matricula'].upper()
+
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+        cursor.execute(
+            "INSERT INTO matriculas (matricula, autorizado, usuario_id) VALUES (%s, %s, %s)",
+            (matricula, False, current_user.id)
+        )
+        conexion.commit()
+        conexion.close()
+
+        flash('Matrícula solicitada correctamente. Pendiente de aprobación.', 'success')
+        return redirect(url_for('mis_matriculas'))
+
+    return render_template('solicitar_matricula.html')
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Mis Matrículas{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h3 class="mt-4 mb-4 text-center">Mis Matrículas Registradas</h3>
+
+  {% if matriculas %}
+    <table class="table table-dark table-striped text-center">
+      <thead>
+        <tr>
+          <th scope="col">Matrícula</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for matricula, autorizado in matriculas %}
+          <tr>
+            <td>{{ matricula }}</td>
+            <td>
+              {% if autorizado %}
+                <span class="badge bg-success">Aprobada</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">Pendiente</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-info text-center">Aún no has solicitado ninguna matrícula.</div>
+  {% endif %}
+</div>
+{% endblock %}
