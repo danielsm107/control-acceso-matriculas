@@ -180,7 +180,7 @@ def solicitar_matricula():
 def mis_matriculas():
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT matricula, autorizado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
+    cursor.execute("SELECT matricula, autorizado, id FROM matriculas WHERE usuario_id = %s", (current_user.id,))
     datos = cursor.fetchall()
     conexion.close()
 
