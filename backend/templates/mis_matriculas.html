@@ -11,25 +11,29 @@
         <tr>
           <th scope="col">Matrícula</th>
           <th scope="col">Estado</th>
+          <th scope="col" class="text-end">Acción</th>
         </tr>
       </thead>
       <tbody>
         {% for matricula, autorizado, id in matriculas %}
-          <tr>
+          <tr class="matricula-row">
             <td>{{ matricula }}</td>
             <td>
               {% if autorizado %}
                 <span class="status-badge authorized">Aprobada</span>
               {% else %}
-                <span class="status-badge pending">Pendiente</span>
+                <span class="status-badge denied">Pendiente</span>
               {% endif %}
             </td>
-            <td>
-                {% if not autorizado %}
-                <form method="POST" action="{{ url_for('eliminar_matricula', matricula_id=id) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');" class="delete-form ms-2">
-                    <button type="submit" class="delete-btn" title="Eliminar">
+            <td class="text-end">
+              {% if not autorizado %}
+                <form method="POST"
+                      action="{{ url_for('eliminar_matricula', matricula_id=id) }}"
+                      onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');"
+                      class="delete-form">
+                  <button type="submit" class="delete-btn" title="Eliminar">
                     <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="18" height="18">
-                    </button>
+                  </button>
                 </form>
               {% endif %}
             </td>
