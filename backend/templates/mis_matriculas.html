@@ -28,7 +28,7 @@
               {% if not autorizado %}
                 <form method="POST" action="{{ url_for('eliminar_matricula', matricula_id=id) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');" style="display:inline;">
                   <button type="submit" class="btn btn-sm p-0" title="Eliminar" style="border: none; background: none;">
-                    <img src="{{ url_for('static', filename='icons/delete.svg') }}" alt="Eliminar" width="24" height="24">
+                    <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
                   </button>
                 </form>
               {% endif %}

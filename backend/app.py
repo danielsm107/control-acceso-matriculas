@@ -186,8 +186,6 @@ def mis_matriculas():
 
     return render_template('mis_matriculas.html', matriculas=datos)
 
-# Esto elimina las matrículas
-from flask import redirect, url_for, flash
 
 @app.route('/eliminar_matricula/<int:matricula_id>', methods=['POST'])
 @login_required
