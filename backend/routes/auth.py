@@ -29,6 +29,7 @@ def login():
 def register():
     if request.method == 'POST':
         nombre = request.form['nombre']
+        apellidos = request.form['apellidos']
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
@@ -41,7 +42,7 @@ def register():
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute("INSERT INTO usuarios (nombre, email, password) VALUES (%s, %s, %s)", (nombre, email, password_hashed))
+        cursor.execute("INSERT INTO usuarios (nombre, apellidos, email, password) VALUES (%s, %s, %s)", (nombre, apellidos, email, password_hashed))
         conexion.commit()
         conexion.close()
 
