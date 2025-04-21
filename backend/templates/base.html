@@ -14,7 +14,7 @@
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 <body>
-  
+
 <!-- Barra de navegación -->
   {% if current_user.is_authenticated %}
   <nav class="navbar navbar-expand-lg navbar-dark">
@@ -22,9 +22,12 @@
       <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='icons/iconopaginaweb45.png') }}" width="48" height="48" class="d-inline-block align-text-top" alt="Icono Página Web"></a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="/solicitar">Solicitar Matrícula</a>
-          </li> -->
+          <li class="nav-item">
+            <a class="nav-link link-light" href="/solicitar_matricula">Solicitar Matrícula</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="/mis_matriculas">Mis Matrículas</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link link-light" href="/historial">Historial</a>
           </li>
@@ -36,7 +39,7 @@
     </div>
   </nav>
   {% endif %}
-  
+
 
 
   <!-- Mensajes flash -->
