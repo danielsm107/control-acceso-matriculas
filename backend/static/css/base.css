@@ -106,6 +106,11 @@ a:hover {
   color: #ff5c75;
 }
 
+.status-badge.pending {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: #e0c53f;
+}
+
 .status-badge i {
   margin-right: 5px;
 }

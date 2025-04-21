@@ -186,6 +186,29 @@ def mis_matriculas():
 
     return render_template('mis_matriculas.html', matriculas=datos)
 
+# Esto elimina las matrículas
+from flask import redirect, url_for, flash
+
+@app.route('/eliminar_matricula/<int:matricula_id>', methods=['POST'])
+@login_required
+def eliminar_matricula(matricula_id):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    # Eliminar solo si la matrícula es del usuario actual
+    cursor.execute("DELETE FROM matriculas WHERE id = %s AND usuario_id = %s AND autorizado = FALSE", (matricula_id, current_user.id))
+    
+    if cursor.rowcount > 0:
+        flash('Matrícula eliminada correctamente.', 'success')
+    else:
+        flash('No se pudo eliminar la matrícula.', 'danger')
+
+    conexion.commit()
+    conexion.close()
+
+    return redirect(url_for('mis_matriculas'))
+
+
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
 
