@@ -24,6 +24,15 @@
                 <span class="status-badge pending">Pendiente</span>
               {% endif %}
             </td>
+            <td>
+                {% if not autorizado %}
+                <form method="POST" action="{{ url_for('eliminar_matricula', matricula_id=id) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
+                  <button type="submit" class="delete-button" title="Eliminar">
+                    <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
+                  </button>
+                </form>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
