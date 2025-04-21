@@ -174,6 +174,18 @@ def solicitar_matricula():
 
     return render_template('solicitar_matricula.html')
 
+# Ruta para ver matrículas asociadas al usuario
+@app.route('/mis_matriculas')
+@login_required
+def mis_matriculas():
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("SELECT matricula, autorizado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
+    datos = cursor.fetchall()
+    conexion.close()
+
+    return render_template('mis_matriculas.html', matriculas=datos)
+
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
 
