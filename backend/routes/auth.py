@@ -13,7 +13,12 @@ def login():
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute("SELECT id, nombre, email, password FROM usuarios WHERE email = %s", (email,))
+        cursor.execute("""
+            SELECT u.id, u.nombre, u.email, u.password, u.rol
+            FROM usuarios u
+            WHERE email = %s
+            LIMIT 1
+        """, (email,))
         usuario = cursor.fetchone()
         conexion.close()
 
@@ -24,6 +29,7 @@ def login():
             flash('Correo o contraseña incorrectos', 'danger')
 
     return render_template('login.html')
+
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -42,7 +48,8 @@ def register():
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute("INSERT INTO usuarios (nombre, apellidos, email, password) VALUES (%s, %s, %s, %s)", (nombre, apellidos, email, password_hashed))
+        cursor.execute("""INSERT INTO usuarios (nombre, apellidos, email, password, rol) VALUES (%s, %s, %s, %s, %s)""", (nombre, apellidos, email, password_hashed, 'usuario'))
+
         conexion.commit()
         conexion.close()
 
