@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Panel de Administración</h1>
+
+  <h3>Usuarios registrados</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre completo</th>
+        <th>Email</th>
+        <th>Rol</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr>
+        <td>{{ u[0] }}</td>
+        <td>{{ u[1] }} {{ u[2] }}</td>
+        <td>{{ u[3] }}</td>
+        <td>{{ u[4] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+
+  <h3 class="mt-5">Matrículas pendientes</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Matrícula</th>
+        <th>Nombre Usuario</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in pendientes %}
+      <tr>
+        <td>{{ m[1] }}</td>
+        <td>{{ m[2] }} {{ m[3] }}</td>
+        <td>{{ m[4] }}</td>
+        <td>
+          <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post" class="d-inline">
+            <button class="btn btn-success btn-sm">Aprobar</button>
+          </form>
+          <form action="{{ url_for('rechazar_matricula', id=m[0]) }}" method="post" class="d-inline">
+            <button class="btn btn-danger btn-sm">Rechazar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

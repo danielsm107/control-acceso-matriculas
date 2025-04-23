@@ -215,8 +215,58 @@ def admin_panel():
     if current_user.rol != 'admin':
         flash("Acceso no autorizado.", "danger")
         return redirect(url_for('index'))
+    conexion = conectar_db()
+    cursor = conexion.cursor()
 
-    return render_template("admin_panel.html", user=current_user)
+    # Obtener todos los usuarios
+    cursor.execute("SELECT id, nombre, apellidos, email, rol FROM usuarios")
+    users = cursor.fetchall()
+
+    # Obtener matrículas pendientes de aprobación
+    cursor.execute("""
+        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email
+        FROM matriculas m
+        JOIN usuarios u ON m.usuario_id = u.id
+        WHERE m.autorizado = FALSE
+    """)
+    pendientes = cursor.fetchall()
+
+    conexion.close()
+    return render_template("admin_panel.html", users=users, pendientes=pendientes, user=current_user)
+
+# Rutas para aprobar o rechazar matrículas
+@app.route("/admin/aprobar/<int:id>", methods=["POST"])
+@login_required
+def aprobar_matricula(id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("index"))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE matriculas SET autorizado = TRUE WHERE id = %s", (id,))
+    conexion.commit()
+    conexion.close()
+
+    flash("Matrícula aprobada", "success")
+    return redirect(url_for("admin_panel"))
+
+@app.route("/admin/rechazar/<int:id>", methods=["POST"])
+@login_required
+def rechazar_matricula(id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("index"))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM matriculas WHERE id = %s", (id,))
+    conexion.commit()
+    conexion.close()
+
+    flash("Matrícula rechazada", "warning")
+    return redirect(url_for("admin_panel"))
+
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
