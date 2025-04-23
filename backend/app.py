@@ -38,7 +38,13 @@ def load_user(user_id):
     usuario = cursor.fetchone()
     conexion.close()
     if usuario:
-        return User(*usuario)
+        return User(
+            id=usuario[0],
+            nombre=usuario[1],
+            email=usuario[2],
+            password=usuario[3],
+            rol=usuario[4]
+        )
     return None
 
 
