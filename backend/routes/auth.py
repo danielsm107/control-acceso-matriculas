@@ -37,12 +37,10 @@ def login():
             if user.rol == 'admin':
                 return redirect(url_for('admin_panel'))
             
-            elif user.rol == 'usuario':
+            else:
                 return redirect(url_for('index'))
             
-            else:
-                flash('Correo o contraseña incorrectos', 'danger')
-                
+    flash('Correo o contraseña incorrectos', 'danger')
     return render_template('login.html')
 
 
