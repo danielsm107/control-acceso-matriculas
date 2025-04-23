@@ -42,7 +42,7 @@ def register():
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute("INSERT INTO usuarios (nombre, apellidos, email, password) VALUES (%s, %s, %s)", (nombre, apellidos, email, password_hashed))
+        cursor.execute("INSERT INTO usuarios (nombre, apellidos, email, password) VALUES (%s, %s, %s, %s)", (nombre, apellidos, email, password_hashed))
         conexion.commit()
         conexion.close()
 
