@@ -11,8 +11,10 @@ def conectar_db():
     )
 
 class User(UserMixin):
-    def __init__(self, id, nombre, email, password):
+    def __init__(self, id, nombre, email, password, matricula, rol='usuario'):
         self.id = id
         self.nombre = nombre
         self.email = email
         self.password = password
+        self.matricula = matricula
+        self.rol = rol

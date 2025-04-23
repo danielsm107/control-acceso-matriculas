@@ -18,13 +18,15 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
 
+# Eliminar mensaje flash de inicio de sesión
+login_manager.login_message = None
 
 
 # Ruta principal (index)
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    return render_template("index.html", user=current_user)
 
 
 
@@ -32,7 +34,7 @@ def index():
 def load_user(user_id):
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT id, nombre, email, password FROM usuarios WHERE id = %s", (user_id,))
+    cursor.execute("SELECT id, nombre, email, password, rol FROM usuarios WHERE id = %s", (user_id,))
     usuario = cursor.fetchone()
     conexion.close()
     if usuario:
@@ -206,6 +208,15 @@ def eliminar_matricula(matricula_id):
 
     return redirect(url_for('mis_matriculas'))
 
+# Ruta para administradores
+@app.route("/admin")
+@login_required
+def admin_panel():
+    if current_user.rol != 'admin':
+        flash("Acceso no autorizado.", "danger")
+        return redirect(url_for('index'))
+
+    return render_template("admin_panel.html", user=current_user)
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
