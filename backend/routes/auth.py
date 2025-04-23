@@ -23,11 +23,26 @@ def login():
         conexion.close()
 
         if usuario and check_password_hash(usuario[3], password):
-            login_user(User(*usuario))
-            return redirect(url_for('index'))
-        else:
-            flash('Correo o contraseña incorrectos', 'danger')
-
+            user = User(
+                id=usuario[0],
+                nombre=usuario[1],
+                email=usuario[2],
+                password=usuario[3],
+                rol=usuario[4]
+            )
+            
+            login_user(user)
+            
+            # Redirección de rol
+            if user.rol == 'admin':
+                return redirect(url_for('admin_panel'))
+            
+            elif user.rol == 'usuario':
+                return redirect(url_for('index'))
+            
+            else:
+                flash('Correo o contraseña incorrectos', 'danger')
+                
     return render_template('login.html')
 
 
