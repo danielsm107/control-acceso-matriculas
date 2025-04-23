@@ -30,7 +30,7 @@ def login():
                 password=usuario[3],
                 rol=usuario[4]
             )
-            
+            print(f"[DEBUG] Rol del usuario: {user.rol}")
             login_user(user)
             
             # Redirección de rol
