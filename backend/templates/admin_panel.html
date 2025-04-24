@@ -64,6 +64,7 @@
         <td>
           <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post" class="d-inline">
             <button type="button" onclick="this.querySelector('img').src='/static/icons/Success.gif'; this.closest('form').submit();">
+              <img src="/static/icons/success.svg" width="40" height="40">
             </button>
           </form>
           <form action="{{ url_for('rechazar_matricula', id=m[0]) }}" method="post" class="d-inline">
