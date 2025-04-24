@@ -162,7 +162,6 @@ def api_historial():
 
     return jsonify(datos)
 
-# Ruta para solicitar matrícula (formulario)
 @app.route('/solicitar_matricula', methods=['GET', 'POST'])
 @login_required
 def solicitar_matricula():
@@ -173,23 +172,33 @@ def solicitar_matricula():
         if not re.fullmatch(r'\d{4}[A-Z]{3}', matricula):
             flash('Formato de matrícula no válido. Debe ser 4 números seguidos de 3 letras (ej: 1234ABC).', 'danger')
             return redirect(url_for('solicitar_matricula'))
-        
+
         conexion = conectar_db()
         cursor = conexion.cursor()
-        # Verificar si ya existe esa matrícula para este usuario
-        cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
-        existe = cursor.fetchone()[0]
 
-        if existe:
+        # Primero, comprobar si ya la registró este usuario
+        cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
+        existe_para_usuario = cursor.fetchone()[0]
+
+        if existe_para_usuario:
             conexion.close()
-            flash('Esa matrícula ya ha sido registrada.', 'danger')
+            flash('Esa matrícula ya la has registrado tú.', 'danger')
             return redirect(url_for('solicitar_matricula'))
-        
+
+        # Después, comprobar si ya existe con otro usuario
+        cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s", (matricula,))
+        ya_existe_global = cursor.fetchone()[0]
+
+        if ya_existe_global:
+            conexion.close()
+            flash("Esa matrícula ya ha sido registrada por otro usuario.", "danger")
+            return redirect(url_for('solicitar_matricula'))
+
+        # Si pasa las dos validaciones, insertamos
         cursor.execute(
             "INSERT INTO matriculas (matricula, autorizado, usuario_id) VALUES (%s, %s, %s)",
             (matricula, False, current_user.id)
         )
-        
         conexion.commit()
         conexion.close()
 
@@ -197,6 +206,7 @@ def solicitar_matricula():
         return redirect(url_for('mis_matriculas'))
 
     return render_template('solicitar_matricula.html')
+
 
 # Ruta para ver matrículas asociadas al usuario
 @app.route('/mis_matriculas')
