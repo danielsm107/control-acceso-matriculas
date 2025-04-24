@@ -139,3 +139,4 @@ Para llevar a cabo este proyecto, se necesitará:
 - [ ] Modificar pagina index.html para que muestre la información del usuario actual.
 - [ ] Evitar duplicados de correos electrónicos.
 - [ ] Añadir botón para poder crear usuarios desde admin_panel.
+- [ ] Quitar
