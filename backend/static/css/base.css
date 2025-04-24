@@ -205,3 +205,37 @@ a:hover {
 .text-uppercase {
   text-transform: uppercase;
 }
+
+.lottie-container {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+.lottie-player {
+  background-color: transparent !important;
+}
+
+.btn-lottie {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lottie-icon {
+  background: none;
+  border: none;
+  border-radius: 50%;
+  box-shadow: none;
+}
+
+.btn-lottie:hover .lottie-icon {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
