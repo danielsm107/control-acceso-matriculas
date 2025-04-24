@@ -164,3 +164,25 @@ a:hover {
   filter: brightness(1.2);
   transform: scale(1.1);
 }
+
+.btn-rol {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.btn-rol:hover {
+  background-color: #4185f4;
+}
+
+.select-rol {
+  background-color: #172a3a;
+  color: #e9ecef;
+  border: 1px solid #213743;
+  border-radius: 6px;
+  padding: 6px 10px;
+}

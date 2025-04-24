@@ -23,17 +23,20 @@
         <td>{{ u[1] }} {{ u[2] }}</td>
         <td>{{ u[3] }}</td>
         <td>
-          <form action="{{ url_for('cambiar_rol', user_id=u[0]) }}" method="post" class="d-flex gap-2">
-            <select name="rol" class="form-select form-select-sm w-auto">
+          <form action="{{ url_for('cambiar_rol', user_id=u[0]) }}" method="post" class="d-flex gap-2 align-items-center">
+            <select name="rol" class="select-rol">
               <option value="usuario" {% if u[4] == 'usuario' %}selected{% endif %}>Usuario</option>
               <option value="admin" {% if u[4] == 'admin' %}selected{% endif %}>Admin</option>
             </select>
-            <button type="submit" class="btn btn-warning btn-sm">Cambiar</button>
+            <button type="submit" class="btn-rol">Cambiar</button>
           </form>
         </td>
         <td>
-          <form action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')">
-            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+          <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}"
+          onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');">
+            <button type="submit" class="delete-btn" title="Eliminar">
+              <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
+            </button>
           </form>
         </td>
       </tr>
