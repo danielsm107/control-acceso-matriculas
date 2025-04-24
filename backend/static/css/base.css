@@ -201,3 +201,7 @@ a:hover {
 .btn-cambiar:hover {
   background-color: #1c8ed3;
 }
+
+.text-uppercase {
+  text-transform: uppercase;
+}

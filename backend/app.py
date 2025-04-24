@@ -7,6 +7,7 @@ from flask_login import LoginManager, current_user, login_required
 import os
 import time
 import pytz
+import re
 
 app = Flask(__name__)
 app.secret_key = "clave_segura"
@@ -168,6 +169,11 @@ def solicitar_matricula():
     if request.method == 'POST':
         matricula = request.form['matricula'].upper()
 
+        # Validar formato exacto: 4 dígitos + 3 letras
+        if not re.fullmatch(r'\d{4}[A-Z]{3}', matricula):
+            flash('Formato de matrícula no válido. Debe ser 4 números seguidos de 3 letras (ej: 1234ABC).', 'danger')
+            return redirect(url_for('solicitar_matricula'))
+        
         conexion = conectar_db()
         cursor = conexion.cursor()
         # Verificar si ya existe esa matrícula para este usuario

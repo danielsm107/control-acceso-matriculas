@@ -9,7 +9,8 @@
     <form method="POST" action="{{ url_for('solicitar_matricula') }}">
       <div class="mb-3">
         <label for="matricula" class="form-label">Matrícula</label>
-        <input type="text" class="form-control" id="matricula" name="matricula" required>
+        <input type="text" class="form-control text-uppercase" id="matricula" name="matricula"
+               pattern="[0-9]{4}[A-Za-z]{3}" title="Formato válido: 1234ABC (4 números seguidos de 3 letras)" required>
       </div>
       <div class="d-grid">
         <button type="submit" class="btn btn-primary">Solicitar</button>
@@ -17,5 +18,6 @@
     </form>
   </div>
 </div>
-{% endblock %}
 
+
+{% endblock %}
