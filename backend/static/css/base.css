@@ -186,3 +186,18 @@ a:hover {
   border-radius: 6px;
   padding: 6px 10px;
 }
+
+.btn-cambiar {
+  background-color: #14b3f2;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cambiar:hover {
+  background-color: #1c8ed3;
+}

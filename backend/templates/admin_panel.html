@@ -28,7 +28,7 @@
               <option value="usuario" {% if u[4] == 'usuario' %}selected{% endif %}>Usuario</option>
               <option value="admin" {% if u[4] == 'admin' %}selected{% endif %}>Admin</option>
             </select>
-            <button type="submit" class="btn-rol">Cambiar</button>
+            <button type="submit" class="btn-cambiar">Cambiar</button>
           </form>
         </td>
         <td>
@@ -63,7 +63,11 @@
         <td>{{ m[4] }}</td>
         <td>
           <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post" class="d-inline">
-            <button class="btn btn-success btn-sm">Aprobar</button>
+            <button type="submit" class="btn-lottie" style="background: none; border: none; padding: 0;" onclick="playLottie(this)">
+              <div class="lottie-container" style="width: 40px; height: 40px;">
+                <div class="lottie-player" id="lottie-{{ m[0] }}"></div>
+              </div>
+            </button>
           </form>
           <form action="{{ url_for('rechazar_matricula', id=m[0]) }}" method="post" class="d-inline">
             <button class="btn btn-danger btn-sm">Rechazar</button>
@@ -74,4 +78,23 @@
     </tbody>
   </table>
 </div>
+
+<script>
+  function playLottie(button) {
+    const container = button.querySelector(".lottie-player");
+    const animation = lottie.loadAnimation({
+      container: container,
+      renderer: 'svg',
+      loop: false,
+      autoplay: true,
+      path: "{{ url_for('static', filename='icons/success.json') }}"
+    });
+
+    // Opcional: añadir un pequeño retardo antes de enviar el form
+    setTimeout(() => {
+      button.closest("form").submit();
+    }, 500); // tiempo suficiente para que la animación arranque
+  }
+</script>
+
 {% endblock %}
