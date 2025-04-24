@@ -13,6 +13,7 @@
         <th>Nombre completo</th>
         <th>Email</th>
         <th>Rol</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -21,7 +22,20 @@
         <td>{{ u[0] }}</td>
         <td>{{ u[1] }} {{ u[2] }}</td>
         <td>{{ u[3] }}</td>
-        <td>{{ u[4] }}</td>
+        <td>
+          <form action="{{ url_for('cambiar_rol', user_id=u[0]) }}" method="post" class="d-flex gap-2">
+            <select name="rol" class="form-select form-select-sm w-auto">
+              <option value="usuario" {% if u[4] == 'usuario' %}selected{% endif %}>Usuario</option>
+              <option value="admin" {% if u[4] == 'admin' %}selected{% endif %}>Admin</option>
+            </select>
+            <button type="submit" class="btn btn-warning btn-sm">Cambiar</button>
+          </form>
+        </td>
+        <td>
+          <form action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')">
+            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+          </form>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

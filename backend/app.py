@@ -273,6 +273,41 @@ def rechazar_matricula(id):
     flash("Matrícula rechazada", "warning")
     return redirect(url_for("admin_panel"))
 
+# Eliminar usuario
+@app.route("/admin/eliminar_usuario/<int:user_id>", methods=["POST"])
+@login_required
+def eliminar_usuario(user_id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("index"))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM usuarios WHERE id = %s", (user_id,))
+    conexion.commit()
+    conexion.close()
+
+    flash("Usuario eliminado correctamente", "success")
+    return redirect(url_for("admin_panel"))
+
+# Cambiar rol de usuario
+@app.route("/admin/cambiar_rol/<int:user_id>", methods=["POST"])
+@login_required
+def cambiar_rol(user_id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("index"))
+
+    nuevo_rol = request.form.get("rol")
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE usuarios SET rol = %s WHERE id = %s", (nuevo_rol, user_id))
+    conexion.commit()
+    conexion.close()
+
+    flash("Rol actualizado correctamente", "success")
+    return redirect(url_for("admin_panel"))
+
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
