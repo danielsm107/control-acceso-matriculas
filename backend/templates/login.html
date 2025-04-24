@@ -7,17 +7,6 @@
   <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
     <h3 class="text-center mb-4">Iniciar Sesión</h3>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
     <form method="POST" action="{{ url_for('auth.login') }}">
       <div class="mb-3">
         <label for="email" class="form-label">Correo electrónico</label>
