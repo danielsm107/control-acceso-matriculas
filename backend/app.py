@@ -170,10 +170,20 @@ def solicitar_matricula():
 
         conexion = conectar_db()
         cursor = conexion.cursor()
+        # Verificar si ya existe esa matrícula para este usuario
+        cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
+        existe = cursor.fetchone()[0]
+
+        if existe:
+            conexion.close()
+            flash('Esa matrícula ya ha sido registrada.', 'danger')
+            return redirect(url_for('solicitar_matricula'))
+        
         cursor.execute(
             "INSERT INTO matriculas (matricula, autorizado, usuario_id) VALUES (%s, %s, %s)",
             (matricula, False, current_user.id)
         )
+        
         conexion.commit()
         conexion.close()
 
