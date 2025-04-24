@@ -6,12 +6,6 @@
   <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
     <h3 class="text-center mb-4">Solicitar Registro de Matrícula</h3>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">{{ message }}</div>
-      {% endfor %}
-    {% endwith %}
-
     <form method="POST" action="{{ url_for('solicitar_matricula') }}">
       <div class="mb-3">
         <label for="matricula" class="form-label">Matrícula</label>
@@ -24,3 +18,4 @@
   </div>
 </div>
 {% endblock %}
+
