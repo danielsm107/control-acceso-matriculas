@@ -206,36 +206,63 @@ a:hover {
   text-transform: uppercase;
 }
 
-.lottie-container {
-  background: none;
+
+/* Fondo y bordes del contenido del modal */
+.modal-content {
+  background-color: #172a3a; /* mismo color que tus cards */
+  color: #e9ecef; /* mismo color de tus tablas/textos */
   border: none;
-  padding: 0;
-  margin: 0;
-  outline: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-.lottie-player {
-  background-color: transparent !important;
+/* Header del modal */
+.modal-header {
+  border-bottom: 1px solid #213743;
 }
 
-.btn-lottie {
-  background: none;
-  border: none;
-  padding: 0;
-  outline: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Footer del modal */
+.modal-footer {
+  border-top: 1px solid #213743;
 }
 
-.lottie-icon {
-  background: none;
-  border: none;
-  border-radius: 50%;
+/* Inputs dentro del modal */
+.modal-body input.form-control {
+  background-color: #0c1822; /* mismo que fondo de body */
+  color: #e9ecef;
+  border: 1px solid #213743;
+  border-radius: 6px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Inputs al hacer focus */
+.modal-body input.form-control:focus {
+  background-color: #0c1822;
+  color: #ffffff;
+  border-color: #14b3f2; /* tu azul de navbar */
   box-shadow: none;
 }
 
-.btn-lottie:hover .lottie-icon {
-  transform: scale(1.05);
-  transition: transform 0.2s ease;
+/* Botón 'Guardar Cambios' */
+.modal-footer .btn-success {
+  background-color: #14b3f2; /* Tu azul personalizado */
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.modal-footer .btn-success:hover {
+  background-color: #1c8ed3;
+}
+
+/* Botón 'Cancelar' */
+.modal-footer .btn-secondary {
+  background-color: #495057;
+  border: none;
+  border-radius: 8px;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #5a6268;
 }
