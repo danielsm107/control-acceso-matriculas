@@ -140,3 +140,4 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Evitar duplicados de correos electrónicos.
 - [ ] Añadir botón para poder crear usuarios desde admin_panel.
 - [ ] Cambiar estilos botones admin panel.
+- [x] Añadir imágenes en historial.html.

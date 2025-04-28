@@ -158,8 +158,6 @@ a:hover {
 .delete-btn img {
   filter: brightness(0.8);
   transition: filter 0.2s ease, transform 0.2s ease;
-  object-fit: contain; /* Ajusta bien el contenido */
-  vertical-align: middle;
 }
 
 .delete-btn:hover img {
