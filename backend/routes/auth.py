@@ -116,3 +116,39 @@ def editar_usuario_modal(user_id):
 
     flash('Usuario actualizado correctamente.', 'success')
     return redirect(url_for('admin_panel'))
+
+# Creación de usuario desde el panel de administración
+@auth.route('/crear_usuario', methods=['POST'])
+@login_required
+def crear_usuario():
+    nombre = request.form['nombre']
+    apellidos = request.form['apellidos']
+    email = request.form['email']
+    password = request.form['password']
+    confirm_password = request.form['confirm_password']
+
+    if password != confirm_password:
+        flash('Las contraseñas no coinciden.', 'danger')
+        return redirect(url_for('admin_panel'))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    # Verificar si el email ya existe
+    cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
+    if cursor.fetchone():
+        conexion.close()
+        flash('El correo electrónico ya está registrado.', 'danger')
+        return redirect(url_for('admin_panel'))
+
+    password_hashed = generate_password_hash(password)
+    cursor.execute(
+        "INSERT INTO usuarios (nombre, apellidos, email, password, rol) VALUES (%s, %s, %s, %s, %s)",
+        (nombre, apellidos, email, password_hashed, 'usuario')
+    )
+    conexion.commit()
+    conexion.close()
+
+    flash('Usuario creado correctamente.', 'success')
+    return redirect(url_for('admin_panel'))
+

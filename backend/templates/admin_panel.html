@@ -7,6 +7,9 @@
 
   <!-- Tabla Usuarios -->
   <h3>Usuarios registrados</h3>
+  <button class="btn btn-cambiar" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">
+    + Crear Usuario
+  </button>
   <table class="table-modern">
     <thead>
       <tr>
@@ -118,5 +121,46 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Crear Usuario -->
+<div class="modal fade" id="crearUsuarioModal" tabindex="-1" aria-labelledby="crearUsuarioModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{{ url_for('auth.crear_usuario') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearUsuarioModalLabel">Crear Nuevo Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Apellidos</label>
+            <input type="text" class="form-control" name="apellidos" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Confirmar Contraseña</label>
+            <input type="password" class="form-control" name="confirm_password" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success">Crear Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endfor %}
 {% endblock %}
