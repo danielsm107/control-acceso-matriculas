@@ -82,8 +82,37 @@ def register():
         return redirect(url_for('auth.login'))
 
     return render_template('register.html')
+
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@auth.route('/editar_usuario_modal/<int:user_id>', methods=['POST'])
+@login_required
+def editar_usuario_modal(user_id):
+    nombre = request.form['nombre']
+    apellidos = request.form['apellidos']
+    email = request.form['email']
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    # Validar email duplicado
+    cursor.execute("SELECT id FROM usuarios WHERE email = %s AND id != %s", (email, user_id))
+    if cursor.fetchone():
+        conexion.close()
+        flash('Este correo electrónico ya está en uso.', 'danger')
+        return redirect(url_for('admin_panel'))
+
+    cursor.execute("""
+        UPDATE usuarios
+        SET nombre = %s, apellidos = %s, email = %s
+        WHERE id = %s
+    """, (nombre, apellidos, email, user_id))
+    conexion.commit()
+    conexion.close()
+
+    flash('Usuario actualizado correctamente.', 'success')
+    return redirect(url_for('admin_panel'))

@@ -5,6 +5,7 @@
 <div class="container py-5">
   <h1 class="mb-4">Panel de Administración</h1>
 
+  <!-- Tabla Usuarios -->
   <h3>Usuarios registrados</h3>
   <table class="table-modern">
     <thead>
@@ -13,7 +14,7 @@
         <th>Nombre completo</th>
         <th>Email</th>
         <th>Rol</th>
-        <th></th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -31,19 +32,22 @@
             <button type="submit" class="btn-cambiar">Cambiar</button>
           </form>
         </td>
-        <td>
-          <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}"
-          onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');">
+        <td class="d-flex align-items-center gap-2">
+          <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" class="d-inline">
             <button type="submit" class="delete-btn" title="Eliminar">
               <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
             </button>
           </form>
+          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ u[0] }}" title="Editar">
+            ✏️
+          </button>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
+  <!-- Tabla Matrículas -->
   <h3 class="mt-5">Matrículas pendientes</h3>
   <table class="table-modern">
     <thead>
@@ -51,7 +55,7 @@
         <th>Matrícula</th>
         <th>Nombre Usuario</th>
         <th>Email</th>
-        <th>Aceptar|Rechazar</th>
+        <th>Aceptar | Rechazar</th>
       </tr>
     </thead>
     <tbody>
@@ -60,7 +64,7 @@
         <td>{{ m[1] }}</td>
         <td>{{ m[2] }} {{ m[3] }}</td>
         <td>{{ m[4] }}</td>
-        <td class="acciones">
+        <td class="acciones d-flex gap-2">
           <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post" class="d-inline">
             <button type="submit" class="delete-btn" title="Aceptar">
               <img src="{{ url_for('static', filename='icons/tick.svg') }}" alt="Aceptar" width="27" height="27">
@@ -77,4 +81,38 @@
     </tbody>
   </table>
 </div>
+
+<!-- Modales de edición -->
+{% for u in users %}
+<div class="modal fade" id="editModal{{ u[0] }}" tabindex="-1" aria-labelledby="editModalLabel{{ u[0] }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{{ url_for('editar_usuario_modal', user_id=u[0]) }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel{{ u[0] }}">Editar Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" value="{{ u[1] }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Apellidos</label>
+            <input type="text" class="form-control" name="apellidos" value="{{ u[2] }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" name="email" value="{{ u[3] }}" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endfor %}
 {% endblock %}

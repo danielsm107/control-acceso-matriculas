@@ -137,6 +137,6 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Arreglar redireccionamiento a la pagina principal cuando eres admin.
 - [ ] Añadir botón para modificación de usuarios desde admin.
 - [ ] Modificar pagina index.html para que muestre la información del usuario actual.
-- [ ] Evitar duplicados de correos electrónicos.
+- [x] Evitar duplicados de correos electrónicos.
 - [ ] Añadir botón para poder crear usuarios desde admin_panel.
 - [ ] Cambiar estilos botones admin panel.
