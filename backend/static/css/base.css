@@ -267,8 +267,3 @@ a:hover {
   background-color: #5a6268;
 }
 
-.acciones-wrapper {
-  display: flex;
-  gap: 0.5rem; /* Separación entre botones */
-}
-
