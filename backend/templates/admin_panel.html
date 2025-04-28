@@ -33,16 +33,14 @@
           </form>
         </td>
         <td class="acciones d-flex gap-2">
-          <div>
-            <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#editModal{{ u[0] }}" title="Editar">
-              <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="Editar" width="24" height="24">
+          <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#editModal{{ u[0] }}" title="Editar">
+            <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="Editar" width="24" height="24">
+          </button>
+          <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" class="d-inline">
+            <button type="submit" class="delete-btn" title="Eliminar">
+              <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
             </button>
-            <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" class="d-inline">
-              <button type="submit" class="delete-btn" title="Eliminar">
-                <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
-              </button>
-            </form>
-          </div>
+          </form>
         </td>
       </tr>
       {% endfor %}
