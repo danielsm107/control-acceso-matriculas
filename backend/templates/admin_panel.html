@@ -39,7 +39,7 @@
         <td class="acciones">
           <div class="d-flex align-items-center justify-content-start gap-2">
             <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#editModal{{ u[0] }}" title="Editar">
-              <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="Editar" width="24" height="24">
+              <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="Editar" width="24" height="22">
             </button>
             <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');">
               <button type="submit" class="delete-btn" title="Eliminar">
