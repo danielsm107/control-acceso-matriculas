@@ -87,7 +87,7 @@
 <div class="modal fade" id="editModal{{ u[0] }}" tabindex="-1" aria-labelledby="editModalLabel{{ u[0] }}" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="{{ url_for('editar_usuario_modal', user_id=u[0]) }}">
+      <form method="POST" action="{{ url_for('auth.editar_usuario_modal', user_id=u[0]) }}">
         <div class="modal-header">
           <h5 class="modal-title" id="editModalLabel{{ u[0] }}">Editar Usuario</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
