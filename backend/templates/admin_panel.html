@@ -67,7 +67,7 @@
         <td>{{ m[2] }} {{ m[3] }}</td>
         <td>{{ m[4] }}</td>
         <td class="acciones">
-          <div class="d-flex align-items-center justify-content-start gap-2">
+          <div class="d-flex align-items-center justify-content-center gap-2">
             <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post">
               <button type="submit" class="delete-btn" title="Aceptar">
                 <img src="{{ url_for('static', filename='icons/tick.svg') }}" alt="Aceptar" width="27" height="27">
