@@ -52,17 +52,29 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        
+
         if password != confirm_password:
             flash('Las contraseñas no coinciden', 'danger')
             return redirect(url_for('auth.register'))
-        
-        password_hashed = generate_password_hash(password)
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute("""INSERT INTO usuarios (nombre, apellidos, email, password, rol) VALUES (%s, %s, %s, %s, %s)""", (nombre, apellidos, email, password_hashed, 'usuario'))
 
+        # Verificar si el email ya existe
+        cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            conexion.close()
+            flash('El correo electrónico ya está registrado.', 'danger')
+            return redirect(url_for('auth.register'))
+
+        # Insertar si no existe
+        password_hashed = generate_password_hash(password)
+        cursor.execute(
+            "INSERT INTO usuarios (nombre, apellidos, email, password, rol) VALUES (%s, %s, %s, %s, %s)",
+            (nombre, apellidos, email, password_hashed, 'usuario')
+        )
         conexion.commit()
         conexion.close()
 
@@ -70,7 +82,6 @@ def register():
         return redirect(url_for('auth.login'))
 
     return render_template('register.html')
-
 @auth.route('/logout')
 @login_required
 def logout():
