@@ -5,11 +5,12 @@
 <div class="container py-5">
   <h1 class="mb-4">Panel de Administración</h1>
 
-  <!-- Tabla Usuarios -->
-  <h3>Usuarios registrados</h3>
-  <button class="btn btn-cambiar" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">
-    + Crear Usuario
-  </button>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Usuarios registrados</h3>
+    <button class="btn btn-cambiar" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">
+      + Crear Usuario
+    </button>
+  </div>
   <table class="table-modern">
     <thead>
       <tr>
@@ -42,7 +43,7 @@
             </button>
             <form method="POST" action="{{ url_for('eliminar_usuario', user_id=u[0]) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?');">
               <button type="submit" class="delete-btn" title="Eliminar">
-                <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="27" height="27">
+                <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
               </button>
             </form>
           </div>
