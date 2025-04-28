@@ -134,7 +134,7 @@ Para llevar a cabo este proyecto, se necesitará:
 
 ## **Para hacer:**
 
-- [ ] Arreglar redireccionamiento a la pagina principal cuando eres admin.
+- [x] Arreglar redireccionamiento a la pagina principal cuando eres admin.
 - [ ] Añadir botón para modificación de usuarios desde admin.
 - [ ] Modificar pagina index.html para que muestre la información del usuario actual.
 - [ ] Evitar duplicados de correos electrónicos.
