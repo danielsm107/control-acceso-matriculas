@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from utils.db_utils import conectar_db, User
-from forms import RegisterForm
 
 auth = Blueprint('auth', __name__)
 
@@ -47,26 +46,33 @@ def login():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        nombre = form.nombre.data
-        apellidos = form.apellidos.data
-        email = form.email.data
-        password = form.password.data
-
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellidos = request.form['apellidos']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        
+        if password != confirm_password:
+            flash('Las contraseñas no coinciden', 'danger')
+            return redirect(url_for('auth.register'))
+        
         password_hashed = generate_password_hash(password)
 
         conexion = conectar_db()
         cursor = conexion.cursor()
-        cursor.execute(
-            "INSERT INTO usuarios (nombre, apellidos, email, password, rol) VALUES (%s, %s, %s, %s, %s)",
-            (nombre, apellidos, email, password_hashed, 'usuario')
-        )
+        cursor.execute("""INSERT INTO usuarios (nombre, apellidos, email, password, rol) VALUES (%s, %s, %s, %s, %s)""", (nombre, apellidos, email, password_hashed, 'usuario'))
+
         conexion.commit()
         conexion.close()
 
         flash('Cuenta creada correctamente. Ahora puedes iniciar sesión.', 'success')
         return redirect(url_for('auth.login'))
 
-    return render_template('register.html', form=form)
+    return render_template('register.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
