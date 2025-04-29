@@ -73,19 +73,37 @@
         <td>{{ m[2] }} {{ m[3] }}</td>
         <td>{{ m[4] }}</td>
         <td class="acciones">
-          <div class="d-flex align-items-center justify-content-center gap-2">
-            <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post">
-              <button type="submit" class="delete-btn" title="Aceptar">
-                <img src="{{ url_for('static', filename='icons/tick.svg') }}" alt="Aceptar" width="27" height="27">
-              </button>
-            </form>
-            <form action="{{ url_for('rechazar_matricula', id=m[0]) }}" method="post">
-              <button type="submit" class="delete-btn" title="Rechazar">
-                <img src="{{ url_for('static', filename='icons/cross.svg') }}" alt="Rechazar" width="24" height="24">
-              </button>
-            </form>
+          <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+            <span class="status-badge 
+              {% if m[5] == 'autorizada' %}authorized
+              {% elif m[5] == 'pendiente' %}pending
+              {% else %}denied{% endif %}">
+              {% if m[5] == 'autorizada' %}
+                Autorizada
+              {% elif m[5] == 'pendiente' %}
+                Pendiente
+              {% else %}
+                Denegada
+              {% endif %}
+            </span>
+        
+            {% if m[5] == 'pendiente' %}
+            <div class="d-flex gap-2 mt-1">
+              <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post">
+                <button type="submit" class="delete-btn" title="Aceptar">
+                  <img src="{{ url_for('static', filename='icons/tick.svg') }}" alt="Aceptar" width="27" height="27">
+                </button>
+              </form>
+              <form action="{{ url_for('rechazar_matricula', id=m[0]) }}" method="post">
+                <button type="submit" class="delete-btn" title="Rechazar">
+                  <img src="{{ url_for('static', filename='icons/cross.svg') }}" alt="Rechazar" width="24" height="24">
+                </button>
+              </form>
+            </div>
+            {% endif %}
           </div>
-        </td>        
+        </td>
+                
       </tr>
       {% endfor %}
     </tbody>

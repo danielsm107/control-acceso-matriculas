@@ -30,20 +30,26 @@
         <td>{{ acceso[0] }}</td>
         <td>{{ acceso[1] }}</td>
         <td>
-          <span class="status-badge {{ 'authorized' if acceso[2] else 'denied' }}">
-            {% if acceso[2] %}
+          <span class="status-badge 
+            {% if acceso[2] == 'autorizada' %}authorized
+            {% elif acceso[2] == 'pendiente' %}pending
+            {% else %}denied{% endif %}">
+            {% if acceso[2] == 'autorizada' %}
               <i class="fas fa-check-circle"></i> Autorizado
+            {% elif acceso[2] == 'pendiente' %}
+              <i class="fas fa-clock"></i> Pendiente
             {% else %}
               <i class="fas fa-times-circle"></i> Denegado
             {% endif %}
           </span>
         </td>
-        <td>{{ 'Acceso permitido' if acceso[2] else 'Acceso denegado' }}</td>
         <td>
-          {% if acceso[3] %}
-            <img src="{{ url_for('static', filename='imagenes/' + acceso[3]) }}" width="120">
+          {% if acceso[2] == 'autorizada' %}
+            Acceso permitido
+          {% elif acceso[2] == 'pendiente' %}
+            En espera de validación
           {% else %}
-            Sin imagen
+            Acceso denegado
           {% endif %}
         </td>
       </tr>
@@ -77,10 +83,25 @@
   socket.on("nuevo_acceso", (acceso) => {
     const fila = document.createElement("tr");
 
-    const statusClass = acceso.autorizado ? 'authorized' : 'denied';
-    const statusIcon = acceso.autorizado ? 'fas fa-check-circle' : 'fas fa-times-circle';
-    const estadoTexto = acceso.autorizado ? "Autorizado" : "Denegado";
-    const mensaje = acceso.autorizado ? "Acceso permitido" : "Acceso denegado";
+    let statusClass, statusIcon, estadoTexto, mensaje;
+
+    if (acceso.estado === 'autorizada') {
+      statusClass = 'authorized';
+      statusIcon = 'fas fa-check-circle';
+      estadoTexto = 'Autorizado';
+      mensaje = 'Acceso permitido';
+    } else if (acceso.estado === 'pendiente') {
+      statusClass = 'pending';
+      statusIcon = 'fas fa-clock';
+      estadoTexto = 'Pendiente';
+      mensaje = 'En espera de validación';
+    } else {
+      statusClass = 'denied';
+      statusIcon = 'fas fa-times-circle';
+      estadoTexto = 'Denegado';
+      mensaje = 'Acceso denegado';
+    }
+    
     const imagenHtml = acceso.imagen
       ? `<img src="/static/imagenes/${acceso.imagen}" width="120">`
       : `Sin imagen`;

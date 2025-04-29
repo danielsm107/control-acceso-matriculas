@@ -66,14 +66,14 @@ def recibir_matricula():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    cursor.execute("SELECT autorizado FROM matriculas WHERE matricula = %s", (matricula,))
+    cursor.execute("SELECT estado FROM matriculas WHERE matricula = %s", (matricula,))
     resultado = cursor.fetchone()
 
     if resultado is None:
         conexion.close()
         return jsonify({"error": "Matrícula no registrada"}), 404
 
-    autorizado = resultado[0]
+    estado = resultado[0]
 
     # Guardar imagen si se recibió
     nombre_imagen = None
@@ -88,20 +88,20 @@ def recibir_matricula():
 
     # Registrar acceso
     cursor.execute(
-        "INSERT INTO registros_accesos (matricula, autorizado, imagen, fecha) VALUES (%s, %s, %s, %s)",
-        (matricula, autorizado, nombre_imagen, fecha_actual)
+        "INSERT INTO registros_accesos (matricula, estado, imagen, fecha) VALUES (%s, %s, %s, %s)",
+        (matricula, estado, nombre_imagen, fecha_actual)
     )
     conexion.commit()
 
     socketio.emit("nuevo_acceso", {
         "matricula": matricula,
-        "autorizado": autorizado,
+        "estado": estado,
         "fecha": fecha_actual,
         "imagen": nombre_imagen
     })
 
     conexion.close()
-    return jsonify({"acceso": autorizado, "imagen": nombre_imagen})
+    return jsonify({"acceso": estado, "imagen": nombre_imagen})
 
 @app.route("/historial")
 def historial():
@@ -112,21 +112,21 @@ def historial():
     # Filtrar historial
     if filtro == "hoy":
         cursor.execute("""
-            SELECT matricula, fecha, autorizado, imagen
+            SELECT matricula, fecha, estado, imagen
             FROM registros_accesos
             WHERE DATE(fecha) = CURDATE()
             ORDER BY fecha DESC
         """)
     elif filtro == "ultimos7":
         cursor.execute("""
-            SELECT matricula, fecha, autorizado, imagen
+            SELECT matricula, fecha, estado, imagen
             FROM registros_accesos
             WHERE fecha >= NOW() - INTERVAL 7 DAY
             ORDER BY fecha DESC
         """)
     else:
         cursor.execute("""
-            SELECT matricula, fecha, autorizado, imagen
+            SELECT matricula, fecha, estado, imagen
             FROM registros_accesos
             ORDER BY fecha DESC
             LIMIT 50
@@ -138,9 +138,9 @@ def historial():
     # Formatear fechas
     historial_format = []
     for fila in historial:
-        matricula, fecha, autorizado, imagen = fila
+        matricula, fecha, estado, imagen = fila
         fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
-        historial_format.append((matricula, fecha_str, autorizado, imagen))
+        historial_format.append((matricula, fecha_str, estado, imagen))
 
     return render_template("historial.html", historial=historial_format, filtro=filtro)
 
@@ -148,7 +148,7 @@ def historial():
 def api_historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT matricula, fecha, autorizado FROM registros_accesos ORDER BY fecha DESC LIMIT 20")
+    cursor.execute("SELECT matricula, fecha, estado FROM registros_accesos ORDER BY fecha DESC LIMIT 20")
     historial = cursor.fetchall()
     conexion.close()
 
@@ -157,7 +157,7 @@ def api_historial():
         datos.append({
             "matricula": fila[0],
             "fecha": fila[1].strftime("%Y-%m-%d %H:%M:%S"),
-            "autorizado": fila[2]
+            "estado": fila[2]
         })
 
     return jsonify(datos)
@@ -196,8 +196,8 @@ def solicitar_matricula():
 
         # Si pasa las dos validaciones, insertamos
         cursor.execute(
-            "INSERT INTO matriculas (matricula, autorizado, usuario_id) VALUES (%s, %s, %s)",
-            (matricula, False, current_user.id)
+            "INSERT INTO matriculas (matricula, estado, usuario_id) VALUES (%s, %s, %s)",
+            (matricula, 'pendiente', current_user.id)
         )
         conexion.commit()
         conexion.close()
@@ -214,7 +214,7 @@ def solicitar_matricula():
 def mis_matriculas():
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT matricula, autorizado, id FROM matriculas WHERE usuario_id = %s", (current_user.id,))
+    cursor.execute("SELECT matricula, estado, id FROM matriculas WHERE usuario_id = %s", (current_user.id,))
     datos = cursor.fetchall()
     conexion.close()
 
@@ -228,7 +228,7 @@ def eliminar_matricula(matricula_id):
     cursor = conexion.cursor()
 
     # Eliminar solo si la matrícula es del usuario actual
-    cursor.execute("DELETE FROM matriculas WHERE id = %s AND usuario_id = %s AND autorizado = FALSE", (matricula_id, current_user.id))
+    cursor.execute("DELETE FROM matriculas WHERE id = %s AND usuario_id = %s AND estado = 'denegada'", (matricula_id, current_user.id))
     
     if cursor.rowcount > 0:
         flash('Matrícula eliminada correctamente.', 'success')
@@ -259,7 +259,7 @@ def admin_panel():
         SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email
         FROM matriculas m
         JOIN usuarios u ON m.usuario_id = u.id
-        WHERE m.autorizado = FALSE
+        WHERE m.estado = 'denegada'
     """)
     pendientes = cursor.fetchall()
 
@@ -276,7 +276,7 @@ def aprobar_matricula(id):
 
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("UPDATE matriculas SET autorizado = TRUE WHERE id = %s", (id,))
+    cursor.execute("UPDATE matriculas SET estado = 'autorizada' WHERE id = %s", (id,))
     conexion.commit()
     conexion.close()
 
