@@ -23,8 +23,13 @@
         <td>{{ m[2] }} {{ m[3] }}</td>
         <td>{{ m[4] }}</td>
         <td>
-          <span class="status-badge {{ m[5]|lower }}">{{ m[5] }}</span>
-        </td>
+            <span class="status-badge 
+              {% if m[5] == 'autorizada' %}authorized
+              {% elif m[5] == 'pendiente' %}pending
+              {% else %}denied{% endif %}">
+              {{ m[5]|capitalize }}
+            </span>
+          </td>          
         <td>{{ m[6] }}</td>
       </tr>
       {% endfor %}
