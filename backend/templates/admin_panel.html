@@ -74,19 +74,6 @@
         <td>{{ m[4] }}</td>
         <td class="acciones">
           <div class="d-flex flex-column align-items-center justify-content-center gap-2">
-            <span class="status-badge 
-              {% if m[5] == 'autorizada' %}authorized
-              {% elif m[5] == 'pendiente' %}pending
-              {% else %}denied{% endif %}">
-              {% if m[5] == 'autorizada' %}
-                Autorizada
-              {% elif m[5] == 'pendiente' %}
-                Pendiente
-              {% else %}
-                Denegada
-              {% endif %}
-            </span>
-        
             {% if m[5] == 'pendiente' %}
             <div class="d-flex gap-2 mt-1">
               <form action="{{ url_for('aprobar_matricula', id=m[0]) }}" method="post">
