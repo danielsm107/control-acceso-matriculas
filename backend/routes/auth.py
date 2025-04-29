@@ -172,10 +172,10 @@ def matriculas_admin():
     cursor = conexion.cursor()
 
     cursor.execute("""
-        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.autorizado, m.fecha
+        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.autorizado, m.fecha_registro
         FROM matriculas m
         JOIN usuarios u ON m.usuario_id = u.id
-        ORDER BY m.fecha DESC
+        ORDER BY m.fecha_registro DESC
     """)
 
     matriculas = cursor.fetchall()
