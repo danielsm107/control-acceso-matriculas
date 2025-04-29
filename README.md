@@ -141,5 +141,5 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Cambiar estilos botones admin panel.
 - [x] Añadir imágenes en historial.html.
 - [ ] Modificar pagina index.html para que muestre la información del usuario actual.
-- [ ] Separar la tabla matriculas pendientes a otra página.
-- [ ] Crear una tabla en admin_panel.html para ver todas las matrículas.
+- [x] Crear una página con todas las matriculas existentes.
+- [ ] Arreglar las imagenes en historial.
