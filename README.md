@@ -141,5 +141,10 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Cambiar estilos botones admin panel.
 - [x] Añadir imágenes en historial.html.
 - [ ] Modificar pagina index.html para que muestre la información del usuario actual.
+- [ ] Creación de gráficas para matriculas.
 - [x] Crear una página con todas las matriculas existentes.
-- [ ] Arreglar las imagenes en historial.
+- [x] Arreglar las imagenes en historial.
+- [ ] Arreglar fechas.
+- [ ] Añadir columna de acciones en matriculas_admin.
+- [ ] Añadir filtros en matriculas_admin.
+- [ ] Añadir botón de limpiar historial en historial.html.

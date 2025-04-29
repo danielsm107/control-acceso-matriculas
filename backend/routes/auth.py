@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from utils.db_utils import conectar_db, User
 from functools import wraps
 
+
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -89,7 +90,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    session.clear
+    session.clear()
     return redirect(url_for('index'))
 
 @auth.route('/editar_usuario_modal/<int:user_id>', methods=['POST'])
