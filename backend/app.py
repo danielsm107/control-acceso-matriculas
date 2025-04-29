@@ -259,7 +259,7 @@ def admin_panel():
         SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email
         FROM matriculas m
         JOIN usuarios u ON m.usuario_id = u.id
-        WHERE m.estado = 'denegada'
+        WHERE m.estado = 'pendiente'
     """)
     pendientes = cursor.fetchall()
 
