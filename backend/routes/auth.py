@@ -153,9 +153,6 @@ def crear_usuario():
     flash('Usuario creado correctamente.', 'success')
     return redirect(url_for('admin_panel'))
 
-from functools import wraps
-from flask import session, redirect, url_for, flash
-
 def solo_admin(f):
     @wraps(f)
     def decorador(*args, **kwargs):
