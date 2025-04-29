@@ -292,7 +292,7 @@ def rechazar_matricula(id):
 
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("DELETE FROM matriculas WHERE id = %s", (id,))
+    cursor.execute("UPDATE matriculas SET estado = 'denegada' WHERE id = %s", (id,))
     conexion.commit()
     conexion.close()
 
