@@ -52,6 +52,13 @@
             Acceso denegado
           {% endif %}
         </td>
+        <td>
+          {% if acceso[3] %}
+            <img src="{{ url_for('static', filename='imagenes/' + acceso[3]) }}" width="120">
+          {% else %}
+            Sin imagen
+          {% endif %}
+        </td>        
       </tr>
       {% endfor %}
     </tbody>
