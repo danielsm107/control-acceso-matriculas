@@ -89,7 +89,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    session.clear()
+    session.clear
     return redirect(url_for('index'))
 
 @auth.route('/editar_usuario_modal/<int:user_id>', methods=['POST'])
@@ -172,7 +172,7 @@ def matriculas_admin():
     cursor = conexion.cursor()
 
     cursor.execute("""
-        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.estado, m.fecha
+        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.autorizado, m.fecha
         FROM matriculas m
         JOIN usuarios u ON m.usuario_id = u.id
         ORDER BY m.fecha DESC
