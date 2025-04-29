@@ -135,9 +135,11 @@ Para llevar a cabo este proyecto, se necesitará:
 ## **Para hacer:**
 
 - [x] Arreglar redireccionamiento a la pagina principal cuando eres admin.
-- [ ] Añadir botón para modificación de usuarios desde admin.
-- [ ] Modificar pagina index.html para que muestre la información del usuario actual.
+- [x] Añadir botón para modificación de usuarios desde admin.
 - [x] Evitar duplicados de correos electrónicos.
-- [ ] Añadir botón para poder crear usuarios desde admin_panel.
-- [ ] Cambiar estilos botones admin panel.
+- [x] Añadir botón para poder crear usuarios desde admin_panel.
+- [x] Cambiar estilos botones admin panel.
 - [x] Añadir imágenes en historial.html.
+- [ ] Modificar pagina index.html para que muestre la información del usuario actual.
+- [ ] Separar la tabla matriculas pendientes a otra página.
+- [ ] Crear una tabla en admin_panel.html para ver todas las matrículas.

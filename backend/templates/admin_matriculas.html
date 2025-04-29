@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Matrículas - Panel Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Todas las Matrículas</h1>
+  <table class="table-modern">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Matrícula</th>
+        <th>Nombre Usuario</th>
+        <th>Email</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in matriculas %}
+      <tr>
+        <td>{{ m[0] }}</td>
+        <td>{{ m[1] }}</td>
+        <td>{{ m[2] }} {{ m[3] }}</td>
+        <td>{{ m[4] }}</td>
+        <td>
+          <span class="status-badge {{ m[5]|lower }}">{{ m[5] }}</span>
+        </td>
+        <td>{{ m[6] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

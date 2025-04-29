@@ -40,6 +40,11 @@
           <li class="nav-item">
             <a class="nav-link text-danger" href="/logout">Cerrar sesión</a>
           </li>
+          {% if current_user.rol == 'admin' %}
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{{ url_for('auth.matriculas_admin') }}">Ver Matrículas</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>

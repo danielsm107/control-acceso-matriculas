@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from utils.db_utils import conectar_db, User
+from functools import wraps
 
 auth = Blueprint('auth', __name__)
 
@@ -152,3 +153,33 @@ def crear_usuario():
     flash('Usuario creado correctamente.', 'success')
     return redirect(url_for('admin_panel'))
 
+from functools import wraps
+from flask import session, redirect, url_for, flash
+
+def solo_admin(f):
+    @wraps(f)
+    def decorador(*args, **kwargs):
+        if 'rol' not in session or session['rol'] != 'admin':
+            flash("Acceso denegado. Solo el administrador puede ver esta página.", "danger")
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorador
+
+@auth.route('/matriculas_admin')
+@login_required
+@solo_admin
+def matriculas_admin():
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.estado, m.fecha
+        FROM matriculas m
+        JOIN usuarios u ON m.usuario_id = u.id
+        ORDER BY m.fecha DESC
+    """)
+
+    matriculas = cursor.fetchall()
+    conexion.close()
+
+    return render_template('admin_matriculas.html', matriculas=matriculas)
