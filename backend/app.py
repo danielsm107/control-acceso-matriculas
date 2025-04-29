@@ -256,7 +256,7 @@ def admin_panel():
 
     # Obtener matrículas pendientes de aprobación
     cursor.execute("""
-        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email
+        SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.estado
         FROM matriculas m
         JOIN usuarios u ON m.usuario_id = u.id
         WHERE m.estado = 'pendiente'
