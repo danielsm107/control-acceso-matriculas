@@ -33,6 +33,7 @@ def login():
             )
             
             login_user(user)
+            session['rol'] = user.rol
             
             # Redirección de rol
             if user.rol == 'admin':
@@ -88,6 +89,7 @@ def register():
 @login_required
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for('index'))
 
 @auth.route('/editar_usuario_modal/<int:user_id>', methods=['POST'])
