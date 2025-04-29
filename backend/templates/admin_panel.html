@@ -33,7 +33,9 @@
               <option value="usuario" {% if u[4] == 'usuario' %}selected{% endif %}>Usuario</option>
               <option value="admin" {% if u[4] == 'admin' %}selected{% endif %}>Admin</option>
             </select>
-            <button type="submit" class="btn-cambiar">Cambiar</button>
+            <button type="submit" class="btn-cambiar">
+              <img src="{{ url_for('static', filename='icons/change.svg') }}" alt="Cambiar" width="30" height="30">
+            </button>
           </form>
         </td>
         <td class="acciones">
