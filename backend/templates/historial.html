@@ -12,6 +12,13 @@
     <a href="/historial?filtro=todos" class="btn btn-outline-primary {{ 'active' if filtro == 'todos' else '' }}">Todos</a>
     <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
     <a href="/historial?filtro=hoy" class="btn btn-outline-success {{ 'active' if filtro == 'hoy' else '' }}">Hoy</a>
+    {% if current_user.rol == 'admin' %}
+    <form action="{{ url_for('limpiar_historial') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres limpiar todo el historial?');">
+      <button type="submit" class="delete-btn" title="Limpiar historial">
+        <img src="{{ url_for('static', filename='icons/clean.svg') }}" alt="Rechazar" width="24" height="24">
+      </button>
+    </form>
+    {% endif %}
   </div>
 
   <table class="table-modern">

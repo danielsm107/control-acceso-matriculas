@@ -334,6 +334,22 @@ def cambiar_rol(user_id):
     flash("Rol actualizado correctamente", "success")
     return redirect(url_for("admin_panel"))
 
+@app.route('/limpiar_historial', methods=['POST'])
+@login_required
+def limpiar_historial():
+    if current_user.rol != 'admin':
+        flash('Acceso no autorizado.', 'danger')
+        return redirect(url_for('historial'))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM registros_accesos")
+    conexion.commit()
+    conexion.close()
+
+    flash('Historial de accesos eliminado correctamente.', 'success')
+    return redirect(url_for('historial'))
+
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
