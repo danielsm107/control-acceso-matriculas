@@ -215,3 +215,15 @@ def editar_matricula():
     flash("Matrícula actualizada correctamente.", "success")
     return redirect(url_for('auth.matriculas_admin'))
 
+@auth.route('/admin/eliminar_matricula/<int:matricula_id>', methods=['POST'], endpoint='eliminar_matricula_admin')
+@login_required
+@solo_admin
+def eliminar_matricula_admin(matricula_id):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM matriculas WHERE id = %s", (matricula_id,))
+    conexion.commit()
+    conexion.close()
+
+    flash("Matrícula eliminada correctamente.", "success")
+    return redirect(url_for('auth.matriculas_admin'))
