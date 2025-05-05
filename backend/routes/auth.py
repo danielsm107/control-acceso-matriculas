@@ -172,14 +172,23 @@ def matriculas_admin():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
+    # Obtener todas las matrículas y sus datos asociados
     cursor.execute("""
         SELECT m.id, m.matricula, u.nombre, u.apellidos, u.email, m.estado, m.fecha_registro
         FROM matriculas m
         JOIN usuarios u ON m.usuario_id = u.id
         ORDER BY m.fecha_registro DESC
     """)
-
     matriculas = cursor.fetchall()
+
+    # Obtener lista de usuarios para el select
+    cursor.execute("SELECT id, nombre, apellidos, email FROM usuarios")
+    usuarios = [
+        {'id': row[0], 'nombre': row[1], 'apellidos': row[2], 'email': row[3]}
+        for row in cursor.fetchall()
+    ]
+
     conexion.close()
 
-    return render_template('admin_matriculas.html', matriculas=matriculas)
+    return render_template('admin_matriculas.html', matriculas=matriculas, usuarios=usuarios)
+

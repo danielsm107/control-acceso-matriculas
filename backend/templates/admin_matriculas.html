@@ -4,6 +4,9 @@
 {% block content %}
 <div class="container py-5">
   <h1 class="mb-4">Todas las Matrículas</h1>
+  <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#modalNuevaMatricula">
+    <img src="{{ url_for('static', filename='icons/add.svg') }}" alt="Añadir usuario" width="30" height="30">
+  </button>
   <table class="table-modern">
     <thead>
       <tr>
@@ -35,5 +38,37 @@
       {% endfor %}
     </tbody>
   </table>
+</div>
+
+<div class="modal fade" id="modalNuevaMatricula" tabindex="-1" aria-labelledby="modalNuevaMatriculaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('solicitar_matricula') }}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevaMatriculaLabel">Registrar nueva matrícula</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input type="text" class="form-control" name="matricula" id="matricula" required pattern="\d{4}[A-Z]{3}" placeholder="1234ABC">
+          </div>
+          <div class="mb-3">
+            <label for="usuario_id" class="form-label">Asignar a usuario</label>
+            <select name="usuario_id" id="usuario_id" class="form-select" required>
+              <option value="" disabled selected>Selecciona un usuario</option>
+              {% for u in usuarios %}
+                <option value="{{ u.id }}">{{ u.nombre }} {{ u.apellidos }} ({{ u.email }})</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

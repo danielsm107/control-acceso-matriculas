@@ -149,4 +149,4 @@ Para llevar a cabo este proyecto, se necesitará:
 - [ ] Añadir filtros en matriculas_admin.
 - [x] Añadir botón de limpiar historial en historial.html.
 - [ ] Arreglar mensaje de fallo de contraseña en el login.
-- [ ] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.
+- [x] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.
