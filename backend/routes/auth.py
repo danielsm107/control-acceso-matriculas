@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from utils.db_utils import conectar_db, User
 from functools import wraps
+import re
 
 
 auth = Blueprint('auth', __name__)
@@ -191,4 +192,26 @@ def matriculas_admin():
     conexion.close()
 
     return render_template('admin_matriculas.html', matriculas=matriculas, usuarios=usuarios)
+
+@auth.route('/admin/editar_matricula', methods=['POST'])
+@login_required
+@solo_admin
+def editar_matricula():
+    matricula_id = request.form.get('matricula_id')
+    nueva_matricula = request.form.get('nueva_matricula').upper()
+
+    if not re.fullmatch(r'\d{4}[A-Z]{3}', nueva_matricula):
+        flash("Formato de matrícula no válido. Usa 4 números seguidos de 3 letras (ej: 1234ABC).", "danger")
+        return redirect(url_for('auth.matriculas_admin'))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    # Solo permitir editar si la matrícula está autorizada
+    cursor.execute("UPDATE matriculas SET matricula = %s WHERE id = %s AND estado = 'autorizada'", (nueva_matricula, matricula_id))
+    conexion.commit()
+    conexion.close()
+
+    flash("Matrícula actualizada correctamente.", "success")
+    return redirect(url_for('auth.matriculas_admin'))
 

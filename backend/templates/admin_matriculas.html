@@ -17,7 +17,7 @@
         <th>Nombre Usuario</th>
         <th>Email</th>
         <th>Estado</th>
-        <th>Fecha</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +35,24 @@
               {{ m[5]|capitalize }}
             </span>
           </td>          
-        <td>{{ m[6] }}</td>
+          <td class="acciones">
+            <div class="d-flex align-items-center justify-content-start gap-2">
+              <button class="delete-btn"
+              data-bs-toggle="modal"
+              data-bs-target="#editarMatriculaModal"
+              data-id="{{ m[0] }}"
+              data-matricula="{{ m[1] }}"
+              title="Editar">
+                <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="Editar" width="24" height="22">
+              </button>
+              <form action="{{ url_for('eliminar_matricula_admin', matricula_id=m[0]) }}" method="POST" class="d-inline"
+              onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta matrícula?');">                
+                <button type="submit" class="delete-btn" title="Eliminar">
+                  <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
+                </button>
+              </form>
+            </div>
+          </td>              
       </tr>
       {% endfor %}
     </tbody>
@@ -73,4 +90,30 @@
     </form>
   </div>
 </div>
+
+<div class="modal fade" id="editarMatriculaModal" tabindex="-1" aria-labelledby="editarMatriculaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('auth.editar_matricula') }}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarMatriculaModalLabel">Editar Matrícula</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="matricula_id" id="editar-matricula-id">
+          <div class="mb-3">
+            <label for="nueva_matricula" class="form-label">Nueva matrícula</label>
+            <input type="text" class="form-control" name="nueva_matricula" id="editar-matricula-valor"
+                   pattern="\d{4}[A-Z]{3}" required placeholder="1234ABC">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
