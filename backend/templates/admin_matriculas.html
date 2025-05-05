@@ -117,3 +117,19 @@
 </div>
 
 {% endblock %}
+
+{% block scripts %}
+<script>
+  const editarModal = document.getElementById('editarMatriculaModal');
+  editarModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const id = button.getAttribute('data-id');
+    const matricula = button.getAttribute('data-matricula');
+
+    // Asignar a inputs del modal
+    document.getElementById('editar-matricula-id').value = id;
+    document.getElementById('editar-matricula-valor').value = matricula;
+  });
+</script>
+
+{% endblock %}
