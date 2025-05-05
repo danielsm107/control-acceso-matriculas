@@ -267,3 +267,6 @@ a:hover {
   background-color: #5a6268;
 }
 
+#matricula::placeholder {
+  color: #adb5bd !important;
+}
