@@ -45,7 +45,7 @@
               title="Editar">
                 <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="Editar" width="24" height="22">
               </button>
-              <form action="{{ url_for('eliminar_matricula_admin', matricula_id=m[0]) }}" method="POST" class="d-inline"
+              <form action="{{ url_for('auth.eliminar_matricula_admin', matricula_id=m[0]) }}" method="POST" class="d-inline"
               onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta matrícula?');">                
                 <button type="submit" class="delete-btn" title="Eliminar">
                   <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
