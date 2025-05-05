@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, redirect_back
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
@@ -28,6 +28,13 @@ login_manager.login_message = None
 @login_required
 def index():
     return render_template("index.html", user=current_user)
+
+# Redirrecionar según rol
+def _redirect_matriculas():
+    if current_user.rol == 'admin':
+        return redirect(url_for('auth.matriculas_admin'))
+    else:
+        return redirect(url_for('mis_matriculas'))
 
 
 
@@ -171,7 +178,7 @@ def solicitar_matricula():
         # Validar formato exacto
         if not re.fullmatch(r'\d{4}[A-Z]{3}', matricula):
             flash('Formato de matrícula no válido. Debe ser 4 números seguidos de 3 letras (ej: 1234ABC).', 'danger')
-            return redirect_back()
+            return _redirect_matriculas()
 
         conexion = conectar_db()
         cursor = conexion.cursor()
@@ -190,7 +197,7 @@ def solicitar_matricula():
         if existe_para_usuario:
             conexion.close()
             flash('Esa matrícula ya está registrada para ese usuario.', 'danger')
-            return redirect_back()
+            return _redirect_matriculas()
 
         # Comprobación global
         cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s", (matricula,))
@@ -199,7 +206,7 @@ def solicitar_matricula():
         if ya_existe_global:
             conexion.close()
             flash("Esa matrícula ya ha sido registrada por otro usuario.", "danger")
-            return redirect_back()
+            return _redirect_matriculas()
 
         # Determinar estado
         if current_user.rol == 'admin' and usuario_id != current_user.id:
