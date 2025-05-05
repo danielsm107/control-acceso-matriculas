@@ -28,6 +28,7 @@
       </a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
+          {% if current_user.rol != 'admin' %}
           <li class="nav-item">
             <a class="nav-link link-light" href="/solicitar_matricula">Solicitar Matrícula</a>
           </li>
