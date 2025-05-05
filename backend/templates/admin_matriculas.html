@@ -55,7 +55,7 @@
           </div>
           <div class="mb-3">
             <label for="usuario_id" class="form-label">Asignar a usuario</label>
-            <select name="usuario_id" id="usuario_id" class="form-select" required>
+            <select name="usuario_id" id="usuario_id" class="select-rol" required>
               <option value="" disabled selected>Selecciona un usuario</option>
               {% for u in usuarios %}
                 <option value="{{ u.id }}">{{ u.nombre }} {{ u.apellidos }} ({{ u.email }})</option>

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, redirect_back
 from flask_socketio import SocketIO, emit
 from datetime import datetime
 from routes.auth import auth as auth_blueprint
@@ -168,42 +168,59 @@ def solicitar_matricula():
     if request.method == 'POST':
         matricula = request.form['matricula'].upper()
 
-        # Validar formato exacto: 4 dígitos + 3 letras
+        # Validar formato exacto
         if not re.fullmatch(r'\d{4}[A-Z]{3}', matricula):
             flash('Formato de matrícula no válido. Debe ser 4 números seguidos de 3 letras (ej: 1234ABC).', 'danger')
-            return redirect(url_for('solicitar_matricula'))
+            return redirect_back()
 
         conexion = conectar_db()
         cursor = conexion.cursor()
 
-        # Primero, comprobar si ya la registró este usuario
-        cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
+        # Obtener usuario objetivo
+        usuario_id = current_user.id
+        if current_user.rol == 'admin':
+            usuario_id_form = request.form.get('usuario_id')
+            if usuario_id_form and usuario_id_form.isdigit():
+                usuario_id = int(usuario_id_form)
+
+        # Comprobación de duplicados para ese usuario
+        cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, usuario_id))
         existe_para_usuario = cursor.fetchone()[0]
 
         if existe_para_usuario:
             conexion.close()
-            flash('Esa matrícula ya la has registrado tú.', 'danger')
-            return redirect(url_for('solicitar_matricula'))
+            flash('Esa matrícula ya está registrada para ese usuario.', 'danger')
+            return redirect_back()
 
-        # Después, comprobar si ya existe con otro usuario
+        # Comprobación global
         cursor.execute("SELECT COUNT(*) FROM matriculas WHERE matricula = %s", (matricula,))
         ya_existe_global = cursor.fetchone()[0]
 
         if ya_existe_global:
             conexion.close()
             flash("Esa matrícula ya ha sido registrada por otro usuario.", "danger")
-            return redirect(url_for('solicitar_matricula'))
+            return redirect_back()
 
-        # Si pasa las dos validaciones, insertamos
+        # Determinar estado
+        if current_user.rol == 'admin' and usuario_id != current_user.id:
+            estado = 'autorizada'
+        else:
+            estado = 'pendiente'
+
+        # Insertar en base de datos
         cursor.execute(
             "INSERT INTO matriculas (matricula, estado, usuario_id) VALUES (%s, %s, %s)",
-            (matricula, 'pendiente', current_user.id)
+            (matricula, estado, usuario_id)
         )
         conexion.commit()
         conexion.close()
 
-        flash('Matrícula solicitada correctamente. Pendiente de aprobación.', 'success')
-        return redirect(url_for('mis_matriculas'))
+        if current_user.rol == 'admin':
+            flash(f'Matrícula registrada y autorizada para el usuario ID {usuario_id}.', 'success')
+            return redirect(url_for('auth.matriculas_admin'))
+        else:
+            flash('Matrícula solicitada correctamente. Pendiente de aprobación.', 'success')
+            return redirect(url_for('mis_matriculas'))
 
     return render_template('solicitar_matricula.html')
 
