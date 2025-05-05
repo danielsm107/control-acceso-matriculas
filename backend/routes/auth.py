@@ -198,7 +198,7 @@ def matriculas_admin():
 @solo_admin
 def editar_matricula():
     matricula_id = request.form.get('matricula_id')
-    nueva_matricula = request.form.get('nueva_matricula').upper()
+    nueva_matricula = request.form.get('nueva_matricula', '').upper()
 
     if not re.fullmatch(r'\d{4}[A-Z]{3}', nueva_matricula):
         flash("Formato de matrícula no válido. Usa 4 números seguidos de 3 letras (ej: 1234ABC).", "danger")
@@ -207,10 +207,21 @@ def editar_matricula():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # Solo permitir editar si la matrícula está autorizada
+    # Validar que no haya otra matrícula con ese mismo valor
+    cursor.execute("SELECT id FROM matriculas WHERE matricula = %s AND id != %s", (nueva_matricula, matricula_id))
+    if cursor.fetchone():
+        conexion.close()
+        flash("Ya existe otra matrícula con ese valor.", "danger")
+        return redirect(url_for('auth.matriculas_admin'))
+
+    # Solo permitir editar si está autorizada
     cursor.execute("UPDATE matriculas SET matricula = %s WHERE id = %s AND estado = 'autorizada'", (nueva_matricula, matricula_id))
     conexion.commit()
     conexion.close()
+
+    flash("Matrícula actualizada correctamente.", "success")
+    return redirect(url_for('auth.matriculas_admin'))
+
 
     flash("Matrícula actualizada correctamente.", "success")
     return redirect(url_for('auth.matriculas_admin'))
