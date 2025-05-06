@@ -41,7 +41,7 @@ def login():
             else:
                 return redirect(url_for('index'))
         else:
-            flash('Correo o contraseña incorrectos', 'error')
+            flash('Correo o contraseña incorrectos', 'danger')
 
     return render_template('login.html')
 
