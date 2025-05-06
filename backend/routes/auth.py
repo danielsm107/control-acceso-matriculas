@@ -11,8 +11,8 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email')
+        password = request.form.get('password')
 
         conexion = conectar_db()
         cursor = conexion.cursor()
@@ -33,19 +33,18 @@ def login():
                 password=usuario[3],
                 rol=usuario[4]
             )
-            
             login_user(user)
             session['rol'] = user.rol
-            
-            # Redirección de rol
+
             if user.rol == 'admin':
                 return redirect(url_for('admin_panel'))
-            
             else:
                 return redirect(url_for('index'))
-            
-            
+        else:
+            flash('Correo o contraseña incorrectos', 'error')
+
     return render_template('login.html')
+
 
 
 @auth.route('/register', methods=['GET', 'POST'])
