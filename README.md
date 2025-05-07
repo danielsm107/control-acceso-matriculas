@@ -132,7 +132,7 @@ Para llevar a cabo este proyecto, se necesitará:
 ```
 
 
-## **Para hacer:**
+## **Por hacer:**
 
 - [x] Arreglar redireccionamiento a la pagina principal cuando eres admin.
 - [x] Añadir botón para modificación de usuarios desde admin.
@@ -140,13 +140,15 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Añadir botón para poder crear usuarios desde admin_panel.
 - [x] Cambiar estilos botones admin panel.
 - [x] Añadir imágenes en historial.html.
-- [ ] Modificar pagina index.html para que muestre la información del usuario actual.
-- [ ] Creación de gráficas para matriculas.
 - [x] Crear una página con todas las matriculas existentes.
 - [x] Arreglar las imagenes en historial.
 - [ ] Arreglar fechas.
 - [x] Añadir columna de acciones en matriculas_admin.
-- [ ] Añadir filtros en matriculas_admin.
+- [x] Añadir filtros en matriculas_admin.
 - [x] Añadir botón de limpiar historial en historial.html.
 - [x] Arreglar mensaje de fallo de contraseña en el login.
 - [x] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.
+- [ ] Añadir filtro historial.html
+- [ ] Arreglar que cuando un admin registre una nueva matricula en admin_matriculas esté como autorizada automáticamente.
+- [ ] Modificar pagina index.html para que muestre la información del usuario actual. (**PRIORITARIO**)
+- [ ] Creación de gráficas para matriculas. (**PRIORITARIO**)
