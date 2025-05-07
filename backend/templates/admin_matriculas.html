@@ -12,11 +12,26 @@
   <table class="table-modern">
     <thead>
       <tr>
-        <th onclick="sortTable(0, this)">ID <span class="sort-icon"></span></th>
-        <th onclick="sortTable(1, this)">Matrícula <span class="sort-icon"></span></th>
-        <th onclick="sortTable(2, this)">Nombre Usuario <span class="sort-icon"></span></th>
-        <th onclick="sortTable(3, this)">Email <span class="sort-icon"></span></th>
-        <th onclick="sortTable(4, this)">Estado <span class="sort-icon"></span></th>
+        <th onclick="sortTable(0, this)">
+          ID
+          <img class="sort-icon d-inline-block" src="{{ url_for('static', filename='icons/sort-icon.svg') }}" alt="Ordenar">
+        </th>
+        <th onclick="sortTable(1, this)">
+          Matrícula 
+          <img class="sort-icon d-inline-block" src="{{ url_for('static', filename='icons/sort-icon.svg') }}" alt="Ordenar">
+        </th>
+        <th onclick="sortTable(2, this)">
+          Nombre Usuario
+          <img class="sort-icon d-inline-block" src="{{ url_for('static', filename='icons/sort-icon.svg') }}" alt="Ordenar">
+        </th>
+        <th onclick="sortTable(3, this)">
+          Email 
+          <img class="sort-icon d-inline-block" src="{{ url_for('static', filename='icons/sort-icon.svg') }}" alt="Ordenar">
+        </th>
+        <th onclick="sortTable(4, this)">
+          Estado 
+          <img class="sort-icon d-inline-block" src="{{ url_for('static', filename='icons/sort-icon.svg') }}" alt="Ordenar">
+        </th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -150,7 +165,6 @@
     const rows = Array.from(table.rows);
     const isNumeric = !isNaN(rows[0].cells[colIndex].innerText.trim());
   
-    // Determinar si se invierte la dirección
     const shouldReverse = lastSortedColumn === colIndex && lastSortDirection === 'asc';
     lastSortedColumn = colIndex;
     lastSortDirection = shouldReverse ? 'desc' : 'asc';
@@ -172,14 +186,18 @@
     table.innerHTML = '';
     sortedRows.forEach(row => table.appendChild(row));
   
-    // Reset de iconos
-    document.querySelectorAll(".sort-icon").forEach(el => el.innerHTML = "");
+    // Resetear estado visual
+    document.querySelectorAll(".sort-icon").forEach(icon => {
+      icon.classList.remove('asc', 'desc');
+    });
   
-    // Establecer nueva flecha
-    const icon = shouldReverse ? "↓" : "↑";
-    thElement.querySelector(".sort-icon").innerHTML = icon;
+    // Aplicar nuevo estado visual
+    const icon = thElement.querySelector(".sort-icon");
+    if (icon) {
+      icon.classList.add(shouldReverse ? 'desc' : 'asc');
+    }
   }
-</script>
+</script>  
 {% endblock %}
 
 
