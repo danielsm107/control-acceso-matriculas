@@ -11,7 +11,7 @@
     <form method="get" class="d-flex gap-3 mb-3">
       <div class="flex-grow-1">
         <label for="filtro_fecha" class="form-label text-white">Filtrar por fecha</label>
-        <select name="filtro" id="filtro_fecha" class="form-select" onchange="this.form.submit()">
+        <select name="filtro" id="filtro_fecha" class="filtro-select" onchange="this.form.submit()">
           <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
           <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
           <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
@@ -20,7 +20,7 @@
     
       <div class="flex-grow-1">
         <label for="buscar" class="form-label text-white">Buscar por matrícula</label>
-        <input type="text" name="buscar" id="buscar" value="{{ request.args.get('buscar', '') }}" class="form-control" placeholder="Ej: 1234ABC">
+        <input type="text" name="buscar" id="buscar" value="{{ request.args.get('buscar', '') }}" class="filtro-input" placeholder="Ej: 1234ABC">
       </div>
     </form>
       
