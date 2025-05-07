@@ -281,14 +281,14 @@ a:hover {
 
 .filtros-wrapper .form-label {
   font-weight: 500;
-  color: #ffffff;
+  color: white;
 }
 
 .filtro-select,
 .filtro-input {
-  background-color: #1e2a38;
-  border: 1px solid #00bfff;
-  color: #fff;
+  background-color: #172a3a;
+  border: 1px solid #14b3f2;
+  color: white;
   transition: all 0.2s ease-in-out;
 }
 
@@ -297,11 +297,12 @@ a:hover {
   border-color: #1ac2ff;
   box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
   background-color: #243340;
+  color: white;
 }
 
 .filtro-select option {
-  background-color: #1e2a38;
-  color: #ffffff;
+  background-color: #172a3a;
+  color: white;
 }
 
 
