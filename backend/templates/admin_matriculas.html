@@ -12,11 +12,12 @@
   <table class="table-modern">
     <thead>
       <tr>
-        <th onclick="sortTable(0)">ID</th>
-        <th onclick="sortTable(1)">Matrícula</th>
-        <th onclick="sortTable(2)">Nombre Usuario</th>
-        <th onclick="sortTable(3)">Email</th>
-        <th onclick="sortTable(4)">Estado</th>
+        <th onclick="sortTable(0, this)">ID <span class="sort-icon"></span></th>
+        <th onclick="sortTable(1, this)">Matrícula <span class="sort-icon"></span></th>
+        <th onclick="sortTable(2, this)">Nombre Usuario <span class="sort-icon"></span></th>
+        <th onclick="sortTable(3, this)">Email <span class="sort-icon"></span></th>
+        <th onclick="sortTable(4, this)">Estado <span class="sort-icon"></span></th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -141,7 +142,7 @@
 
 <!-- Script para ordenar la tabla -->
 <script>
-  function sortTable(colIndex) {
+  function sortTable(colIndex, thElement) {
     const table = document.querySelector(".table-modern tbody");
     const rows = Array.from(table.rows);
   
@@ -154,22 +155,27 @@
       if (isNumeric) {
         return parseFloat(aText) - parseFloat(bText);
       }
-  
       return aText.localeCompare(bText, 'es', { sensitivity: 'base' });
     });
   
     // Alternar dirección asc/desc
+    let reverse = false;
     if (table.getAttribute('data-sorted') == colIndex) {
       sortedRows.reverse();
       table.setAttribute('data-sorted', '');
+      reverse = true;
     } else {
       table.setAttribute('data-sorted', colIndex);
     }
   
-    // Vaciar y volver a insertar
     table.innerHTML = '';
     sortedRows.forEach(row => table.appendChild(row));
-  }
+  
+    // Eliminar iconos previos
+    document.querySelectorAll(".sort-icon").forEach(el => el.innerHTML = "");
+    // Añadir flecha visual
+    thElement.querySelector(".sort-icon").innerHTML = reverse ? "↓" : "↑";
+  }  
 </script>
 {% endblock %}
 

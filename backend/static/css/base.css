@@ -270,3 +270,10 @@ a:hover {
 #matricula::placeholder {
   color: #adb5bd !important;
 }
+
+.sort-icon {
+  font-size: 0.9rem;
+  margin-left: 5px;
+  color: #66bfff;
+  transition: transform 0.2s ease;
+}
