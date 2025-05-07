@@ -272,16 +272,10 @@ a:hover {
 }
 
 .sort-icon {
-  width: 14px;
-  height: 14px;
-  margin-left: 6px;
-  transition: transform 0.3s ease;
-  filter: brightness(1.8); /* opcional para mejorar visibilidad en tema oscuro */
-}
-.sort-icon.asc {
-  transform: rotate(180deg);
-}
-.sort-icon.desc {
-  transform: rotate(0deg);
+  font-size: 18px;
+  font-weight: bold;     
+  margin-left: 6px;      
+  display: inline-block;
+  color: #fff;           
 }
 
