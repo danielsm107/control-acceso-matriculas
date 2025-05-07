@@ -12,7 +12,7 @@
   <form class="row mb-4 g-3 align-items-end filtros-wrapper">
     <div class="col-md-4">
       <label for="filtro_fecha" class="form-label">Filtrar por fecha</label>
-      <select id="filtro_fecha" name="filtro" class="form-select filtro-control">
+      <select id="filtro_fecha" name="filtro" class="form-select filtro-control" onchange="this.form.submit()">
         <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
         <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
         <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
