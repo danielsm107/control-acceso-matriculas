@@ -7,6 +7,22 @@
   <h2 class="mb-4 text-white">Historial de Accesos 
     <span id="estado-ws" class="badge connection-badge bg-secondary">Conectando...</span>
   </h2>
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label class="form-label text-white">Filtrar por estado</label>
+      <select id="filtro-estado" class="form-control filtro-input">
+        <option value="todos">Todos</option>
+        <option value="autorizada">Autorizado</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="denegada">Denegado</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label text-white">Buscar por matrícula</label>
+      <input type="text" id="buscar-matricula" class="form-control filtro-input" placeholder="Ej: 1234ABC">
+    </div>
+  </div>  
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- Filtros a la izquierda -->
@@ -30,8 +46,8 @@
   <table class="table-modern">
     <thead>
       <tr>
-        <th>Matrícula</th>
-        <th>Fecha</th>
+        <th class="sortable" data-columna="0">Matrícula <span class="sort-icon">⇅</span></th>
+        <th class="sortable" data-columna="1">Fecha <span class="sort-icon">⇅</span></th>
         <th>Estado</th>
         <th>Mensaje</th>
         <th>Imagen</th>
@@ -135,6 +151,35 @@
     `;
 
     tabla.prepend(fila);
+  });
+</script>
+
+<script>
+  cabeceras.forEach(th => {
+    th.addEventListener("click", () => {
+      const col = parseInt(th.dataset.columna);
+      const ordenAsc = !th.classList.contains("asc");
+  
+      // Reset iconos
+      document.querySelectorAll(".sortable").forEach(th => {
+        th.classList.remove("asc", "desc");
+        th.querySelector(".sort-icon").textContent = "⇅";
+      });
+  
+      th.classList.add(ordenAsc ? "asc" : "desc");
+      th.querySelector(".sort-icon").textContent = ordenAsc ? "⬆" : "⬇";
+  
+      // Ordenar filas
+      filas.sort((a, b) => {
+        const valA = a.children[col].textContent.trim().toLowerCase();
+        const valB = b.children[col].textContent.trim().toLowerCase();
+        return ordenAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      });
+  
+      const tbody = document.getElementById("tabla-accesos");
+      tbody.innerHTML = "";
+      filas.forEach(f => tbody.appendChild(f));
+    });
   });
 </script>
 {% endblock %}
