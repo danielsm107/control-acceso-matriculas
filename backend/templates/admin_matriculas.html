@@ -138,10 +138,7 @@
     document.getElementById('editar-matricula-valor').value = matricula;
   });
 </script>
-{% endblock %}
 
-
-{% block scripts %}
 <!-- Script para ordenar la tabla -->
 <script>
   function sortTable(colIndex) {
@@ -173,5 +170,8 @@
     table.innerHTML = '';
     sortedRows.forEach(row => table.appendChild(row));
   }
-  </script>
+</script>
 {% endblock %}
+
+
+
