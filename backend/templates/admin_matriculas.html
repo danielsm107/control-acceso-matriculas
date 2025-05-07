@@ -9,14 +9,30 @@
     <img src="{{ url_for('static', filename='icons/add.svg') }}" alt="Añadir usuario" width="30" height="30">
   </button>
   </div>
+  <div class="row mb-4 g-3 align-items-end filtros-wrapper">
+    <div class="col-md-4">
+      <label for="filtro-estado" class="form-label text-white">Filtrar por estado</label>
+      <select id="filtro-estado" class="form-control filtro-select">
+        <option value="">Todos</option>
+        <option value="autorizada">Autorizada</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="denegada">Denegada</option>
+      </select>
+    </div>
+    <div class="col-md-5">
+      <label for="filtro-usuario" class="form-label text-white">Buscar por usuario</label>
+      <input type="text" id="filtro-usuario" class="form-control filtro-input" placeholder="Nombre o correo">
+    </div>
+  </div>  
+
   <table class="table-modern">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Matrícula</th>
-        <th>Nombre Usuario</th>
-        <th>Email</th>
-        <th>Estado</th>
+        <th onclick="sortTable(0, this)">ID <span class="sort-icon"></span></th>
+        <th onclick="sortTable(1, this)">Matrícula <span class="sort-icon"></span></th>
+        <th onclick="sortTable(2, this)">Nombre Usuario <span class="sort-icon"></span></th>
+        <th onclick="sortTable(3, this)">Email <span class="sort-icon"></span></th>
+        <th onclick="sortTable(4, this)">Estado <span class="sort-icon"></span></th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -126,6 +142,7 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- Script para editar modal -->
 <script>
   const editarModal = document.getElementById('editarMatriculaModal');
   editarModal.addEventListener('show.bs.modal', function (event) {
@@ -139,4 +156,74 @@
   });
 </script>
 
+<!-- Script para ordenar la tabla -->
+<script>
+  let lastSortedColumn = null;
+  let lastSortDirection = 'asc';
+  
+  function sortTable(colIndex, thElement) {
+    const table = document.querySelector(".table-modern tbody");
+    const rows = Array.from(table.rows);
+    const isNumeric = !isNaN(rows[0].cells[colIndex].innerText.trim());
+  
+    // Determinar si se invierte la dirección
+    const shouldReverse = lastSortedColumn === colIndex && lastSortDirection === 'asc';
+    lastSortedColumn = colIndex;
+    lastSortDirection = shouldReverse ? 'desc' : 'asc';
+  
+    const sortedRows = rows.sort((a, b) => {
+      const aText = a.cells[colIndex].innerText.trim().toLowerCase();
+      const bText = b.cells[colIndex].innerText.trim().toLowerCase();
+  
+      let comparison = 0;
+      if (isNumeric) {
+        comparison = parseFloat(aText) - parseFloat(bText);
+      } else {
+        comparison = aText.localeCompare(bText, 'es', { sensitivity: 'base' });
+      }
+  
+      return shouldReverse ? -comparison : comparison;
+    });
+  
+    table.innerHTML = '';
+    sortedRows.forEach(row => table.appendChild(row));
+  
+    // Reset de iconos
+    document.querySelectorAll(".sort-icon").forEach(el => el.innerHTML = "");
+  
+    // Establecer nueva flecha
+    const icon = shouldReverse ? "↓" : "↑";
+    thElement.querySelector(".sort-icon").innerHTML = icon;
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const estadoInput = document.getElementById("filtro-estado");
+    const usuarioInput = document.getElementById("filtro-usuario");
+    const filas = document.querySelectorAll("table.table-modern tbody tr");
+  
+    function filtrarTabla() {
+      const estado = estadoInput.value.toLowerCase();
+      const usuario = usuarioInput.value.toLowerCase();
+  
+      filas.forEach(fila => {
+        const estadoCelda = fila.querySelector("td:nth-child(5)").textContent.toLowerCase();
+        const usuarioCelda = fila.querySelector("td:nth-child(3)").textContent.toLowerCase();
+        const emailCelda = fila.querySelector("td:nth-child(4)").textContent.toLowerCase();
+  
+        const coincideEstado = !estado || estadoCelda.includes(estado);
+        const coincideUsuario = !usuario || usuarioCelda.includes(usuario) || emailCelda.includes(usuario);
+  
+        fila.style.display = (coincideEstado && coincideUsuario) ? "" : "none";
+      });
+    }
+  
+    estadoInput.addEventListener("change", filtrarTabla);
+    usuarioInput.addEventListener("input", filtrarTabla);
+  });
+  </script>  
 {% endblock %}
+
+
+

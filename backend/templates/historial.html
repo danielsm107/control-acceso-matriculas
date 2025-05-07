@@ -8,27 +8,14 @@
     <span id="estado-ws" class="badge connection-badge bg-secondary">Conectando...</span>
   </h2>
 
-
-  <form class="row mb-4 g-3 align-items-end filtros-wrapper">
-    <div class="col-md-4">
-      <label for="filtro_fecha" class="form-label">Filtrar por fecha</label>
-      <select id="filtro_fecha" name="filtro" class="form-select filtro-control" onchange="this.form.submit()">
-        <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
-        <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
-        <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
-      </select>
-    </div>
-  
-    <div class="col-md-5">
-      <label for="buscar" class="form-label">Buscar por matrícula</label>
-      <input type="text" id="buscar" name="buscar" class="form-control filtro-control" placeholder="Ej: 1234ABC"
-             value="{{ request.args.get('buscar', '') }}">
-    </div>
-  </form>
-  
-  
-
   <div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Filtros a la izquierda -->
+    <div class="filter-buttons">
+      <a href="/historial?filtro=todos" class="btn btn-outline-primary {{ 'active' if filtro == 'todos' else '' }}">Todos</a>
+      <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
+      <a href="/historial?filtro=hoy" class="btn btn-outline-success {{ 'active' if filtro == 'hoy' else '' }}">Hoy</a>
+    </div>
+  
     <!-- Botón limpiar historial a la derecha -->
     {% if current_user.rol == 'admin' %}
     <form action="{{ url_for('limpiar_historial') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres limpiar todo el historial?');">
@@ -43,8 +30,8 @@
   <table class="table-modern">
     <thead>
       <tr>
-        <th class="sortable" data-columna="0">Matrícula <span class="sort-icon">⇅</span></th>
-        <th class="sortable" data-columna="1">Fecha <span class="sort-icon">⇅</span></th>
+        <th>Matrícula</th>
+        <th>Fecha</th>
         <th>Estado</th>
         <th>Mensaje</th>
         <th>Imagen</th>
@@ -148,35 +135,6 @@
     `;
 
     tabla.prepend(fila);
-  });
-</script>
-
-<script>
-  cabeceras.forEach(th => {
-    th.addEventListener("click", () => {
-      const col = parseInt(th.dataset.columna);
-      const ordenAsc = !th.classList.contains("asc");
-  
-      // Reset iconos
-      document.querySelectorAll(".sortable").forEach(th => {
-        th.classList.remove("asc", "desc");
-        th.querySelector(".sort-icon").textContent = "⇅";
-      });
-  
-      th.classList.add(ordenAsc ? "asc" : "desc");
-      th.querySelector(".sort-icon").textContent = ordenAsc ? "⬆" : "⬇";
-  
-      // Ordenar filas
-      filas.sort((a, b) => {
-        const valA = a.children[col].textContent.trim().toLowerCase();
-        const valB = b.children[col].textContent.trim().toLowerCase();
-        return ordenAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
-      });
-  
-      const tbody = document.getElementById("tabla-accesos");
-      tbody.innerHTML = "";
-      filas.forEach(f => tbody.appendChild(f));
-    });
   });
 </script>
 {% endblock %}
