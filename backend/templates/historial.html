@@ -10,21 +10,22 @@
 
 
   <form class="row mb-4 g-3 align-items-end filtros-wrapper">
-
     <div class="col-md-4">
-      <label for="filtro_fecha" class="form-label text-white">Filtrar por fecha</label>
-      <select id="filtro_fecha" name="filtro" class="filtro-select">
+      <label for="filtro_fecha" class="form-label">Filtrar por fecha</label>
+      <select id="filtro_fecha" name="filtro" class="form-select filtro-control">
         <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
         <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
         <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
       </select>
     </div>
+  
     <div class="col-md-5">
-      <label for="buscar" class="form-label text-white">Buscar por matrícula</label>
-      <input type="text" id="buscar" name="buscar" placeholder="Ej: 1234ABC"
-             class="form-control filtro-input" value="{{ request.args.get('buscar', '') }}">
+      <label for="buscar" class="form-label">Buscar por matrícula</label>
+      <input type="text" id="buscar" name="buscar" class="form-control filtro-control" placeholder="Ej: 1234ABC"
+             value="{{ request.args.get('buscar', '') }}">
     </div>
   </form>
+  
   
 
   <div class="d-flex justify-content-between align-items-center mb-3">

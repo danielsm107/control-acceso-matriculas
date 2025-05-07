@@ -259,48 +259,32 @@ a:hover {
   display: inline-block;
   color: #fff;           
 }
-
 .filtros-wrapper .form-label {
   font-weight: 500;
   color: white;
 }
 
-.filtro-input::placeholder {
-  color: #b0bfcf;
-  opacity: 0.7;
-}
-
-.filtro-select,
-.filtro-input {
+.filtro-control {
   background-color: #172a3a;
   border: 1px solid #14b3f2;
   color: white;
   transition: all 0.2s ease-in-out;
 }
 
-.filtro-input::placeholder {
-  color: #b0bfcf; 
+.filtro-control::placeholder {
+  color: #b0bfcf;
   opacity: 0.7;
 }
 
-.filtro-select:focus,
-.filtro-input:focus {
+.filtro-control:focus {
   border-color: #1ac2ff;
   box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
   background-color: #243340;
   color: white;
 }
 
-.filtro-select option {
+.filtro-control option {
   background-color: #172a3a;
   color: white;
 }
 
-.filtro-form-select, .filtro-form-input {
-  background-color: #172a3a;
-  color: white;
-  border: 1px solid #14b3f2;
-}
-.filtro-form-select:focus, .filtro-form-input:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.4);
-}
