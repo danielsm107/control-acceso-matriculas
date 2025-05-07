@@ -9,22 +9,23 @@
   </h2>
 
 
-    <form method="get" class="d-flex gap-3 mb-3">
-      <div class="flex-grow-1">
-        <label for="filtro_fecha" class="form-label text-white">Filtrar por fecha</label>
-        <select name="filtro" id="filtro_fecha" class="filtro-form-select" onchange="this.form.submit()">
-          <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
-          <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
-          <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
-        </select>
-      </div>
-    
-      <div class="flex-grow-1">
-        <label for="buscar" class="form-label text-white">Buscar por matrícula</label>
-        <input type="text" name="buscar" id="buscar" value="{{ request.args.get('buscar', '') }}" class="filtro-form-input" placeholder="Ej: 1234ABC">
-      </div>
-    </form>
-      
+  <form class="form-filtros row g-3 align-items-end mb-4">
+
+    <div class="col-md-4">
+      <label for="filtro_fecha" class="form-label text-white">Filtrar por fecha</label>
+      <select id="filtro_fecha" name="filtro" class="filtro-select">
+        <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
+        <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
+        <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
+      </select>
+    </div>
+    <div class="col-md-5">
+      <label for="buscar" class="form-label text-white">Buscar por matrícula</label>
+      <input type="text" id="buscar" name="buscar" placeholder="Ej: 1234ABC"
+             class="form-control filtro-input" value="{{ request.args.get('buscar', '') }}">
+    </div>
+  </form>
+  
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- Botón limpiar historial a la derecha -->
