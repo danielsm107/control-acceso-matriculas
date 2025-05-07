@@ -145,8 +145,8 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Crear una página con todas las matriculas existentes.
 - [x] Arreglar las imagenes en historial.
 - [ ] Arreglar fechas.
-- [ ] Añadir columna de acciones en matriculas_admin.
+- [x] Añadir columna de acciones en matriculas_admin.
 - [ ] Añadir filtros en matriculas_admin.
 - [x] Añadir botón de limpiar historial en historial.html.
-- [ ] Arreglar mensaje de fallo de contraseña en el login.
+- [x] Arreglar mensaje de fallo de contraseña en el login.
 - [x] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.

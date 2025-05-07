@@ -12,12 +12,11 @@
   <table class="table-modern">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Matrícula</th>
-        <th>Nombre Usuario</th>
-        <th>Email</th>
-        <th>Estado</th>
-        <th>Acciones</th>
+        <th onclick="sortTable(0)">ID</th>
+        <th onclick="sortTable(1)">Matrícula</th>
+        <th onclick="sortTable(2)">Nombre Usuario</th>
+        <th onclick="sortTable(3)">Email</th>
+        <th onclick="sortTable(4)">Estado</th>
       </tr>
     </thead>
     <tbody>
@@ -126,6 +125,7 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- Script para editar modal -->
 <script>
   const editarModal = document.getElementById('editarMatriculaModal');
   editarModal.addEventListener('show.bs.modal', function (event) {
@@ -138,5 +138,40 @@
     document.getElementById('editar-matricula-valor').value = matricula;
   });
 </script>
+{% endblock %}
 
+
+{% block scripts %}
+<!-- Script para ordenar la tabla -->
+<script>
+  function sortTable(colIndex) {
+    const table = document.querySelector(".table-modern tbody");
+    const rows = Array.from(table.rows);
+  
+    const isNumeric = !isNaN(rows[0].cells[colIndex].innerText.trim());
+  
+    const sortedRows = rows.sort((a, b) => {
+      const aText = a.cells[colIndex].innerText.trim().toLowerCase();
+      const bText = b.cells[colIndex].innerText.trim().toLowerCase();
+  
+      if (isNumeric) {
+        return parseFloat(aText) - parseFloat(bText);
+      }
+  
+      return aText.localeCompare(bText, 'es', { sensitivity: 'base' });
+    });
+  
+    // Alternar dirección asc/desc
+    if (table.getAttribute('data-sorted') == colIndex) {
+      sortedRows.reverse();
+      table.setAttribute('data-sorted', '');
+    } else {
+      table.setAttribute('data-sorted', colIndex);
+    }
+  
+    // Vaciar y volver a insertar
+    table.innerHTML = '';
+    sortedRows.forEach(row => table.appendChild(row));
+  }
+  </script>
 {% endblock %}
