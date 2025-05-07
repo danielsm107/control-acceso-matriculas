@@ -9,10 +9,10 @@
     <img src="{{ url_for('static', filename='icons/add.svg') }}" alt="Añadir usuario" width="30" height="30">
   </button>
   </div>
-  <div class="row mb-4 align-items-end">
+  <div class="row mb-4 g-3 align-items-end filtros-wrapper">
     <div class="col-md-4">
-      <label for="filtro-estado" class="form-label text-light">Filtrar por estado</label>
-      <select id="filtro-estado" class="form-select bg-dark text-light border-primary">
+      <label for="filtro-estado" class="form-label text-white">Filtrar por estado</label>
+      <select id="filtro-estado" class="form-control filtro-select">
         <option value="">Todos</option>
         <option value="autorizada">Autorizada</option>
         <option value="pendiente">Pendiente</option>
@@ -20,8 +20,8 @@
       </select>
     </div>
     <div class="col-md-5">
-      <label for="filtro-usuario" class="form-label text-light">Buscar por usuario</label>
-      <input type="text" id="filtro-usuario" class="form-control bg-dark text-light border-primary" placeholder="Nombre o correo">
+      <label for="filtro-usuario" class="form-label text-white">Buscar por usuario</label>
+      <input type="text" id="filtro-usuario" class="form-control filtro-input" placeholder="Nombre o correo">
     </div>
   </div>  
 
