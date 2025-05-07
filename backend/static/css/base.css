@@ -296,4 +296,11 @@ a:hover {
   color: white;
 }
 
-
+.filtro-form-select, .filtro-form-input {
+  background-color: #172a3a;
+  color: white;
+  border: 1px solid #14b3f2;
+}
+.filtro-form-select:focus, .filtro-form-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.4);
+}
