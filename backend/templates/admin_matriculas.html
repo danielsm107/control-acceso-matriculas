@@ -9,6 +9,22 @@
     <img src="{{ url_for('static', filename='icons/add.svg') }}" alt="Añadir usuario" width="30" height="30">
   </button>
   </div>
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <label class="form-label text-light">Filtrar por estado</label>
+      <select id="filtro-estado" class="form-select">
+        <option value="">Todos</option>
+        <option value="autorizada">Autorizada</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="denegada">Denegada</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label text-light">Buscar por usuario</label>
+      <input type="text" id="filtro-usuario" class="form-control" placeholder="Nombre o correo">
+    </div>
+  </div>
+
   <table class="table-modern">
     <thead>
       <tr>
@@ -180,6 +196,33 @@
     thElement.querySelector(".sort-icon").innerHTML = icon;
   }
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const estadoInput = document.getElementById("filtro-estado");
+    const usuarioInput = document.getElementById("filtro-usuario");
+    const filas = document.querySelectorAll("table.table-modern tbody tr");
+  
+    function filtrarTabla() {
+      const estado = estadoInput.value.toLowerCase();
+      const usuario = usuarioInput.value.toLowerCase();
+  
+      filas.forEach(fila => {
+        const estadoCelda = fila.querySelector("td:nth-child(5)").textContent.toLowerCase();
+        const usuarioCelda = fila.querySelector("td:nth-child(3)").textContent.toLowerCase();
+        const emailCelda = fila.querySelector("td:nth-child(4)").textContent.toLowerCase();
+  
+        const coincideEstado = !estado || estadoCelda.includes(estado);
+        const coincideUsuario = !usuario || usuarioCelda.includes(usuario) || emailCelda.includes(usuario);
+  
+        fila.style.display = (coincideEstado && coincideUsuario) ? "" : "none";
+      });
+    }
+  
+    estadoInput.addEventListener("change", filtrarTabla);
+    usuarioInput.addEventListener("input", filtrarTabla);
+  });
+  </script>  
 {% endblock %}
 
 
