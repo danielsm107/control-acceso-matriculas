@@ -296,4 +296,11 @@ a:hover {
   color: white;
 }
 
-
+form select, form input {
+  background-color: #172a3a;
+  color: white;
+  border: 1px solid #14b3f2;
+}
+form select:focus, form input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.4);
+}

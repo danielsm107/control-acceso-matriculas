@@ -18,22 +18,36 @@
       </select>
     </div>
 
-    <form method="get" class="d-flex gap-3 mb-3">
-      <div class="flex-grow-1">
+    <form method="get" class="row g-3 align-items-end mb-4">
+      <div class="col-md-3">
+        <label for="estado" class="form-label text-white">Filtrar por estado</label>
+        <select name="estado" id="estado" class="form-select bg-dark text-white border-primary">
+          <option value="todos" {{ 'selected' if estado == 'todos' else '' }}>Todos</option>
+          <option value="autorizada" {{ 'selected' if estado == 'autorizada' else '' }}>Autorizado</option>
+          <option value="pendiente" {{ 'selected' if estado == 'pendiente' else '' }}>Pendiente</option>
+          <option value="denegada" {{ 'selected' if estado == 'denegada' else '' }}>Denegado</option>
+        </select>
+      </div>
+    
+      <div class="col-md-3">
         <label for="filtro_fecha" class="form-label text-white">Filtrar por fecha</label>
-        <select name="filtro" id="filtro_fecha" class="form-select" onchange="this.form.submit()">
+        <select name="filtro" id="filtro_fecha" class="form-select bg-dark text-white border-primary">
           <option value="todos" {{ 'selected' if filtro == 'todos' else '' }}>Todos</option>
           <option value="ultimos7" {{ 'selected' if filtro == 'ultimos7' else '' }}>Últimos 7 días</option>
           <option value="hoy" {{ 'selected' if filtro == 'hoy' else '' }}>Hoy</option>
         </select>
       </div>
     
-      <div class="flex-grow-1">
+      <div class="col-md-4">
         <label for="buscar" class="form-label text-white">Buscar por matrícula</label>
-        <input type="text" name="buscar" id="buscar" value="{{ request.args.get('buscar', '') }}" class="form-control" placeholder="Ej: 1234ABC">
+        <input type="text" name="buscar" id="buscar" value="{{ request.args.get('buscar', '') }}"
+               class="form-control bg-dark text-white border-primary" placeholder="Ej: 1234ABC">
+      </div>
+    
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-light w-100">Aplicar</button>
       </div>
     </form>
-      
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- Botón limpiar historial a la derecha -->
