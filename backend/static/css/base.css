@@ -115,25 +115,6 @@ a:hover {
   margin-right: 5px;
 }
 
-/* Botones de filtros */
-.filter-buttons {
-  margin-bottom: 20px;
-}
-
-.filter-buttons .btn {
-  border-radius: 50px;
-  padding: 8px 20px;
-  margin-right: 10px;
-  transition: all 0.3s;
-}
-
-.filter-buttons .btn:hover {
-  transform: translateY(-2px);
-}
-
-.filter-buttons .btn.active {
-  box-shadow: 0 2px 8px rgba(0, 129, 255, 0.3);
-}
 
 /* Estado de la conexión */
 .connection-badge {
