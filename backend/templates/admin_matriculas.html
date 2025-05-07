@@ -142,40 +142,43 @@
 
 <!-- Script para ordenar la tabla -->
 <script>
+  let lastSortedColumn = null;
+  let lastSortDirection = 'asc';
+  
   function sortTable(colIndex, thElement) {
     const table = document.querySelector(".table-modern tbody");
     const rows = Array.from(table.rows);
-  
     const isNumeric = !isNaN(rows[0].cells[colIndex].innerText.trim());
+  
+    // Determinar si se invierte la dirección
+    const shouldReverse = lastSortedColumn === colIndex && lastSortDirection === 'asc';
+    lastSortedColumn = colIndex;
+    lastSortDirection = shouldReverse ? 'desc' : 'asc';
   
     const sortedRows = rows.sort((a, b) => {
       const aText = a.cells[colIndex].innerText.trim().toLowerCase();
       const bText = b.cells[colIndex].innerText.trim().toLowerCase();
   
+      let comparison = 0;
       if (isNumeric) {
-        return parseFloat(aText) - parseFloat(bText);
+        comparison = parseFloat(aText) - parseFloat(bText);
+      } else {
+        comparison = aText.localeCompare(bText, 'es', { sensitivity: 'base' });
       }
-      return aText.localeCompare(bText, 'es', { sensitivity: 'base' });
-    });
   
-    // Alternar dirección asc/desc
-    let reverse = false;
-    if (table.getAttribute('data-sorted') == colIndex) {
-      sortedRows.reverse();
-      table.setAttribute('data-sorted', '');
-      reverse = true;
-    } else {
-      table.setAttribute('data-sorted', colIndex);
-    }
+      return shouldReverse ? -comparison : comparison;
+    });
   
     table.innerHTML = '';
     sortedRows.forEach(row => table.appendChild(row));
   
-    // Eliminar iconos previos
+    // Reset de iconos
     document.querySelectorAll(".sort-icon").forEach(el => el.innerHTML = "");
-    // Añadir flecha visual
-    thElement.querySelector(".sort-icon").innerHTML = reverse ? "↓" : "↑";
-  }  
+  
+    // Establecer nueva flecha
+    const icon = shouldReverse ? "↓" : "↑";
+    thElement.querySelector(".sort-icon").innerHTML = icon;
+  }
 </script>
 {% endblock %}
 
