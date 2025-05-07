@@ -113,42 +113,43 @@ def recibir_matricula():
 @app.route("/historial")
 def historial():
     filtro = request.args.get("filtro", "todos")
-    buscar = request.args.get("buscar", "").strip().upper()
-
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    base_query = """
-        SELECT matricula, fecha, estado, imagen
-        FROM registros_accesos
-        WHERE 1=1
-    """
-    params = []
-
-    # Filtro por fecha
+    # Filtrar historial
     if filtro == "hoy":
-        base_query += " AND DATE(fecha) = CURDATE()"
+        cursor.execute("""
+            SELECT matricula, fecha, estado, imagen
+            FROM registros_accesos
+            WHERE DATE(fecha) = CURDATE()
+            ORDER BY fecha DESC
+        """)
     elif filtro == "ultimos7":
-        base_query += " AND fecha >= NOW() - INTERVAL 7 DAY"
+        cursor.execute("""
+            SELECT matricula, fecha, estado, imagen
+            FROM registros_accesos
+            WHERE fecha >= NOW() - INTERVAL 7 DAY
+            ORDER BY fecha DESC
+        """)
+    else:
+        cursor.execute("""
+            SELECT matricula, fecha, estado, imagen
+            FROM registros_accesos
+            ORDER BY fecha DESC
+            LIMIT 50
+        """)
 
-    # Filtro por matrícula (si hay algo escrito)
-    if buscar:
-        base_query += " AND matricula LIKE %s"
-        params.append(f"%{buscar}%")
-
-    base_query += " ORDER BY fecha DESC"
-
-    cursor.execute(base_query, params)
     historial = cursor.fetchall()
     conexion.close()
 
+    # Formatear fechas
     historial_format = []
-    for matricula, fecha, estado, imagen in historial:
+    for fila in historial:
+        matricula, fecha, estado, imagen = fila
         fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
         historial_format.append((matricula, fecha_str, estado, imagen))
 
     return render_template("historial.html", historial=historial_format, filtro=filtro)
-
 
 @app.route("/api/historial")
 def api_historial():
