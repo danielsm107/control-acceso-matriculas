@@ -285,7 +285,7 @@ a:hover {
 }
 
 .filtro-input::placeholder {
-  color: #b0bfcf; /* gris claro, buen contraste */
+  color: #b0bfcf;
   opacity: 0.7;
 }
 
@@ -298,7 +298,7 @@ a:hover {
 }
 
 .filtro-input::placeholder {
-  color: #b0bfcf; /* gris claro, buen contraste */
+  color: #b0bfcf; 
   opacity: 0.7;
 }
 
