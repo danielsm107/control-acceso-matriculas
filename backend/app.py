@@ -4,12 +4,10 @@ from datetime import datetime
 from routes.auth import auth as auth_blueprint
 from utils.db_utils import conectar_db, User
 from flask_login import LoginManager, current_user, login_required
-from werkzeug.utils import secure_filename
 import os
 import time
 import pytz
 import re
-
 
 app = Flask(__name__)
 app.secret_key = "clave_segura"
@@ -29,39 +27,7 @@ login_manager.login_message = None
 @app.route("/")
 @login_required
 def index():
-    if current_user.rol != 'admin':
-        conexion = conectar_db()
-        cursor = conexion.cursor()
-        cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
-        matriculas = cursor.fetchall()
-        conexion.close()
-    else:
-        matriculas = []
-
-    return render_template("index.html", user=current_user, matriculas=matriculas)
-
-
-@app.route("/subir_imagen_perfil", methods=["POST"])
-@login_required
-def subir_imagen_perfil():
-    imagen = request.files.get("imagen")
-    if imagen and imagen.filename != "":
-        nombre_archivo = secure_filename(f"user_{current_user.id}.png")
-        ruta = os.path.join("static/fotos_perfil", nombre_archivo)
-        imagen.save(ruta)
-
-        # Guardar en base de datos si usas campo `foto`
-        conexion = conectar_db()
-        cursor = conexion.cursor()
-        cursor.execute("UPDATE usuarios SET foto = %s WHERE id = %s", (nombre_archivo, current_user.id))
-        conexion.commit()
-        conexion.close()
-
-        flash("Imagen de perfil actualizada", "success")
-    else:
-        flash("No se seleccionó ninguna imagen válida", "danger")
-
-    return redirect(url_for("index"))
+    return render_template("index.html", user=current_user)
 
 # Redirrecionar según rol
 def _redirect_matriculas():
