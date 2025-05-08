@@ -2,14 +2,17 @@
 {% block content %}
 <div class="container py-5">
 
-  <div class="d-flex align-items-center gap-4 mb-5">
-    <img src="{{ url_for('static', filename='icons/profile-user.png') }}"
-         class="rounded-circle border border-info" width="100" height="100" alt="Perfil">
-    <div class="text-white">
-      <h3 class="mb-0">Bienvenido, {{ current_user.nombre }}</h3>
-      <small class="text-muted">{{ current_user.email }}</small>
+  <form action="{{ url_for('subir_imagen_perfil') }}" method="POST" enctype="multipart/form-data">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto if current_user.foto else 'icons/profile-user.png') }}"
+           class="rounded-circle border border-info" width="100" height="100" alt="Perfil">
+      
+      <div>
+        <input type="file" name="imagen" accept="image/*" class="form-control form-control-sm" required>
+        <button type="submit" class="btn btn-outline-info btn-sm mt-2">Cambiar imagen</button>
+      </div>
     </div>
-  </div>
+  </form>
 
   <div class="text-white">
     <h4 class="mb-3">Mis Matrículas Registradas</h4>
