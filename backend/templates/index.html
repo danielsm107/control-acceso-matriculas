@@ -3,11 +3,12 @@
 <div class="container py-5">
 
   <!-- Cabecera de usuario -->
+  {% if current_user.rol != 'admin' %}
   <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4 perfil-box">
     <form action="{{ url_for('subir_foto_perfil') }}" method="POST" enctype="multipart/form-data"
           class="d-flex flex-column flex-md-row align-items-center gap-3 w-100" id="form-foto">
   
-      <!-- Imagen clicable -->
+      <!-- Imagen clicable correctamente enlazada -->
       <label for="input-foto" class="mb-0" style="cursor: pointer;">
         <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
              class="rounded-circle border border-info shadow-sm"
@@ -26,7 +27,6 @@
       </div>
     </form>
   </div>
-      
   {% endif %}
 
   <!-- Tarjetas resumen -->
