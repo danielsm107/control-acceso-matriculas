@@ -23,11 +23,17 @@ login_manager.init_app(app)
 login_manager.login_message = None
 
 
-# Ruta principal (index)
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html", user=current_user)
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
+    matriculas = cursor.fetchall()
+    conexion.close()
+
+    return render_template("index.html", matriculas=matriculas)
+
 
 # Redirrecionar según rol
 def _redirect_matriculas():

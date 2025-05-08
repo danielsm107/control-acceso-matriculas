@@ -5,11 +5,11 @@
   <!-- Cabecera de usuario -->
   {% if current_user.rol != 'admin' %}
   <div class="d-flex align-items-center gap-4 mb-4">
-    <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-user.png') }}"
+    <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
          class="rounded-circle border border-info" width="90" height="90" alt="Foto de perfil">
     <div class="text-white">
       <h2 class="mb-0">{{ current_user.nombre }}</h2>
-      <small class="text-muted">{{ current_user.email }}</small>
+      <small class="text-white">{{ current_user.email }}</small>
     </div>
   </div>
   {% endif %}
