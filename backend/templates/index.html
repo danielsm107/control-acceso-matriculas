@@ -60,7 +60,7 @@
   {% if current_user.rol != 'admin' %}
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="text-white mb-0">Mis Matrículas Registradas</h4>
-    <button class="btn btn-outline-info d-flex align-items-center gap-2"
+    <button class="delete-btn"
     data-bs-toggle="modal" data-bs-target="#modalNuevaMatricula"
     title="Solicitar nueva matrícula" aria-label="Solicitar nueva matrícula">
       <img src="{{ url_for('static', filename='icons/add.svg') }}" alt="+" width="30" height="30">
