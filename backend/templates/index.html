@@ -58,12 +58,19 @@
 
   <!-- Tabla de matrículas -->
   {% if current_user.rol != 'admin' %}
-  <h4 class="text-white mb-3">Mis Matrículas Registradas</h4>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="text-white mb-0">Mis Matrículas Registradas</h4>
+    <button class="btn btn-outline-info d-flex align-items-center gap-2"
+    data-bs-toggle="modal" data-bs-target="#modalNuevaMatricula"
+    title="Solicitar nueva matrícula" aria-label="Solicitar nueva matrícula">
+      <img src="{{ url_for('static', filename='icons/add.svg') }}" alt="+" width="30" height="30">
+    </button>
+  </div>  
   <table class="table-modern w-100">
     <thead>
       <tr>
         <th onclick="sortTable(0, this)">Matrícula <span class="sort-icon"></span></th>
-        <th onclick="sortTable(1, this)">Estado <span class="sort-icon"></span><</th>
+        <th onclick="sortTable(1, this)">Estado <span class="sort-icon"></span></th>
       </tr>
     </thead>
     <tbody>
@@ -85,6 +92,31 @@
   {% endif %}
 
 </div>
+
+<!-- Modal nueva matrícula -->
+<div class="modal fade" id="modalNuevaMatricula" tabindex="-1" aria-labelledby="modalNuevaMatriculaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('solicitar_matricula') }}">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="modalNuevaMatriculaLabel">Registrar nueva matrícula</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input type="text" class="form-control" name="matricula" id="matricula" required pattern="\d{4}[A-Z]{3}" placeholder="1234ABC">
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
