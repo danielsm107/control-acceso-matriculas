@@ -7,6 +7,16 @@
   <div class="d-flex align-items-center gap-4 mb-4">
     <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
          class="rounded-circle border border-info" width="90" height="90" alt="Foto de perfil">
+    <form action="{{ url_for('subir_foto_perfil') }}" method="POST" enctype="multipart/form-data"
+    class="d-flex flex-column flex-md-row align-items-start gap-3 mt-3">
+      <div>
+        <input type="file" name="foto" accept="image/*" class="form-control form-control-sm" required>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-outline-info btn-sm">Cambiar foto</button>
+      </div>
+    </form>
+    
     <div class="text-white">
       <h2 class="mb-0">{{ current_user.nombre }}</h2>
       <small class="text-white">{{ current_user.email }}</small>

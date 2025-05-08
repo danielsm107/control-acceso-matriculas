@@ -48,7 +48,7 @@ def _redirect_matriculas():
 def load_user(user_id):
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT id, nombre, email, password, rol FROM usuarios WHERE id = %s", (user_id,))
+    cursor.execute("SELECT id, nombre, email, password, rol, foto FROM usuarios WHERE id = %s", (user_id,))
     usuario = cursor.fetchone()
     conexion.close()
     if usuario:
@@ -57,7 +57,8 @@ def load_user(user_id):
             nombre=usuario[1],
             email=usuario[2],
             password=usuario[3],
-            rol=usuario[4]
+            rol=usuario[4],
+            foto=usuario[5]
         )
     return None
 
@@ -385,6 +386,35 @@ def limpiar_historial():
     flash('Historial de accesos eliminado correctamente.', 'success')
     return redirect(url_for('historial'))
 
+
+# Subir foto de perfil
+
+@app.route("/subir_foto_perfil", methods=["POST"])
+@login_required
+def subir_foto_perfil():
+    imagen = request.files.get("foto")
+    if imagen and imagen.filename != "":
+        import os
+        from werkzeug.utils import secure_filename
+
+        nombre_archivo = secure_filename(f"user_{current_user.id}.png")
+        ruta_carpeta = os.path.join("static", "fotos_perfil")
+        os.makedirs(ruta_carpeta, exist_ok=True)
+        ruta = os.path.join(ruta_carpeta, nombre_archivo)
+        imagen.save(ruta)
+
+        # Guardar el nombre del archivo en la base de datos
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+        cursor.execute("UPDATE usuarios SET foto = %s WHERE id = %s", (nombre_archivo, current_user.id))
+        conexion.commit()
+        conexion.close()
+
+        flash("Tu foto de perfil se ha actualizado.", "success")
+    else:
+        flash("No se seleccionó ninguna imagen válida.", "danger")
+
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
