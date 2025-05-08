@@ -354,6 +354,10 @@ def cambiar_rol(user_id):
         flash("Acceso no autorizado", "danger")
         return redirect(url_for("index"))
 
+    if user_id == 8:  # ID del administrador principal
+        flash("No se puede modificar el rol del administrador principal.", "warning")
+        return redirect(url_for("admin_panel"))
+
     nuevo_rol = request.form.get("rol")
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -363,6 +367,7 @@ def cambiar_rol(user_id):
 
     flash("Rol actualizado correctamente", "success")
     return redirect(url_for("admin_panel"))
+
 
 @app.route('/limpiar_historial', methods=['POST'])
 @login_required
