@@ -17,7 +17,9 @@
       <form action="{{ url_for('subir_foto_perfil') }}" method="POST" enctype="multipart/form-data"
             class="d-flex align-items-center gap-2 ms-auto">
         <input type="file" name="foto" accept="image/*" class="form-control form-control-sm" required>
-        <button type="submit" class="btn btn-outline-info btn-sm">Cambiar foto</button>
+        <button type="submit" class="delete-btn" title="Subir foto de perfil" aria-label="Subir foto de perfil">
+          <img src="{{ url_for('static', filename='icons/changeprofileicon.svg') }}" alt="Subir" width="30" height="30">
+        </button>
       </form>
     </div>
   </div>  
