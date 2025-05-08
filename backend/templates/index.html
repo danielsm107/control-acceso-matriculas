@@ -5,24 +5,25 @@
   <!-- Cabecera de usuario -->
   {% if current_user.rol != 'admin' %}
   <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4 perfil-box">
-    <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
-         class="rounded-circle border border-info shadow-sm" width="90" height="90" alt="Foto de perfil">
+    <form action="{{ url_for('subir_foto_perfil') }}" method="POST" enctype="multipart/form-data"
+          class="d-flex flex-column flex-md-row align-items-center gap-3 w-100" id="form-foto">
   
-    <div class="d-flex flex-column flex-md-row align-items-center gap-3 w-100">
+      <!-- Imagen clicable -->
+      <label for="input-foto" class="mb-0" style="cursor: pointer;">
+        <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
+             class="rounded-circle border border-info shadow-sm" width="90" height="90" alt="Foto de perfil">
+      </label>
+  
+      <!-- Input oculto -->
+      <input type="file" name="foto" id="input-foto" accept="image/*" class="d-none" onchange="document.getElementById('form-foto').submit()">
+  
       <div class="text-white">
         <h2 class="mb-0">{{ current_user.nombre }}</h2>
         <small class="text-white">{{ current_user.email }}</small>
+        <p class="text-white mb-0 medium">Haz clic en la imagen para cambiarla</p>
       </div>
-  
-      <form action="{{ url_for('subir_foto_perfil') }}" method="POST" enctype="multipart/form-data"
-            class="d-flex align-items-center gap-2 ms-auto">
-        <input type="file" name="foto" accept="image/*" class="form-control form-control-sm" required>
-        <button type="submit" class="delete-btn" title="Subir foto de perfil" aria-label="Subir foto de perfil">
-          <img src="{{ url_for('static', filename='icons/changeprofileicon.svg') }}" alt="Subir" width="30" height="30">
-        </button>
-      </form>
-    </div>
-  </div>  
+    </form>
+  </div>    
   {% endif %}
 
   <!-- Tarjetas resumen -->

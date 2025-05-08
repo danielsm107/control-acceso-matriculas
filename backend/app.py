@@ -388,7 +388,6 @@ def limpiar_historial():
 
 
 # Subir foto de perfil
-
 @app.route("/subir_foto_perfil", methods=["POST"])
 @login_required
 def subir_foto_perfil():
