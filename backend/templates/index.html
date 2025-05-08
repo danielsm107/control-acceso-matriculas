@@ -1,41 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container py-5">
 
-{% if current_user.rol != 'admin' %}
-<div class="d-flex align-items-center gap-4 mb-5  p-4">
-  <img src="{{ url_for('static', filename='icons/profile-icon.png') }}" class="rounded-circle border border-light" width="100" height="100" alt="Foto de perfil">
+  <div class="d-flex align-items-center gap-4 mb-5">
+    <img src="{{ url_for('static', filename='icons/profile-user.png') }}"
+         class="rounded-circle border border-info" width="100" height="100" alt="Perfil">
+    <div class="text-white">
+      <h3 class="mb-0">Bienvenido, {{ current_user.nombre }}</h3>
+      <small class="text-muted">{{ current_user.email }}</small>
+    </div>
+  </div>
 
   <div class="text-white">
-    <h2 class="mb-0">Bienvenido, {{ current_user.nombre }}</h2>
-    <p class="mb-0">
-      <i class="fas fa-envelope me-2"></i>{{ current_user.email }}
-    </p>
+    <h4 class="mb-3">Mis Matrículas Registradas</h4>
+    <table class="table-modern w-100">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0, this)">MATRÍCULA <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(1, this)">ESTADO <span class="sort-icon">⇅</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for matricula, estado in matriculas %}
+        <tr>
+          <td>{{ matricula }}</td>
+          <td>
+            <span class="status-badge 
+              {% if estado == 'autorizada' %}authorized
+              {% elif estado == 'pendiente' %}pending
+              {% else %}denied{% endif %}">
+              {{ estado|capitalize }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-<h2 class="text-white mt-5 mb-3">Mis Matrículas Registradas</h2>
-<table class="table-modern">
-  <thead>
-    <tr>
-      <th onclick="sortTable(1, this)">Matrícula <span class="sort-icon">⇅</span></th>
-      <th onclick="sortTable(2, this)">Estado <span class="sort-icon">⇅</span></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for matricula, estado in matriculas %}
-    <tr>
-      <td>{{ matricula }}</td>
-      <td>
-        <span class="status-badge 
-          {% if estado == 'autorizada' %}authorized
-          {% elif estado == 'pendiente' %}pending
-          {% else %}denied{% endif %}">
-          {{ estado|capitalize }}
-        </span>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% endif %}
 </div>
 {% endblock %}
 
