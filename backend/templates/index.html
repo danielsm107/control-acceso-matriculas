@@ -11,7 +11,7 @@
       <!-- Imagen clicable -->
       <label for="input-foto" class="mb-0" style="cursor: pointer;">
         <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
-             class="rounded-circle border border-info shadow-sm" width="90" height="90" alt="Foto de perfil">
+        class="rounded-2 border border-info shadow-sm" width="120" height="80" alt="Foto de perfil">
       </label>
   
       <!-- Input oculto -->

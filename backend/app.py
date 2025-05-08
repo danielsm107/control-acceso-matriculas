@@ -10,6 +10,7 @@ import pytz
 import re
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024 # Limitar a 10 MB
 app.secret_key = "clave_segura"
 socketio = SocketIO(app)
 app.register_blueprint(auth_blueprint)
@@ -34,6 +35,11 @@ def index():
 
     return render_template("index.html", matriculas=matriculas)
 
+# Error 413: Para cuando la imagen es demasiado grande
+@app.errorhandler(413)
+def too_large(e):
+    flash("La imagen es demasiado grande. El límite es de 10 MB.", "danger")
+    return redirect(url_for("index"))
 
 # Redirrecionar según rol
 def _redirect_matriculas():

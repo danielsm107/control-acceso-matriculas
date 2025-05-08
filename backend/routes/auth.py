@@ -222,9 +222,6 @@ def editar_matricula():
     return redirect(url_for('auth.matriculas_admin'))
 
 
-    flash("Matrícula actualizada correctamente.", "success")
-    return redirect(url_for('auth.matriculas_admin'))
-
 @auth.route('/admin/eliminar_matricula/<int:matricula_id>', methods=['POST'], endpoint='eliminar_matricula_admin')
 @login_required
 @solo_admin
