@@ -9,10 +9,10 @@
           class="d-flex flex-column flex-md-row align-items-center gap-3 w-100" id="form-foto">
   
       <!-- Imagen clicable -->
-      <label for="input-foto" class="mb-0" style="cursor: pointer;">
-        <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
-        class="rounded-2 border border-info shadow-sm" width="120" height="80" alt="Foto de perfil">
-      </label>
+      <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-icon.png') }}"
+      class="rounded-circle border border-info shadow-sm"
+      width="120" height="120"
+      alt="Foto de perfil"> 
   
       <!-- Input oculto -->
       <input type="file" name="foto" id="input-foto" accept="image/*" class="d-none" onchange="document.getElementById('form-foto').submit()">
