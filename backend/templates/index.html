@@ -1,18 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container py-5">
 
-{% if current_user.rol != 'admin' %}
-<div class="d-flex align-items-center gap-4 mb-5 p-4">
-  <div class="text-white">
-    <h2 class="mb-0">Bienvenido, {{ current_user.nombre }}</h2>
-    <p class="mb-0">
-      <i class="fas fa-envelope me-2"></i>{{ current_user.email }}
-    </p>
+  <!-- Cabecera de usuario -->
+  {% if current_user.rol != 'admin' %}
+  <div class="d-flex align-items-center gap-4 mb-4">
+    <img src="{{ url_for('static', filename='fotos_perfil/' + current_user.foto) if current_user.foto else url_for('static', filename='icons/profile-user.png') }}"
+         class="rounded-circle border border-info" width="90" height="90" alt="Foto de perfil">
+    <div class="text-white">
+      <h2 class="mb-0">{{ current_user.nombre }}</h2>
+      <small class="text-muted">{{ current_user.email }}</small>
+    </div>
   </div>
-</div>
+  {% endif %}
 
-<div class="container">
-  <h2 class="text-white mb-3">Mis Matrículas Registradas</h2>
+  <!-- Tarjetas resumen -->
+  <div class="row text-white mb-4">
+    <div class="col-md-4">
+      <div class="card bg-dark border-primary shadow-sm p-3">
+        <h6 class="text-uppercase text-muted">Total Matrículas</h6>
+        <h3>{{ matriculas|length }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-dark border-success shadow-sm p-3">
+        <h6 class="text-uppercase text-muted">Autorizadas</h6>
+        <h3>{{ matriculas|selectattr('1', 'equalto', 'autorizada')|list|length }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-dark border-danger shadow-sm p-3">
+        <h6 class="text-uppercase text-muted">Denegadas</h6>
+        <h3>{{ matriculas|selectattr('1', 'equalto', 'denegada')|list|length }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de matrículas -->
+  {% if current_user.rol != 'admin' %}
+  <h4 class="text-white mb-3">Mis Matrículas Registradas</h4>
   <table class="table-modern w-100">
     <thead>
       <tr>
@@ -36,35 +62,35 @@
       {% endfor %}
     </tbody>
   </table>
-</div>
-{% endif %}
+  {% endif %}
 
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-let lastSortedColumn = null;
-let lastSortDirection = 'asc';
+  let lastSortedColumn = null;
+  let lastSortDirection = 'asc';
 
-function sortTable(colIndex, thElement) {
-  const table = document.querySelector(".table-modern tbody");
-  const rows = Array.from(table.rows);
+  function sortTable(colIndex, thElement) {
+    const table = document.querySelector(".table-modern tbody");
+    const rows = Array.from(table.rows);
 
-  const shouldReverse = lastSortedColumn === colIndex && lastSortDirection === 'asc';
-  lastSortedColumn = colIndex;
-  lastSortDirection = shouldReverse ? 'desc' : 'asc';
+    const shouldReverse = lastSortedColumn === colIndex && lastSortDirection === 'asc';
+    lastSortedColumn = colIndex;
+    lastSortDirection = shouldReverse ? 'desc' : 'asc';
 
-  const sortedRows = rows.sort((a, b) => {
-    const aText = a.cells[colIndex].textContent.trim().toLowerCase();
-    const bText = b.cells[colIndex].textContent.trim().toLowerCase();
-    return shouldReverse ? bText.localeCompare(aText) : aText.localeCompare(bText);
-  });
+    const sortedRows = rows.sort((a, b) => {
+      const aText = a.cells[colIndex].innerText.trim().toLowerCase();
+      const bText = b.cells[colIndex].innerText.trim().toLowerCase();
+      return shouldReverse ? bText.localeCompare(aText) : aText.localeCompare(bText);
+    });
 
-  table.innerHTML = '';
-  sortedRows.forEach(row => table.appendChild(row));
+    table.innerHTML = '';
+    sortedRows.forEach(row => table.appendChild(row));
 
-  document.querySelectorAll(".sort-icon").forEach(i => i.textContent = '⇅');
-  thElement.querySelector(".sort-icon").textContent = shouldReverse ? '↓' : '↑';
-}
+    document.querySelectorAll(".sort-icon").forEach(i => i.textContent = '⇅');
+    thElement.querySelector(".sort-icon").textContent = shouldReverse ? '↓' : '↑';
+  }
 </script>
 {% endblock %}
