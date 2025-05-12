@@ -150,27 +150,25 @@ def historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # Base query
     query = """
-        SELECT r.matricula, r.fecha, r.estado, r.imagen
-        FROM registros_accesos r
-        JOIN matriculas m ON r.matricula = m.matricula
+        SELECT matricula, fecha, estado, imagen
+        FROM registros_accesos
     """
     params = []
 
     if current_user.rol != "admin":
-        query += " WHERE m.usuario_id = %s"
+        query += " WHERE usuario_id = %s"
         params.append(current_user.id)
 
-    # Añadir filtro de fecha
+    # Filtros de fecha
     if filtro == "hoy":
         query += " AND" if current_user.rol != "admin" else " WHERE"
-        query += " DATE(r.fecha) = CURDATE()"
+        query += " DATE(fecha) = CURDATE()"
     elif filtro == "ultimos7":
         query += " AND" if current_user.rol != "admin" else " WHERE"
-        query += " r.fecha >= NOW() - INTERVAL 7 DAY"
+        query += " fecha >= NOW() - INTERVAL 7 DAY"
 
-    query += " ORDER BY r.fecha DESC LIMIT 50"
+    query += " ORDER BY fecha DESC LIMIT 50"
 
     cursor.execute(query, tuple(params))
     historial = cursor.fetchall()
@@ -178,8 +176,7 @@ def historial():
 
     # Formatear fechas
     historial_format = []
-    for fila in historial:
-        matricula, fecha, estado, imagen = fila
+    for matricula, fecha, estado, imagen in historial:
         fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
         historial_format.append((matricula, fecha_str, estado, imagen))
 
@@ -187,22 +184,27 @@ def historial():
 
 
 @app.route("/api/historial")
+@login_required
 def api_historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
-    cursor.execute("SELECT matricula, fecha, estado FROM registros_accesos ORDER BY fecha DESC LIMIT 20")
+
+    if current_user.rol == 'admin':
+        cursor.execute("SELECT matricula, fecha, estado FROM registros_accesos ORDER BY fecha DESC LIMIT 20")
+    else:
+        cursor.execute("SELECT matricula, fecha, estado FROM registros_accesos WHERE usuario_id = %s ORDER BY fecha DESC LIMIT 20", (current_user.id,))
+
     historial = cursor.fetchall()
     conexion.close()
 
-    datos = []
-    for fila in historial:
-        datos.append({
-            "matricula": fila[0],
-            "fecha": fila[1].strftime("%Y-%m-%d %H:%M:%S"),
-            "estado": fila[2]
-        })
+    datos = [{
+        "matricula": fila[0],
+        "fecha": fila[1].strftime("%Y-%m-%d %H:%M:%S"),
+        "estado": fila[2]
+    } for fila in historial]
 
     return jsonify(datos)
+
 
 @app.route('/solicitar_matricula', methods=['GET', 'POST'])
 @login_required
