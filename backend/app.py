@@ -144,34 +144,35 @@ def recibir_matricula():
     return jsonify({"acceso": estado, "imagen": nombre_imagen})
 
 @app.route("/historial")
+@login_required
 def historial():
     filtro = request.args.get("filtro", "todos")
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # Filtrar historial
-    if filtro == "hoy":
-        cursor.execute("""
-            SELECT matricula, fecha, estado, imagen
-            FROM registros_accesos
-            WHERE DATE(fecha) = CURDATE()
-            ORDER BY fecha DESC
-        """)
-    elif filtro == "ultimos7":
-        cursor.execute("""
-            SELECT matricula, fecha, estado, imagen
-            FROM registros_accesos
-            WHERE fecha >= NOW() - INTERVAL 7 DAY
-            ORDER BY fecha DESC
-        """)
-    else:
-        cursor.execute("""
-            SELECT matricula, fecha, estado, imagen
-            FROM registros_accesos
-            ORDER BY fecha DESC
-            LIMIT 50
-        """)
+    # Base query
+    query = """
+        SELECT r.matricula, r.fecha, r.estado, r.imagen
+        FROM registros_accesos r
+        JOIN matriculas m ON r.matricula = m.matricula
+    """
+    params = []
 
+    if current_user.rol != "admin":
+        query += " WHERE m.usuario_id = %s"
+        params.append(current_user.id)
+
+    # Añadir filtro de fecha
+    if filtro == "hoy":
+        query += " AND" if current_user.rol != "admin" else " WHERE"
+        query += " DATE(r.fecha) = CURDATE()"
+    elif filtro == "ultimos7":
+        query += " AND" if current_user.rol != "admin" else " WHERE"
+        query += " r.fecha >= NOW() - INTERVAL 7 DAY"
+
+    query += " ORDER BY r.fecha DESC LIMIT 50"
+
+    cursor.execute(query, tuple(params))
     historial = cursor.fetchall()
     conexion.close()
 
@@ -183,6 +184,7 @@ def historial():
         historial_format.append((matricula, fecha_str, estado, imagen))
 
     return render_template("historial.html", historial=historial_format, filtro=filtro)
+
 
 @app.route("/api/historial")
 def api_historial():
