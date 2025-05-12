@@ -85,16 +85,34 @@
     </div>
   </div>
 
+<!-- Acordeón para Gráficas -->
+<div class="accordion mb-5" id="accordionGraficas">
+  <div class="accordion-item bg-dark border-0">
+    <h2 class="accordion-header" id="headingGraficas">
+      <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGraficas" aria-expanded="false" aria-controls="collapseGraficas">
+        Mostrar Gráficas de Matrículas
+      </button>
+    </h2>
+    <div id="collapseGraficas" class="accordion-collapse collapse" aria-labelledby="headingGraficas" data-bs-parent="#accordionGraficas">
+      <div class="accordion-body">
+        
+        <!-- Gráfico Distribución -->
+        <div class="chart-container mx-auto mb-4">
+          <h5 class="text-white">Distribución de Matrículas</h5>
+          <canvas id="graficoMatrimonios" width="400" height="400" style="max-width: 400px; max-height: 400px;"></canvas>
+        </div>
 
-<div class="chart-container mx-auto mb-5">
-  <h5 class="text-white">Distribución de Matrículas</h5>
-  <canvas id="graficoMatrimonios" width="400" height="400" style="max-width: 400px; max-height: 400px;"></canvas>
+        <!-- Gráfico Entradas -->
+        <div class="chart-container mx-auto">
+          <h5 class="text-white">Entradas por Día</h5>
+          <canvas id="graficoEntradas" width="400" height="250"></canvas>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="mb-4">
-  <h5 class="text-white">Entradas por Día</h5>
-  <canvas id="graficoEntradas" width="400" height="250"></canvas>
-</div>
 
 
   <!-- Tabla de matrículas -->
