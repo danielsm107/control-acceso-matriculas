@@ -201,10 +201,19 @@ new Chart(ctxEntradas, {
       legend: { labels: { color: 'white' } },
       title: { display: false }
     },
-    scales: {
-      x: { ticks: { color: '#fff' } },
-      y: { ticks: { color: '#fff' }, beginAtZero: true }
+  scales: {
+    x: { ticks: { color: '#fff' } },
+    y: {
+      beginAtZero: true,
+      ticks: {
+        color: '#fff',
+        stepSize: 1,
+        callback: function(value) {
+          return Number.isInteger(value) ? value : null;
+        }
+      }
     }
+  }
   }
 });
 </script>
