@@ -30,7 +30,7 @@
   {% endif %}
 
   <!-- Tarjetas resumen -->
-  <div class="d-flex flex-wrap gap-3 text-white mb-5 justify-content-center">
+  <div class="row text-white mb-5">
     <div class="col-md-4">
       <div class="card resumen-card bg-gradient border-0 shadow-sm p-3 d-flex flex-row align-items-center gap-3">
         <div class="icon-wrapper bg-primary">
@@ -85,34 +85,10 @@
     </div>
   </div>
 
-<!-- Acordeón para Gráficas -->
-<div class="accordion mb-5" id="accordionGraficas">
-  <div class="accordion-item bg-dark border-0">
-    <h2 class="accordion-header" id="headingGraficas">
-      <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGraficas">
-        <i class="fas fa-chart-pie me-2"></i> Ver Gráficas de Matrículas
-      </button>
-    </h2>
-    <div id="collapseGraficas" class="accordion-collapse collapse" aria-labelledby="headingGraficas" data-bs-parent="#accordionGraficas">
-      <div class="accordion-body">
-        
-        <!-- Gráfico Distribución -->
-        <div class="chart-container mx-auto mb-4">
-          <h5 class="text-white">Distribución de Matrículas</h5>
-          <canvas id="graficoMatrimonios" width="400" height="400" style="max-width: 400px; max-height: 400px;"></canvas>
-        </div>
-
-        <!-- Gráfico Entradas -->
-        <div class="chart-container mx-auto">
-          <h5 class="text-white">Entradas por Día</h5>
-          <canvas id="graficoEntradas" width="400" height="250"></canvas>
-        </div>
-
-      </div>
-    </div>
-  </div>
+<div class="mb-4">
+  <h5 class="text-white">Entradas por Día</h5>
+  <canvas id="graficoEntradas" width="400" height="250"></canvas>
 </div>
-
 
 
   <!-- Tabla de matrículas -->
@@ -217,38 +193,6 @@
     // Establecer nueva flecha
     const icon = shouldReverse ? "↓" : "↑";
     thElement.querySelector(".sort-icon").innerHTML = icon;
-  }
-</script>
-
-<script>
-  const canvas = document.getElementById('graficoMatrimonios');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Autorizadas', 'Pendientes', 'Denegadas'],
-        datasets: [{
-          data: [
-            {{ matriculas|selectattr('1', 'equalto', 'autorizada')|list|length }},
-            {{ matriculas|selectattr('1', 'equalto', 'pendiente')|list|length }},
-            {{ matriculas|selectattr('1', 'equalto', 'denegada')|list|length }}
-          ],
-          backgroundColor: ['#198754', '#ffc107', '#dc3545'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        cutout: '60%',
-        plugins: {
-          legend: {
-            labels: { color: 'white' },
-            position: 'bottom'
-          }
-        }
-      }
-    });
   }
 </script>
 
