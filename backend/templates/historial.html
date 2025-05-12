@@ -40,7 +40,11 @@
     <tbody id="tabla-accesos">
       {% for acceso in historial %}
       <tr>
-        <td>{{ acceso[0] }}</td>
+        <td>
+          <a href="{{ url_for('index_usuario', user_id=acceso[4]) }}" class="text-info">
+            {{ acceso[0] }}
+          </a>
+        </td>
         <td>{{ acceso[1] }}</td>
         <td>
           <span class="status-badge 

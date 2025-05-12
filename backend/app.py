@@ -445,6 +445,28 @@ def subir_foto_perfil():
 
     return redirect(url_for("index"))
 
+@app.route("/perfil/<matricula>")
+@login_required
+def perfil_matricula(matricula):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        SELECT u.id, u.nombre, u.email
+        FROM matriculas m
+        JOIN usuarios u ON m.usuario_id = u.id
+        WHERE m.matricula = %s
+    """, (matricula,))
+    usuario = cursor.fetchone()
+    conexion.close()
+
+    if not usuario:
+        flash("No se encontró un usuario con esa matrícula", "danger")
+        return redirect(url_for("index"))
+
+    # Redirigir al index del usuario con esa matrícula
+    return render_template("index.html", usuario=usuario)
+
+
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
 
