@@ -331,3 +331,9 @@ a:hover {
   max-width: 400px;
   margin-top: 20px;
 }
+
+.resumen-card {
+  min-width: 220px;
+  max-width: 260px;
+  flex: 1 1 auto;
+}
