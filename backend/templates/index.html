@@ -183,37 +183,35 @@
 </script>
 
 <script>
-  const ctxDonut = document.getElementById('graficoDonut').getContext('2d');
-
-  new Chart(ctxDonut, {
-    type: 'doughnut',
-    data: {
-      labels: ['Autorizadas', 'Pendientes', 'Denegadas'],
-      datasets: [{
-        label: 'Estado de Matrículas',
-        data: [
-          {{ matriculas|selectattr('1', 'equalto', 'autorizada')|list|length }},
-          {{ matriculas|selectattr('1', 'equalto', 'pendiente')|list|length }},
-          {{ matriculas|selectattr('1', 'equalto', 'denegada')|list|length }}
-        ],
-        backgroundColor: ['#198754', '#ffc107', '#dc3545'],
-        borderColor: '#0f1f2f',
-        borderWidth: 2,
-        hoverOffset: 12
-      }]
-    },
-    options: {
-      cutout: '70%',
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            color: 'white',
-            padding: 15
+  const canvas = document.getElementById('graficoMatrimonios');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Autorizadas', 'Pendientes', 'Denegadas'],
+        datasets: [{
+          data: [
+            {{ matriculas|selectattr('1', 'equalto', 'autorizada')|list|length }},
+            {{ matriculas|selectattr('1', 'equalto', 'pendiente')|list|length }},
+            {{ matriculas|selectattr('1', 'equalto', 'denegada')|list|length }}
+          ],
+          backgroundColor: ['#198754', '#ffc107', '#dc3545'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            labels: { color: 'white' },
+            position: 'bottom'
           }
         }
       }
-    }
-  });
+    });
+  }
 </script>
+
 {% endblock %}
