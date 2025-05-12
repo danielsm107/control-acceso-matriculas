@@ -466,6 +466,30 @@ def perfil_matricula(matricula):
     # Redirigir al index del usuario con esa matrícula
     return render_template("index.html", usuario=usuario)
 
+@app.route("/usuario/<int:user_id>")
+@login_required
+def index_usuario(user_id):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    cursor.execute("SELECT id, nombre, email, foto, rol FROM usuarios WHERE id = %s", (user_id,))
+    row = cursor.fetchone()
+    if not row:
+        return "Usuario no encontrado", 404
+
+    usuario = {
+        "id": row[0],
+        "nombre": row[1],
+        "email": row[2],
+        "foto": row[3],
+        "rol": row[4]
+    }
+
+    cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (user_id,))
+    matriculas = cursor.fetchall()
+
+    conexion.close()
+    return render_template("index.html", usuario=usuario, matriculas=matriculas)
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)
