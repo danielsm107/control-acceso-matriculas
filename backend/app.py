@@ -29,11 +29,30 @@ login_manager.login_message = None
 def index():
     conexion = conectar_db()
     cursor = conexion.cursor()
+
+    # Matriculas del usuario
     cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
     matriculas = cursor.fetchall()
+
+    # Entradas por fecha
+    cursor.execute("""
+        SELECT DATE(fecha_creacion), COUNT(*) 
+        FROM matriculas 
+        WHERE usuario_id = %s
+        GROUP BY DATE(fecha_creacion)
+        ORDER BY DATE(fecha_creacion)
+    """, (current_user.id,))
+    resultados = cursor.fetchall()
+    fechas = [fila[0].strftime("%d/%m") for fila in resultados]
+    cantidades = [fila[1] for fila in resultados]
+
     conexion.close()
 
-    return render_template("index.html", matriculas=matriculas)
+    return render_template("index.html",
+                           matriculas=matriculas,
+                           fechas=fechas,
+                           cantidades=cantidades)
+
 
 
 # Error 413: Para cuando la imagen es demasiado grande

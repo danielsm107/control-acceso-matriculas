@@ -55,6 +55,21 @@
         </div>
       </div>
     </div>
+
+      <div class="col-md-4">
+      <div class="card resumen-card bg-gradient border-0 shadow-sm p-3 d-flex flex-row align-items-center gap-3">
+        <div class="icon-wrapper bg-success">
+          <i class="fas fa-check-circle fa-lg"></i>
+        </div>
+        <div>
+          <div class="text-white medium">Pendientes</div>
+          <div class="fs-4 fw-bold">
+            {{ matriculas|selectattr('1', 'equalto', 'pendiente')|list|length }}
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="col-md-4">
       <div class="card resumen-card bg-gradient border-0 shadow-sm p-3 d-flex flex-row align-items-center gap-3">
         <div class="icon-wrapper bg-danger">
@@ -74,6 +89,12 @@
   <h5 class="text-white">Distribución de Matrículas</h5>
   <canvas id="graficoMatrimonios" width="400" height="400" style="max-width: 400px; max-height: 400px;"></canvas>
 </div>
+
+<div class="mb-4">
+  <h5 class="text-white">Entradas por Día</h5>
+  <canvas id="graficoEntradas" width="400" height="300"></canvas>
+</div>
+
 
   <!-- Tabla de matrículas -->
   {% if current_user.rol != 'admin' %}
@@ -212,4 +233,31 @@
   }
 </script>
 
+<script>
+const ctxEntradas = document.getElementById('graficoEntradas').getContext('2d');
+new Chart(ctxEntradas, {
+  type: 'line',
+  data: {
+    labels: {{ fechas|tojson }},
+    datasets: [{
+      label: 'Entradas',
+      data: {{ cantidades|tojson }},
+      fill: true,
+      borderColor: '#14b3f2',
+      backgroundColor: 'rgba(20, 179, 242, 0.2)',
+      tension: 0.3
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: true, labels: { color: '#fff' } },
+      title: { display: false }
+    },
+    scales: {
+      x: { ticks: { color: '#fff' } },
+      y: { ticks: { color: '#fff' } }
+    }
+  }
+});
+</script>
 {% endblock %}
