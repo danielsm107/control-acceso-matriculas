@@ -79,21 +79,6 @@
 </div>
 
 
-    <div class="col-md-4">
-      <div class="card resumen-card bg-gradient border-0 shadow-sm p-3 d-flex flex-row align-items-center gap-4">
-        <div class="icon-wrapper bg-danger">
-          <i class="fas fa-times-circle fa-lg"></i>
-        </div>
-        <div>
-          <div class="text-white medium">Denegadas</div>
-          <div class="fs-4 fw-bold">
-            {{ matriculas|selectattr('1', 'equalto', 'denegada')|list|length }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 <div class="mb-4">
   <h5 class="text-white">Entradas por Día</h5>
   <canvas id="graficoEntradas" width="250" height="250"></canvas>
