@@ -92,7 +92,7 @@
 
 <div class="mb-4">
   <h5 class="text-white">Entradas por Día</h5>
-  <canvas id="graficoEntradas" width="400" height="300"></canvas>
+  <canvas id="graficoEntradas" width="400" height="250"></canvas>
 </div>
 
 
@@ -240,22 +240,23 @@ new Chart(ctxEntradas, {
   data: {
     labels: {{ fechas|tojson }},
     datasets: [{
-      label: 'Entradas',
+      label: 'Entradas por Día',
       data: {{ cantidades|tojson }},
       fill: true,
+      backgroundColor: 'rgba(20, 179, 242, 0.15)',
       borderColor: '#14b3f2',
-      backgroundColor: 'rgba(20, 179, 242, 0.2)',
-      tension: 0.3
+      tension: 0.4
     }]
   },
   options: {
+    responsive: true,
     plugins: {
-      legend: { display: true, labels: { color: '#fff' } },
+      legend: { labels: { color: 'white' } },
       title: { display: false }
     },
     scales: {
       x: { ticks: { color: '#fff' } },
-      y: { ticks: { color: '#fff' } }
+      y: { ticks: { color: '#fff' }, beginAtZero: true }
     }
   }
 });

@@ -30,19 +30,20 @@ def index():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # Matriculas del usuario
+    # Traer todas las matrículas del usuario
     cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
     matriculas = cursor.fetchall()
 
-    # Entradas por fecha
+    # Contar entradas por día para ese usuario
     cursor.execute("""
-        SELECT DATE(fecha_creacion), COUNT(*) 
+        SELECT DATE(fecha_registro), COUNT(*) 
         FROM matriculas 
         WHERE usuario_id = %s
-        GROUP BY DATE(fecha_creacion)
-        ORDER BY DATE(fecha_creacion)
+        GROUP BY DATE(fecha_registro)
+        ORDER BY DATE(fecha_registro)
     """, (current_user.id,))
     resultados = cursor.fetchall()
+
     fechas = [fila[0].strftime("%d/%m") for fila in resultados]
     cantidades = [fila[1] for fila in resultados]
 
@@ -52,7 +53,6 @@ def index():
                            matriculas=matriculas,
                            fechas=fechas,
                            cantidades=cantidades)
-
 
 
 # Error 413: Para cuando la imagen es demasiado grande
