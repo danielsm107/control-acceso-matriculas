@@ -69,7 +69,13 @@
       </div>
     </div>
   </div>
-  
+
+<div class="card bg-dark text-white p-4 mb-5">
+  <h5 class="mb-3">Distribución de Matrículas</h5>
+  <div class="d-flex justify-content-center">
+    <canvas id="graficoMatrimonios" style="max-width: 400px;"></canvas>
+  </div>
+</div>
 
   <!-- Tabla de matrículas -->
   {% if current_user.rol != 'admin' %}
@@ -174,5 +180,40 @@
     const icon = shouldReverse ? "↓" : "↑";
     thElement.querySelector(".sort-icon").innerHTML = icon;
   }
+</script>
+
+<script>
+  const ctxDonut = document.getElementById('graficoDonut').getContext('2d');
+
+  new Chart(ctxDonut, {
+    type: 'doughnut',
+    data: {
+      labels: ['Autorizadas', 'Pendientes', 'Denegadas'],
+      datasets: [{
+        label: 'Estado de Matrículas',
+        data: [
+          {{ matriculas|selectattr('1', 'equalto', 'autorizada')|list|length }},
+          {{ matriculas|selectattr('1', 'equalto', 'pendiente')|list|length }},
+          {{ matriculas|selectattr('1', 'equalto', 'denegada')|list|length }}
+        ],
+        backgroundColor: ['#198754', '#ffc107', '#dc3545'],
+        borderColor: '#0f1f2f',
+        borderWidth: 2,
+        hoverOffset: 12
+      }]
+    },
+    options: {
+      cutout: '70%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: 'white',
+            padding: 15
+          }
+        }
+      }
+    }
+  });
 </script>
 {% endblock %}

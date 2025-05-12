@@ -35,6 +35,7 @@ def index():
 
     return render_template("index.html", matriculas=matriculas)
 
+
 # Error 413: Para cuando la imagen es demasiado grande
 @app.errorhandler(413)
 def too_large(e):
