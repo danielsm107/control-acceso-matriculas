@@ -326,3 +326,8 @@ a:hover {
 .perfil-box input[type="file"]::file-selector-button:hover {
   background-color: #1c8ed3;
 }
+
+.chart-container {
+  max-width: 400px;
+  margin-top: 20px;
+}
