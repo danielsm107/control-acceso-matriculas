@@ -337,31 +337,33 @@ a:hover {
   font-size: 14px;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
 }
 
-/* Success: verde azulado */
+/* Verde éxito */
 .alert-success {
-  background-color: rgba(25, 135, 84, 0.2);
+  background-color: #102920;
   border-left: 4px solid #1de9b6;
   color: #1de9b6;
 }
 
-/* Warning: amarillo suave */
+/* Amarillo advertencia */
 .alert-warning {
-  background-color: rgba(223, 218, 73, 0.2);
+  background-color: #2f2c12;
   border-left: 4px solid #e0c53f;
   color: #e0c53f;
 }
 
-/* Danger: rojo suave */
+/* Rojo error */
 .alert-danger {
-  background-color: rgba(220, 53, 69, 0.2);
+  background-color: #32161b;
   border-left: 4px solid #ff5c75;
   color: #ff5c75;
 }
 
-/* Botón de cerrar */
+/* Botón de cerrar claro sobre fondo oscuro */
 .alert .btn-close {
-  filter: invert(1);
+  filter: invert(1) brightness(1.3);
 }
+
 
