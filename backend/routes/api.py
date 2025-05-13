@@ -49,5 +49,25 @@ def recibir_matricula():
     ultimo_registro = cursor.fetchone()
 
     if ultimo_registro and ultimo_registro[0] == matricula:
-        conexion.close
+        conexion.close()
+        return jsonify({"mensaje": "Matrícula ya registrada como última. Ignorada."}), 200
+
+    # Registrar nuevo acceso
+    fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute(
+        "INSERT INTO registros_accesos (matricula, estado, imagen, fecha) VALUES (%s, %s, %s, %s)",
+        (matricula, estado, nombre_imagen, fecha_actual)
+    )
+    conexion.commit()
+
+    socketio.emit("nuevo_acceso", {
+        "matricula": matricula,
+        "estado": estado,
+        "fecha": fecha_actual,
+        "imagen": nombre_imagen
+    })
+
+    conexion.close()
+    return jsonify({"acceso": estado, "imagen": nombre_imagen})
+
 
