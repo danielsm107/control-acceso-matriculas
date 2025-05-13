@@ -123,3 +123,19 @@ def eliminar_matricula_admin(matricula_id):
 
     flash("Matrícula eliminada correctamente.", "success")
     return redirect(url_for('admin.matriculas_admin'))
+
+@admin.route("/admin/eliminar_usuario/<int:user_id>", methods=["POST"])
+@login_required
+def eliminar_usuario(user_id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("admin.admin_panel"))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM usuarios WHERE id = %s", (user_id,))
+    conexion.commit()
+    conexion.close()
+
+    flash("Usuario eliminado correctamente", "success")
+    return redirect(url_for("admin.admin_panel"))
