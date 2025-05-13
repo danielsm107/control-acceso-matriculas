@@ -37,9 +37,9 @@ def login():
             session['rol'] = user.rol
 
             if user.rol == 'admin':
-                return redirect(url_for('admin_panel'))
+                return redirect(url_for('admin.admin_panel'))
             else:
-                return redirect(url_for('index'))
+                return redirect(url_for('main.index'))
         else:
             flash('Correo o contraseña incorrectos', 'danger')
 
@@ -91,7 +91,7 @@ def register():
 def logout():
     logout_user()
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 @auth.route('/editar_usuario_modal/<int:user_id>', methods=['POST'])
 @login_required
@@ -108,7 +108,7 @@ def editar_usuario_modal(user_id):
     if cursor.fetchone():
         conexion.close()
         flash('Este correo electrónico ya está en uso.', 'danger')
-        return redirect(url_for('admin_panel'))
+        return redirect(url_for('admin.admin_panel'))
 
     cursor.execute("""
         UPDATE usuarios
@@ -119,7 +119,7 @@ def editar_usuario_modal(user_id):
     conexion.close()
 
     flash('Usuario actualizado correctamente.', 'success')
-    return redirect(url_for('admin_panel'))
+    return redirect(url_for('admin.admin_panel'))
 
 # Creación de usuario desde el panel de administración
 @auth.route('/crear_usuario', methods=['POST'])
@@ -133,7 +133,7 @@ def crear_usuario():
 
     if password != confirm_password:
         flash('Las contraseñas no coinciden.', 'danger')
-        return redirect(url_for('admin_panel'))
+        return redirect(url_for('admin.admin_panel'))
 
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -143,7 +143,7 @@ def crear_usuario():
     if cursor.fetchone():
         conexion.close()
         flash('El correo electrónico ya está registrado.', 'danger')
-        return redirect(url_for('admin_panel'))
+        return redirect(url_for('admin.admin_panel'))
 
     password_hashed = generate_password_hash(password)
     cursor.execute(
@@ -154,6 +154,6 @@ def crear_usuario():
     conexion.close()
 
     flash('Usuario creado correctamente.', 'success')
-    return redirect(url_for('admin_panel'))
+    return redirect(url_for('admin.admin_panel'))
 
 
