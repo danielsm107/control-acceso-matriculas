@@ -17,6 +17,27 @@ def solo_admin(f):
         return f(*args, **kwargs)
     return decorador
 
+@admin.route("/admin/cambiar_rol/<int:user_id>", methods=["POST"])
+@login_required
+def cambiar_rol(user_id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("index"))
+
+    if user_id == 8:  # ID del administrador principal
+        flash("No se puede modificar el rol del administrador principal.", "warning")
+        return redirect(url_for("admin.admin_panel"))
+
+    nuevo_rol = request.form.get("rol")
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE usuarios SET rol = %s WHERE id = %s", (nuevo_rol, user_id))
+    conexion.commit()
+    conexion.close()
+
+    flash("Rol actualizado correctamente", "success")
+    return redirect(url_for("admin.admin_panel"))
+
 @admin.route("/admin")
 @login_required
 def admin_panel():
