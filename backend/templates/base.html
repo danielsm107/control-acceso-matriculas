@@ -24,7 +24,7 @@
   {% if current_user.is_authenticated %}
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% if current_user.rol == 'admin' %}{{ url_for('admin_panel') }}{% else %}{{ url_for('index') }}{% endif %}">
+      <a class="navbar-brand" href="{% if current_user.rol == 'admin' %}{{ url_for('admin.admin_panel') }}{% else %}{{ url_for('index') }}{% endif %}">
         <img src="{{ url_for('static', filename='icons/iconopaginaweb45.png') }}" width="48" height="48" class="d-inline-block align-text-top" alt="Icono Página Web">
       </a>
       <div class="collapse navbar-collapse">
