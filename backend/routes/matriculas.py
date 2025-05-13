@@ -23,7 +23,7 @@ def mis_matriculas():
 def solicitar_matricula():
     def _redirect_matriculas():
         if current_user.rol == 'admin':
-            return redirect(url_for('auth.matriculas_admin'))
+            return redirect(url_for('admin.matriculas_admin'))
         else:
             return redirect(url_for('matriculas.mis_matriculas'))
 
@@ -70,7 +70,7 @@ def solicitar_matricula():
 
         if current_user.rol == 'admin':
             flash(f'Matrícula registrada y autorizada para el usuario ID {usuario_id}.', 'success')
-            return redirect(url_for('auth.matriculas_admin'))
+            return redirect(url_for('admin.matriculas_admin'))
         else:
             flash('Matrícula solicitada correctamente. Pendiente de aprobación.', 'success')
             return redirect(url_for('matriculas.mis_matriculas'))
