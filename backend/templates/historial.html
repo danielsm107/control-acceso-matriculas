@@ -18,7 +18,7 @@
   
     <!-- Botón limpiar historial a la derecha -->
     {% if current_user.rol == 'admin' %}
-    <form action="{{ url_for('limpiar_historial') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres limpiar todo el historial?');">
+    <form action="{{ url_for('admin.limpiar_historial') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres limpiar todo el historial?');">
       <button type="submit" class="delete-btn ms-3" title="Limpiar historial">
         <img src="{{ url_for('static', filename='icons/clean.svg') }}" alt="Limpiar historial" width="24" height="24">
       </button>

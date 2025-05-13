@@ -6,7 +6,7 @@
   <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
     <h3 class="text-center mb-4">Solicitar Registro de Matrícula</h3>
 
-    <form method="POST" action="{{ url_for('solicitar_matricula') }}">
+    <form method="POST" action="{{ url_for('matriculas.solicitar_matricula') }}">
       <div class="mb-3">
         <label for="matricula" class="form-label">Matrícula</label>
         <input type="text" class="form-control text-uppercase" id="matricula" name="matricula"

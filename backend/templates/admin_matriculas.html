@@ -67,7 +67,7 @@
               
               {% if m[5] == 'denegada' or m[5] == 'autorizada' %}
                 <!-- Botón Eliminar -->
-                <form action="{{ url_for('auth.eliminar_matricula_admin', matricula_id=m[0]) }}" method="POST" class="d-inline"
+                <form action="{{ url_for('admin.eliminar_matricula_admin', matricula_id=m[0]) }}" method="POST" class="d-inline"
                       onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta matrícula?');">
                   <button type="submit" class="delete-btn" title="Eliminar">
                     <img src="{{ url_for('static', filename='icons/delete_icon.svg') }}" alt="Eliminar" width="24" height="24">
@@ -84,7 +84,7 @@
 
 <div class="modal fade" id="modalNuevaMatricula" tabindex="-1" aria-labelledby="modalNuevaMatriculaLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="POST" action="{{ url_for('solicitar_matricula') }}">
+    <form method="POST" action="{{ url_for('matriculas.solicitar_matricula') }}">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalNuevaMatriculaLabel">Registrar nueva matrícula</h5>
@@ -116,7 +116,7 @@
 
 <div class="modal fade" id="editarMatriculaModal" tabindex="-1" aria-labelledby="editarMatriculaModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="POST" action="{{ url_for('auth.editar_matricula') }}">
+    <form method="POST" action="{{ url_for('admin.editar_matricula') }}">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="editarMatriculaModalLabel">Editar Matrícula</h5>

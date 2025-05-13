@@ -31,7 +31,7 @@
           <td>
             {% if estado == 'pendiente' %}
               <form method="POST"
-                    action="{{ url_for('eliminar_matricula', matricula_id=id) }}"
+                    action="{{ url_for('matriculas.eliminar_matricula', matricula_id=id) }}"
                     onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');"
                     class="delete-form">
                 <button type="submit" class="delete-btn" title="Eliminar">
