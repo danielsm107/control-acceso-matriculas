@@ -155,3 +155,20 @@ def aprobar_matricula(id):
 
     flash("Matrícula aprobada", "success")
     return redirect(url_for("admin.admin_panel"))
+
+@admin.route("/admin/rechazar/<int:id>", methods=["POST"])
+@login_required
+def rechazar_matricula(id):
+    if current_user.rol != "admin":
+        flash("Acceso no autorizado", "danger")
+        return redirect(url_for("admin.admin_panel"))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE matriculas SET estado = 'denegada' WHERE id = %s", (id,))
+    conexion.commit()
+    conexion.close()
+
+    flash("Matrícula rechazada", "warning")
+    return redirect(url_for("admin.admin_panel"))
+
