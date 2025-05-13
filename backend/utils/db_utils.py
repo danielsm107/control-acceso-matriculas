@@ -1,3 +1,4 @@
+# utils/db_utils.py
 from flask_login import UserMixin
 import mysql.connector
 
@@ -19,3 +20,21 @@ class User(UserMixin):
         self.matricula = matricula
         self.rol = rol
         self.foto = foto
+
+# Cargar usuario para login
+def load_user(user_id):
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("SELECT id, nombre, email, password, rol, foto FROM usuarios WHERE id = %s", (user_id,))
+    usuario = cursor.fetchone()
+    conexion.close()
+    if usuario:
+        return User(
+            id=usuario[0],
+            nombre=usuario[1],
+            email=usuario[2],
+            password=usuario[3],
+            rol=usuario[4],
+            foto=usuario[5]
+        )
+    return None
