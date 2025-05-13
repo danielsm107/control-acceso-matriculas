@@ -172,3 +172,18 @@ def rechazar_matricula(id):
     flash("Matrícula rechazada", "warning")
     return redirect(url_for("admin.admin_panel"))
 
+@admin.route('/limpiar_historial', methods=['POST'])
+@login_required
+def limpiar_historial():
+    if current_user.rol != 'admin':
+        flash('Acceso no autorizado.', 'danger')
+        return redirect(url_for('main.historial'))
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM registros_accesos")
+    conexion.commit()
+    conexion.close()
+
+    flash('Historial de accesos eliminado correctamente.', 'success')
+    return redirect(url_for('main.historial'))
