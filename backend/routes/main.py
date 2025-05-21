@@ -15,10 +15,15 @@ def index():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
+    # Todas las matrículas del usuario
     cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
     matriculas = cursor.fetchall()
 
-    # Aquí cambiamos la fuente de datos para la gráfica a entradas reales
+    # Solo las pendientes
+    cursor.execute("SELECT matricula FROM matriculas WHERE usuario_id = %s AND estado = 'pendiente'", (current_user.id,))
+    pendientes = [fila[0] for fila in cursor.fetchall()]
+
+    # Gráfico de accesos reales
     cursor.execute("""
         SELECT DATE(fecha), COUNT(*) 
         FROM registros_accesos 
@@ -33,7 +38,8 @@ def index():
 
     conexion.close()
 
-    return render_template("index.html", matriculas=matriculas, fechas=fechas, cantidades=cantidades)
+    return render_template("index.html", matriculas=matriculas, pendientes=pendientes, fechas=fechas, cantidades=cantidades)
+
 
 
 
