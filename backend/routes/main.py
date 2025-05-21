@@ -24,8 +24,8 @@ def index():
     matriculas = cursor.fetchall()
 
     # Solo las pendientes
-    cursor.execute("SELECT matricula FROM matriculas WHERE usuario_id = %s AND estado = 'pendiente'", (current_user.id,))
-    pendientes = [fila[0] for fila in cursor.fetchall()]
+    cursor.execute("SELECT id, matricula FROM matriculas WHERE usuario_id = %s AND estado = 'pendiente'", (current_user.id,))
+    pendientes = cursor.fetchall()
 
     # Gráfico de accesos reales
     cursor.execute("""
