@@ -18,12 +18,13 @@ def index():
     cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
     matriculas = cursor.fetchall()
 
+    # Aquí cambiamos la fuente de datos para la gráfica a entradas reales
     cursor.execute("""
-        SELECT DATE(fecha_registro), COUNT(*) 
-        FROM matriculas 
+        SELECT DATE(fecha), COUNT(*) 
+        FROM registros_accesos 
         WHERE usuario_id = %s
-        GROUP BY DATE(fecha_registro)
-        ORDER BY DATE(fecha_registro)
+        GROUP BY DATE(fecha)
+        ORDER BY DATE(fecha)
     """, (current_user.id,))
     resultados = cursor.fetchall()
 
@@ -33,6 +34,7 @@ def index():
     conexion.close()
 
     return render_template("index.html", matriculas=matriculas, fechas=fechas, cantidades=cantidades)
+
 
 
 @main.route("/historial")
