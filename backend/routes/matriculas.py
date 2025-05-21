@@ -73,7 +73,7 @@ def solicitar_matricula():
             return redirect(url_for('admin.matriculas_admin'))
         else:
             flash('Matrícula solicitada correctamente. Pendiente de aprobación.', 'success')
-            return redirect(url_for('matriculas.mis_matriculas'))
+            return redirect(url_for('main.index'))
 
     return render_template('solicitar_matricula.html')
 
@@ -97,4 +97,4 @@ def eliminar_matricula(matricula_id):
     conexion.commit()
     conexion.close()
 
-    return redirect(url_for('matriculas.mis_matriculas'))
+    return redirect(url_for('main.index'))
