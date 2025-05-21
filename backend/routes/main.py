@@ -135,17 +135,28 @@ def simular_acceso():
 
     conexion = conectar_db()
     cursor = conexion.cursor()
+
+    # Obtener estado y validar
     cursor.execute("SELECT estado FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
     resultado = cursor.fetchone()
-    conexion.close()
 
     if not resultado:
+        conexion.close()
         flash("Matrícula no autorizada o no pertenece al usuario", "danger")
         return redirect(url_for("main.historial"))
 
     estado = resultado[0]
     fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
 
+    # Insertar en registros_accesos
+    cursor.execute("""
+        INSERT INTO registros_accesos (matricula, estado, fecha, usuario_id)
+        VALUES (%s, %s, %s, %s)
+    """, (matricula, estado, fecha_actual, current_user.id))
+    conexion.commit()
+    conexion.close()
+
+    # Emitir vía WebSocket
     socketio.emit("nuevo_acceso", {
         "matricula": matricula,
         "estado": estado,
@@ -155,4 +166,5 @@ def simular_acceso():
 
     flash(f"Se ha simulado un acceso para {matricula}", "success")
     return redirect(url_for("main.historial"))
+
 
