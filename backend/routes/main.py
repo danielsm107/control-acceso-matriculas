@@ -42,55 +42,32 @@ def historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    if current_user.rol == "admin":
-        query = """
-            SELECT ra.matricula, ra.fecha, ra.estado, ra.imagen, u.nombre, u.apellidos, u.email
-            FROM registros_accesos ra
-            LEFT JOIN usuarios u ON ra.usuario_id = u.id
-        """
-        if filtro == "hoy":
-            query += " WHERE DATE(ra.fecha) = CURDATE()"
-        elif filtro == "ultimos7":
-            query += " WHERE ra.fecha >= NOW() - INTERVAL 7 DAY"
-        query += " ORDER BY ra.fecha DESC LIMIT 50"
-        cursor.execute(query)
-        historial = cursor.fetchall()
-        conexion.close()
+    query = "SELECT matricula, fecha, estado, imagen FROM registros_accesos"
+    params = []
 
-        historial_format = [
-            (m, f.strftime("%d/%m/%Y %H:%M"), e, i, n, a, em)
-            for m, f, e, i, n, a, em in historial
-        ]
-        return render_template("historial.html", historial=historial_format, filtro=filtro)
+    if current_user.rol != "admin":
+        query += " WHERE usuario_id = %s"
+        params.append(current_user.id)
 
-    # Usuario normal
-    # 1. Obtener historial filtrado
-    query = """
-        SELECT matricula, fecha, estado, imagen
-        FROM registros_accesos
-        WHERE usuario_id = %s
-    """
-    params = [current_user.id]
     if filtro == "hoy":
-        query += " AND DATE(fecha) = CURDATE()"
+        query += " AND" if current_user.rol != "admin" else " WHERE"
+        query += " DATE(fecha) = CURDATE()"
     elif filtro == "ultimos7":
-        query += " AND fecha >= NOW() - INTERVAL 7 DAY"
+        query += " AND" if current_user.rol != "admin" else " WHERE"
+        query += " fecha >= NOW() - INTERVAL 7 DAY"
+
     query += " ORDER BY fecha DESC LIMIT 50"
+
     cursor.execute(query, tuple(params))
     historial = cursor.fetchall()
-
-    # 2. Obtener todas las matrículas del usuario
-    cursor.execute("""
-        SELECT matricula FROM matriculas
-        WHERE usuario_id = %s AND estado = 'autorizada'
-    """, (current_user.id,))
-    matriculas_usuario = [fila[0] for fila in cursor.fetchall()]
-
     conexion.close()
 
-    historial_format = [(m, f.strftime("%d/%m/%Y %H:%M"), e, i) for m, f, e, i in historial]
-    return render_template("historial.html", historial=historial_format, filtro=filtro, matriculas_usuario=matriculas_usuario)
+    historial_format = []
+    for matricula, fecha, estado, imagen in historial:
+        fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
+        historial_format.append((matricula, fecha_str, estado, imagen))
 
+    return render_template("historial.html", historial=historial_format, filtro=filtro)
 
 
 @main.route("/api/historial")
@@ -138,3 +115,33 @@ def subir_foto_perfil():
         flash("No se seleccionó ninguna imagen válida.", "danger")
 
     return redirect(url_for("main.index"))
+
+@main.route("/simular_acceso", methods=["POST"])
+@login_required
+def simular_acceso():
+    from app import socketio
+    matricula = request.form.get("matricula")
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+    cursor.execute("SELECT estado FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
+    resultado = cursor.fetchone()
+    conexion.close()
+
+    if not resultado:
+        flash("Matrícula no autorizada o no pertenece al usuario", "danger")
+        return redirect(url_for("main.historial"))
+
+    estado = resultado[0]
+    fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
+
+    socketio.emit("nuevo_acceso", {
+        "matricula": matricula,
+        "estado": estado,
+        "fecha": fecha_actual,
+        "imagen": None
+    })
+
+    flash(f"Se ha simulado un acceso para {matricula}", "success")
+    return redirect(url_for("main.historial"))
+

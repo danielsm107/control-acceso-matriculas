@@ -21,6 +21,10 @@
       Ver por Matrícula
     </button>
     {% endif %}
+
+    {% if current_user.rol != 'admin' %}
+    <button class="btn btn-outline-info ms-3" data-bs-toggle="modal" data-bs-target="#modalSimular">Simular Matrícula</button>
+    {% endif %}
   </div>
 
   <!-- Botón limpiar historial a la derecha -->
@@ -91,30 +95,6 @@
   </table>
 </div>
 
-<!-- Modal para seleccionar matrícula -->
-<div class="modal fade" id="modalHistorialMatricula" tabindex="-1" aria-labelledby="modalHistorialMatriculaLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form method="GET" action="{{ url_for('main.historial') }}" class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalHistorialMatriculaLabel">Filtrar por Matrícula</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <label for="matricula" class="form-label">Selecciona una matrícula:</label>
-        <select class="form-select" name="matricula" id="matricula" required>
-          {% for m in matriculas_usuario %}
-            <option value="{{ m }}">{{ m }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Ver Historial</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 {% endblock %}
 
 {% block scripts %}
@@ -175,4 +155,32 @@
     tabla.prepend(fila);
   });
 </script>
+
+<div class="modal fade" id="modalSimular" tabindex="-1" aria-labelledby="modalSimularLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('main.simular_acceso') }}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalSimularLabel">Simular Acceso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="matricula" class="form-label">Selecciona una matrícula:</label>
+            <select name="matricula" id="matricula" class="form-select" required>
+              <option disabled selected value="">-- Elegir matrícula --</option>
+              {% for m in matriculas_usuario %}
+                <option value="{{ m }}">{{ m }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Simular</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
