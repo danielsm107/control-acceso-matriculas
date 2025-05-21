@@ -25,7 +25,7 @@ def solicitar_matricula():
         if current_user.rol == 'admin':
             return redirect(url_for('admin.matriculas_admin'))
         else:
-            return redirect(url_for('main.admin'))
+            return redirect(url_for('main.index'))
 
     if request.method == 'POST':
         matricula = request.form['matricula'].upper()
@@ -84,7 +84,10 @@ def eliminar_matricula(matricula_id):
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    cursor.execute("DELETE FROM matriculas WHERE id = %s AND usuario_id = %s AND estado = 'denegada'", (matricula_id, current_user.id))
+    cursor.execute("""
+        DELETE FROM matriculas 
+        WHERE id = %s AND usuario_id = %s AND estado IN ('denegada', 'pendiente')
+    """, (matricula_id, current_user.id))
     
     if cursor.rowcount > 0:
         flash('Matrícula eliminada correctamente.', 'success')
