@@ -63,7 +63,9 @@ def historial():
             query += " AND DATE(fecha) = CURDATE()"
         elif filtro == "ultimos7":
             query += " AND fecha >= NOW() - INTERVAL 7 DAY"
-        cursor.execute(query + " ORDER BY fecha DESC LIMIT 50", tuple(params))
+        query += " ORDER BY fecha DESC LIMIT 50"
+        cursor.execute(query, tuple(params))
+
         historial = cursor.fetchall()
         conexion.close()
 
