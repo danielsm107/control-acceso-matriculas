@@ -19,10 +19,11 @@ def index():
     cursor.execute("""
         SELECT matricula, estado
         FROM matriculas
-        WHERE usuario_id = %s AND estado IN ('autorizada', 'denegada')
+        WHERE usuario_id = %s
     """, (current_user.id,))
+    
     matriculas = cursor.fetchall()
-
+    
     # Solo las pendientes
     cursor.execute("SELECT id, matricula FROM matriculas WHERE usuario_id = %s AND estado = 'pendiente'", (current_user.id,))
     pendientes = cursor.fetchall()
