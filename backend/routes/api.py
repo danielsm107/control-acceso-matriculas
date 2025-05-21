@@ -26,22 +26,23 @@ def recibir_matricula():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    cursor.execute("SELECT estado FROM matriculas WHERE matricula = %s", (matricula,))
+    # Obtener estado y usuario_id
+    cursor.execute("SELECT estado, usuario_id FROM matriculas WHERE matricula = %s", (matricula,))
     resultado = cursor.fetchone()
 
     if resultado is None:
         conexion.close()
         return jsonify({"error": "Matrícula no registrada"}), 404
 
-    estado = resultado[0]
+    estado, usuario_id = resultado
     nombre_imagen = None
+
     if imagen:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         nombre_imagen = f"{matricula}_{timestamp}.jpg"
         ruta_imagen = os.path.join("static/imagenes", nombre_imagen)
         imagen.save(ruta_imagen)
 
-    # Bloque para evitar duplicados consecutivos
     cursor.execute("""
         SELECT matricula FROM registros_accesos
         ORDER BY fecha DESC LIMIT 1
@@ -52,12 +53,13 @@ def recibir_matricula():
         conexion.close()
         return jsonify({"mensaje": "Matrícula ya registrada como última. Ignorada."}), 200
 
-    # Registrar nuevo acceso
     fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
-    cursor.execute(
-        "INSERT INTO registros_accesos (matricula, estado, imagen, fecha) VALUES (%s, %s, %s, %s)",
-        (matricula, estado, nombre_imagen, fecha_actual)
-    )
+
+    cursor.execute("""
+        INSERT INTO registros_accesos (matricula, estado, imagen, fecha, usuario_id)
+        VALUES (%s, %s, %s, %s, %s)
+    """, (matricula, estado, nombre_imagen, fecha_actual, usuario_id))
+
     conexion.commit()
 
     socketio.emit("nuevo_acceso", {
@@ -69,5 +71,3 @@ def recibir_matricula():
 
     conexion.close()
     return jsonify({"acceso": estado, "imagen": nombre_imagen})
-
-

@@ -42,32 +42,46 @@ def historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    query = "SELECT matricula, fecha, estado, imagen FROM registros_accesos"
-    params = []
+    if current_user.rol == "admin":
+        query = """
+            SELECT ra.matricula, ra.fecha, ra.estado, ra.imagen, u.nombre, u.apellidos, u.email
+            FROM registros_accesos ra
+            LEFT JOIN usuarios u ON ra.usuario_id = u.id
+        """
+        if filtro == "hoy":
+            query += " WHERE DATE(ra.fecha) = CURDATE()"
+        elif filtro == "ultimos7":
+            query += " WHERE ra.fecha >= NOW() - INTERVAL 7 DAY"
+    else:
+        query = """
+            SELECT matricula, fecha, estado, imagen
+            FROM registros_accesos
+            WHERE usuario_id = %s
+        """
+        params = [current_user.id]
+        if filtro == "hoy":
+            query += " AND DATE(fecha) = CURDATE()"
+        elif filtro == "ultimos7":
+            query += " AND fecha >= NOW() - INTERVAL 7 DAY"
+        cursor.execute(query + " ORDER BY fecha DESC LIMIT 50", tuple(params))
+        historial = cursor.fetchall()
+        conexion.close()
 
-    if current_user.rol != "admin":
-        query += " WHERE usuario_id = %s"
-        params.append(current_user.id)
+        historial_format = [(m, f.strftime("%d/%m/%Y %H:%M"), e, i) for m, f, e, i in historial]
+        return render_template("historial.html", historial=historial_format, filtro=filtro)
 
-    if filtro == "hoy":
-        query += " AND" if current_user.rol != "admin" else " WHERE"
-        query += " DATE(fecha) = CURDATE()"
-    elif filtro == "ultimos7":
-        query += " AND" if current_user.rol != "admin" else " WHERE"
-        query += " fecha >= NOW() - INTERVAL 7 DAY"
-
-    query += " ORDER BY fecha DESC LIMIT 50"
-
-    cursor.execute(query, tuple(params))
+    # Solo para admin
+    query += " ORDER BY ra.fecha DESC LIMIT 50"
+    cursor.execute(query)
     historial = cursor.fetchall()
     conexion.close()
 
-    historial_format = []
-    for matricula, fecha, estado, imagen in historial:
-        fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
-        historial_format.append((matricula, fecha_str, estado, imagen))
-
+    historial_format = [
+        (m, f.strftime("%d/%m/%Y %H:%M"), e, i, n, a, em)
+        for m, f, e, i, n, a, em in historial
+    ]
     return render_template("historial.html", historial=historial_format, filtro=filtro)
+
 
 
 @main.route("/api/historial")

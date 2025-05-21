@@ -4,7 +4,8 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h2 class="mb-4 text-white">Historial de Accesos 
+  <h2 class="mb-4 text-white">
+    Historial de Accesos 
     <span id="estado-ws" class="badge connection-badge bg-secondary">Conectando...</span>
   </h2>
 
@@ -15,7 +16,7 @@
       <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
       <a href="/historial?filtro=hoy" class="btn btn-outline-success {{ 'active' if filtro == 'hoy' else '' }}">Hoy</a>
     </div>
-  
+    
     <!-- Botón limpiar historial a la derecha -->
     {% if current_user.rol == 'admin' %}
     <form action="{{ url_for('admin.limpiar_historial') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres limpiar todo el historial?');">
@@ -26,7 +27,6 @@
     {% endif %}
   </div>
   
-
   <table class="table-modern">
     <thead>
       <tr>
@@ -35,6 +35,9 @@
         <th>Estado</th>
         <th>Mensaje</th>
         <th>Imagen</th>
+        {% if current_user.rol == 'admin' %}
+        <th>Usuario</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody id="tabla-accesos">
@@ -71,7 +74,10 @@
           {% else %}
             Sin imagen
           {% endif %}
-        </td>        
+        </td>
+        {% if current_user.rol == 'admin' %}
+        <td>{{ acceso[4] }} {{ acceso[5] }}<br><small>{{ acceso[6] }}</small></td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
@@ -102,7 +108,7 @@
 
   socket.on("nuevo_acceso", (acceso) => {
     const fila = document.createElement("tr");
-
+    
     let statusClass, statusIcon, estadoTexto, mensaje;
 
     if (acceso.estado === 'autorizada') {

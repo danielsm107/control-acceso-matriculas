@@ -153,4 +153,4 @@ Para llevar a cabo este proyecto, se necesitará:
 - [ ] Modificar pagina index.html para que muestre la información del usuario actual. (**PRIORITARIO**)
 - [ ] Creación de gráficas para matriculas. (**PRIORITARIO**)
 - [x] Arreglar que no se puedan cambiar permisos admin principal
-- [ ] Cambiar estilos mensajes flash
+- [x] Cambiar estilos mensajes flash
