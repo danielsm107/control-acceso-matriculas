@@ -25,7 +25,7 @@ def solicitar_matricula():
         if current_user.rol == 'admin':
             return redirect(url_for('admin.matriculas_admin'))
         else:
-            return redirect(url_for('matriculas.mis_matriculas'))
+            return redirect(url_for('main.admin'))
 
     if request.method == 'POST':
         matricula = request.form['matricula'].upper()
