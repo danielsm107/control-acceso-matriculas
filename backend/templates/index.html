@@ -48,6 +48,14 @@
   </div>
 
   <div class="card flex-fill resumen-card p-3 bg-gradient border-0 shadow-sm d-flex flex-row align-items-center gap-3" style="min-width: 220px;">
+    <div class="icon-wrapper bg-warning"><i class="fas fa-clock fa-lg"></i></div>
+    <div>
+      <div class="text-white medium">Pendientes</div>
+      <div class="fs-4 fw-bold">{{ matriculas|selectattr('1', 'equalto', 'pendiente')|list|length }}</div>
+    </div>
+  </div>
+
+  <div class="card flex-fill resumen-card p-3 bg-gradient border-0 shadow-sm d-flex flex-row align-items-center gap-3" style="min-width: 220px;">
     <div class="icon-wrapper bg-danger"><i class="fas fa-times-circle fa-lg"></i></div>
     <div>
       <div class="text-white medium">Denegadas</div>

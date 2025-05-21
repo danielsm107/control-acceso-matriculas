@@ -15,8 +15,12 @@ def index():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # Todas las matrículas del usuario
-    cursor.execute("SELECT matricula, estado FROM matriculas WHERE usuario_id = %s", (current_user.id,))
+    # Solo autorizadas o denegadas
+    cursor.execute("""
+        SELECT matricula, estado
+        FROM matriculas
+        WHERE usuario_id = %s AND estado IN ('autorizada', 'denegada')
+    """, (current_user.id,))
     matriculas = cursor.fetchall()
 
     # Solo las pendientes
@@ -39,6 +43,7 @@ def index():
     conexion.close()
 
     return render_template("index.html", matriculas=matriculas, pendientes=pendientes, fechas=fechas, cantidades=cantidades)
+
 
 
 
