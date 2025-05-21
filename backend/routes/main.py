@@ -42,6 +42,7 @@ def historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
+    # 1. Consulta del historial
     query = "SELECT matricula, fecha, estado, imagen FROM registros_accesos"
     params = []
 
@@ -60,14 +61,24 @@ def historial():
 
     cursor.execute(query, tuple(params))
     historial = cursor.fetchall()
+
+    historial_format = [
+        (matricula, fecha.strftime("%d/%m/%Y %H:%M"), estado, imagen)
+        for matricula, fecha, estado, imagen in historial
+    ]
+
+    # 2. Consulta de matrículas autorizadas para el modal
+    cursor.execute("""
+        SELECT matricula FROM matriculas
+        WHERE usuario_id = %s AND estado = 'autorizada'
+    """, (current_user.id,))
+    matriculas_usuario = [fila[0] for fila in cursor.fetchall()]
+
     conexion.close()
 
-    historial_format = []
-    for matricula, fecha, estado, imagen in historial:
-        fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
-        historial_format.append((matricula, fecha_str, estado, imagen))
+    return render_template("historial.html", historial=historial_format, filtro=filtro, matriculas_usuario=matriculas_usuario)
 
-    return render_template("historial.html", historial=historial_format, filtro=filtro)
+
 
 
 @main.route("/api/historial")
