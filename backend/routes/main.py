@@ -42,7 +42,6 @@ def historial():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # 1. Consulta del historial
     query = "SELECT matricula, fecha, estado, imagen FROM registros_accesos"
     params = []
 
@@ -61,24 +60,14 @@ def historial():
 
     cursor.execute(query, tuple(params))
     historial = cursor.fetchall()
-
-    historial_format = [
-        (matricula, fecha.strftime("%d/%m/%Y %H:%M"), estado, imagen)
-        for matricula, fecha, estado, imagen in historial
-    ]
-
-    # 2. Consulta de matrículas autorizadas para el modal
-    cursor.execute("""
-        SELECT matricula FROM matriculas
-        WHERE usuario_id = %s AND estado = 'autorizada'
-    """, (current_user.id,))
-    matriculas_usuario = [fila[0] for fila in cursor.fetchall()]
-
     conexion.close()
 
-    return render_template("historial.html", historial=historial_format, filtro=filtro, matriculas_usuario=matriculas_usuario)
+    historial_format = []
+    for matricula, fecha, estado, imagen in historial:
+        fecha_str = fecha.strftime("%d/%m/%Y %H:%M")
+        historial_format.append((matricula, fecha_str, estado, imagen))
 
-
+    return render_template("historial.html", historial=historial_format, filtro=filtro)
 
 
 @main.route("/api/historial")
@@ -126,47 +115,3 @@ def subir_foto_perfil():
         flash("No se seleccionó ninguna imagen válida.", "danger")
 
     return redirect(url_for("main.index"))
-
-@main.route("/simular_acceso", methods=["POST"])
-@login_required
-def simular_acceso():
-    from app import socketio
-    matricula = request.form.get("matricula")
-
-    conexion = conectar_db()
-    cursor = conexion.cursor()
-
-    cursor.execute("SELECT estado FROM matriculas WHERE matricula = %s AND usuario_id = %s", (matricula, current_user.id))
-    resultado = cursor.fetchone()
-
-    if not resultado:
-        conexion.close()
-        flash("Matrícula no autorizada o no pertenece al usuario", "danger")
-        return redirect(url_for("main.historial"))
-
-    if resultado[0] != "autorizada":
-        conexion.close()
-        flash("Solo se pueden simular accesos de matrículas autorizadas.", "warning")
-        return redirect(url_for("main.historial"))
-
-    estado = resultado[0]
-    fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
-
-    cursor.execute("""
-        INSERT INTO registros_accesos (matricula, estado, fecha, usuario_id)
-        VALUES (%s, %s, %s, %s)
-    """, (matricula, estado, fecha_actual, current_user.id))
-    conexion.commit()
-    conexion.close()
-
-    socketio.emit("nuevo_acceso", {
-        "matricula": matricula,
-        "estado": estado,
-        "fecha": fecha_actual,
-        "imagen": None
-    })
-
-    flash(f"Se ha simulado un acceso para {matricula}", "success")
-    return redirect(url_for("main.historial"))
-
-

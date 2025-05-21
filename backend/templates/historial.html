@@ -15,17 +15,7 @@
     <a href="/historial?filtro=todos" class="btn btn-outline-primary {{ 'active' if filtro == 'todos' else '' }}">Todos</a>
     <a href="/historial?filtro=ultimos7" class="btn btn-outline-secondary {{ 'active' if filtro == 'ultimos7' else '' }}">Últimos 7 días</a>
     <a href="/historial?filtro=hoy" class="btn btn-outline-success {{ 'active' if filtro == 'hoy' else '' }}">Hoy</a>
-
-    {% if current_user.rol != 'admin' %}
-    <button class="btn btn-outline-info ms-3" data-bs-toggle="modal" data-bs-target="#modalHistorialMatricula">
-      Ver por Matrícula
-    </button>
-    {% endif %}
-
-    {% if current_user.rol != 'admin' %}
-    <button class="btn btn-outline-info ms-3" data-bs-toggle="modal" data-bs-target="#modalSimular">Simular Matrícula</button>
-    {% endif %}
-  </div>
+</div>
 
   <!-- Botón limpiar historial a la derecha -->
   {% if current_user.rol == 'admin' %}
@@ -155,32 +145,4 @@
     tabla.prepend(fila);
   });
 </script>
-
-<div class="modal fade" id="modalSimular" tabindex="-1" aria-labelledby="modalSimularLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form method="POST" action="{{ url_for('main.simular_acceso') }}">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalSimularLabel">Simular Acceso</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="matricula" class="form-label">Selecciona una matrícula:</label>
-            <select name="matricula" id="matricula" class="form-select" required>
-              <option disabled selected value="">-- Elegir matrícula --</option>
-              {% for m in matriculas_usuario %}
-                <option value="{{ m }}">{{ m }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Simular</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
 {% endblock %}
