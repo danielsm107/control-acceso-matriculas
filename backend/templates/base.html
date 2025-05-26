@@ -35,9 +35,6 @@
           </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link link-light" href="{{ url_for('matriculas.mis_matriculas') }}">Mis Matrículas</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link link-light" href="{{ url_for('main.historial') }}">Historial</a>
           </li>
           {% if current_user.rol == 'admin' %}
