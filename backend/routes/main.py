@@ -15,17 +15,36 @@ def index():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    # Solo autorizadas o denegadas
+    # Todas las matrículas del usuario
     cursor.execute("""
         SELECT matricula, estado
         FROM matriculas
         WHERE usuario_id = %s
     """, (current_user.id,))
-    
-    matriculas = cursor.fetchall()
-    
-    # Solo las pendientes
-    cursor.execute("SELECT id, matricula FROM matriculas WHERE usuario_id = %s AND estado = 'pendiente'", (current_user.id,))
+    todas = cursor.fetchall()
+
+    # Autorizadas
+    cursor.execute("""
+        SELECT matricula, estado
+        FROM matriculas
+        WHERE usuario_id = %s AND estado = 'autorizada'
+    """, (current_user.id,))
+    autorizadas = cursor.fetchall()
+
+    # Denegadas
+    cursor.execute("""
+        SELECT matricula, estado
+        FROM matriculas
+        WHERE usuario_id = %s AND estado = 'denegada'
+    """, (current_user.id,))
+    denegadas = cursor.fetchall()
+
+    # Pendientes
+    cursor.execute("""
+        SELECT id, matricula
+        FROM matriculas
+        WHERE usuario_id = %s AND estado = 'pendiente'
+    """, (current_user.id,))
     pendientes = cursor.fetchall()
 
     # Gráfico de accesos reales
@@ -43,7 +62,14 @@ def index():
 
     conexion.close()
 
-    return render_template("index.html", matriculas=matriculas, pendientes=pendientes, fechas=fechas, cantidades=cantidades)
+    return render_template("index.html", 
+        todas=todas,
+        autorizadas=autorizadas,
+        denegadas=denegadas,
+        pendientes=pendientes,
+        fechas=fechas,
+        cantidades=cantidades)
+
 
 
 
