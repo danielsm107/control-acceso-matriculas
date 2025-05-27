@@ -150,7 +150,40 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.
 - [ ] Añadir filtro historial.html
 - [ ] Arreglar que cuando un admin registre una nueva matricula en admin_matriculas esté como autorizada automáticamente.
-- [ ] Modificar pagina index.html para que muestre la información del usuario actual. (**PRIORITARIO**)
+- [x] Modificar pagina index.html para que muestre la información del usuario actual. (**PRIORITARIO**)
 - [ ] Creación de gráficas para matriculas. (**PRIORITARIO**)
 - [x] Arreglar que no se puedan cambiar permisos admin principal
 - [x] Cambiar estilos mensajes flash
+
+--- 
+## **Documentación del proyecto**
+
+### **1. Propósito**
+
+Este documentación proporciona una visión general completa del sistema _Control Acceso Matrículas_, una solución de control de acceso vehicular basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento con **OpenALPR** y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan estos componentes.
+
+### **2. Componentes Principales**
+
+#### **1. Aplicación Web Flask**  
+
+La aplicación web desarrollada con Flask actúa como el componente central del sistema, gestionando las peticiones HTTP tanto de los clientes web como del dispositivo Raspberry Pi. Ofrece rutas para la autenticación, la gestión de matrículas, el control de accesos y la visualización del historial.
+
+**Aspectos clave:**
+
+- Punto de entrada a través de `app.py`
+
+- Uso de _Flask-Login_ para la gestión de autenticación
+
+- Implementación control de acceso basado en roles (administrador vs. usuarios normales)
+   
+- Registro de rutas para todas las funciones del sistema
+
+- Uso de _SocketIO_ para comunicación en tiempo real
+
+
+
+
+
+---
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danielsm107/control-acceso-matriculas)
