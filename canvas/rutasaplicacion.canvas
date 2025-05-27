@@ -1,10 +1,11 @@
 {
 	"nodes":[
-		{"id":"7cd46846746b1f14","x":-820,"y":-480,"width":1280,"height":100,"type":"group","label":"Tipo de rutas"},
+		{"id":"7cd46846746b1f14","type":"group","x":-820,"y":-480,"width":1200,"height":100,"label":"Tipo de rutas"},
 		{"id":"098205e86cd2383f","type":"text","text":"**Rutas de autenticación**\n**(/login, /register)**","x":-780,"y":-460,"width":240,"height":60},
-		{"id":"0f99520cd811ad4f","type":"text","text":"**Aplicación Flask (app.py)**","x":-380,"y":-740,"width":260,"height":60},
-		{"id":"b40c481ff9c4008d","type":"text","text":"**Rutas HTTP**","x":-325,"y":-620,"width":150,"height":50},
-		{"id":"99ea7652e8f7a8a3","type":"text","text":"**Rutas de usuario**\n**(/)**","x":-480,"y":-460,"width":200,"height":60}
+		{"id":"99ea7652e8f7a8a3","type":"text","text":"**Rutas de usuario**\n**(/)**","x":-510,"y":-460,"width":200,"height":60},
+		{"id":"b40c481ff9c4008d","type":"text","text":"**Rutas HTTP**","x":-385,"y":-780,"width":150,"height":50},
+		{"id":"0f99520cd811ad4f","type":"text","text":"**Aplicación Flask (app.py)**","x":-440,"y":-940,"width":260,"height":60},
+		{"id":"952cb5f7e69508f7","type":"text","text":"Rutas de las matriculas\n**(/sol)**","x":-280,"y":-460,"width":200,"height":60}
 	],
 	"edges":[]
 }

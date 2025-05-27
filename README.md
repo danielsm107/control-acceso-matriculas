@@ -160,30 +160,27 @@ Para llevar a cabo este proyecto, se necesitará:
 
 ### **1. Propósito**
 
-Este documentación proporciona una visión general completa del sistema _Control Acceso Matrículas_, una solución de control de acceso vehicular basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento con **OpenALPR** y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan estos componentes.
+Este documentación proporciona una visión general completa del sistema _Control Acceso Matrículas_, una solución de control de acceso basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento con **OpenALPR** y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan estos componentes.
 
-### **2. Componentes Principales**
+### **2. Resumen de la Arquitectura del Sistema**
 
-#### **1. Aplicación Web Flask**  
+El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
-La aplicación web desarrollada con Flask actúa como el componente central del sistema, gestionando las peticiones HTTP tanto de los clientes web como del dispositivo Raspberry Pi. Ofrece rutas para la autenticación, la gestión de matrículas, el control de accesos y la visualización del historial.
-
-**Aspectos clave:**
-
-- Punto de entrada a través de `app.py`
-
-- Uso de _Flask-Login_ para la gestión de autenticación
-
-- Implementación control de acceso basado en roles (administrador vs. usuarios normales)
+- **Aplicación Web**: Un servidor basado en Flask que gestiona la autenticación de usuarios, la gestión de matrículas y la lógica de control de acceso.
    
-- Registro de rutas para todas las funciones del sistema
+- **Componente Raspberry Pi**: Captura imágenes, procesa las matrículas y se comunica con el servidor.
 
-- Uso de _SocketIO_ para comunicación en tiempo real
+- **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
+
+### **3. Componentes Principales**
+
+#### **1. Sistema de Autenticación**  
+El sistema implementa un control de acceso basado en roles con dos roles principales de usuario:
+
+- **Usuario (Usuario Regular):** Puede solicitar el registro de matrículas y ver sus matrículas personales.
+
+- **Admin:** Puede gestionar usuarios, aprobar o rechazar solicitudes de matrícula y acceder a todas las funciones del sistema.
+   
+La autenticación se gestiona a través de **Flask-Login**, con rutas definidas en el _blueprint_ de autenticación ([auth](backend/routes/auth.py)).
 
 
-
-
-
----
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danielsm107/control-acceso-matriculas)
