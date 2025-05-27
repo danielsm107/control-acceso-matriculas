@@ -175,12 +175,27 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 ### **3. Componentes Principales**
 
 #### **1. Sistema de Autenticación**  
+
 El sistema implementa un control de acceso basado en roles con dos roles principales de usuario:
 
 - **Usuario (Usuario Regular):** Puede solicitar el registro de matrículas y ver sus matrículas personales.
 
 - **Admin:** Puede gestionar usuarios, aprobar o rechazar solicitudes de matrícula y acceder a todas las funciones del sistema.
    
-La autenticación se gestiona a través de **Flask-Login**, con rutas definidas en el _blueprint_ de autenticación ([auth](backend/routes/auth.py)).
+La autenticación se gestiona a través de **Flask-Login**, con rutas definidas en el _blueprint_ de autenticación ([auth.py](backend/routes/auth.py)).
 
+### **4. Gestión de Matrículas** 
+
+El sistema permite a los usuarios solicitar el registro de sus matrículas, los cuales deben ser **aprobadas por los administradores** antes de conceder acceso. Las matrículas siguen un formato estándar español de **cuatro números seguidos de tres letras** (por ejemplo: `1234ABC`).
+
+#### **Flujos de trabajo clave:**
+
+- **Usuarios:**  
+    Solicitan el registro de su matrícula a través de la interfaz web.
+
+- **Administradores:**  
+    Revisan cada solicitud y pueden **aprobarla o rechazarla** según los criterios establecidos.
+   
+- **Gestión:**  
+    Los administradores pueden consultar, modificar o eliminar matrículas ya registradas en el sistema.
 
