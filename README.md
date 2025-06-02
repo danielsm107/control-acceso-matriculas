@@ -210,25 +210,36 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
  		> Ejemplo extraído del archivo: [db_utils.py](backend/utils/db_utils.py#L6-L12)
 	
 
-- **Vistas**: Plantillas HTML renderizadas con Jinja2 ([templates/](backend/templates/)).
+- **Vistas**: Plantillas HTML renderizadas con Jinja2 ([templates](backend/templates/)).
 
-#####  2. Vista
 
-###### ¿Qué es?
+	- ¿Qué es?
+	
+		Es la **interfaz visual** con la que interactúa el usuario: HTML, CSS y Flask (Python).
+	
+	 - En tu proyecto:
+	
+		- Están en la carpeta [templates](backend/templates/).
+		    
+		- Se usan con **Jinja2** para insertar dinámicamente datos en las páginas.
+		    
+		- Muestran matrículas, formularios de login, tablas de usuarios, etc.
+		    
+		- **Controladores**: Blueprints organizados en [routes/](backend/routes/) ([auth.py](backend/routes/auth.py), [admin.py](backend/routes/admin.py), [main.py](backend/routes/main.py), [matriculas.py](backend/routes/matriculas.py), [api.py](backend/routes/api.py)).
 
-Es la **interfaz visual** con la que interactúa el usuario: HTML, CSS y JS.
+	    **Ejemplo:**
 
-###### En tu proyecto:
+		```html
+		<h4 class="text-white mb-0">Mis Matrículas Registradas</h4>
+		{% for matricula, estado in todas %}
+		  <tr>
+		    <td>{{ matricula }}</td>
+		    <td>{{ estado }}</td>
+		  </tr>
+		{% endfor %}
+		```
 
-- Están en la carpeta `templates/`.
-    
-- Se usan con **Jinja2** para insertar dinámicamente datos en las páginas.
-    
-- Muestran matrículas, formularios de login, tablas de usuarios, etc.
-    
-- **Controladores**: Blueprints organizados en [routes/](backend/routes/) ([auth.py](backend/routes/auth.py), [admin.py](backend/routes/admin.py), [main.py](backend/routes/main.py), [matriculas.py](backend/routes/matriculas.py), [api.py](backend/routes/api.py)).
-    
-
+ 		> Ejemplo extraído del archivo: [index.html](backend/templates/index.html#L80-L109)
 ### 3. **Autenticación y Roles**
 
 - Basada en `Flask-Login`.
