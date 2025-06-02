@@ -177,7 +177,7 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido en mi proyecto con Flask. Divide la lógica de una aplicación en tres componentes separados:
 
-- **Modelos**: Gestión en y base de datos MySQL 
+- **Modelos** 
 	
 	- ¿Qué es?
 	
@@ -264,15 +264,71 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 ### **4. Componente Raspberry Pi**
 
 Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
-#### Funcionamiento paso a paso:
+#### 1. Funcionamiento paso a paso:
 
 - La Raspberry Pi utiliza una [cámara](https://www.amazon.es/dp/B081Q8ZT9J) conectada físicamente.
     
-- El script [procesar_matricula.py](raspberry-pi/procesar_matricula.py) ejecuta continuamente este comando.
+- El script [procesar_matricula.py](raspberry-pi/procesar_matricula.py) ejecuta continuamente este comando:
 
+```python
+fswebcam -r 1280x720 --no-banner {CAPTURA}
+```
 
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L12).
 
+Y con ese comando, se guarda una imagen de la matricula que está frente a la cámara.
 
+#### 2. Reconocimiento de matrícula:
+
+- Se analiza la imagen usando **OpenALPR**, un sistema de reconocimiento automático de matrículas.
+
+```python
+resultado = subprocess.run(["alpr", "-c", "eu", imagen], capture_output=True, text=True)
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L16).
+
+OpenALPR detecta si hay una matrícula en la imagen y extrae el texto, por ejemplo `1234ABC`.
+
+#### 3. Comunicación con el servidor
+
+- Si se detecta una matrícula válida, la Raspberry Pi **envía la matrícula y la imagen** al servidor web (Flask) mediante una petición **HTTP POST**:
+
+```python
+SERVIDOR="https://matriculas.dsermar0808.tech/recibir_matricula"
+...
+respuesta = requests.post(SERVIDOR, files=archivos, data=datos, timeout=5)
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L27).
+
+El servidor se encarga de comprobar si esa matrícula está autorizada o no.
+
+#### 4. Repetición automática
+
+- Este proceso se ejecuta [cada segundo](raspberry-pi/procesar_matricula.py#L53) en un bucle infinito.
+
+- También se evita repetir matrículas si son consecutivas.
+
+```python
+if matricula_detectada:
+
+	print(f"🚗 Matrícula detectada: {matricula_detectada}")
+
+	if matricula_detectada != ultima_matricula:
+		enviar_matricula(matricula_detectada, imagen)
+		ultima_matricula = matricula_detectada
+	else:
+
+		print("⏩ Matrícula repetida, no se envía de nuevo.")
+
+	
+else:
+	print("⚠️ No se detectó ninguna matrícula.")
+	ultima_matricula = None
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L42-L51).
 
 
 --- 
