@@ -1,0 +1,13 @@
+[Unit]  
+Description=Gunicorn instance to serve flask app  
+After=network.target  
+  
+[Service]  
+User=root
+Group=www-data  
+WorkingDirectory=/root/control-acceso-matriculas/backend  
+Environment="PATH=/root/control-acceso-matriculas/backend/venv/bin"  
+ExecStart=/root/control-acceso-matriculas/backend/venv/bin/gunicorn --worker-class eventlet --workers 1 --bind 0.0.0.0:5000 wsgi:app  
+  
+[Install]  
+WantedBy=multi-user.target

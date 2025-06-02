@@ -1,0 +1,14 @@
+[Unit]
+Description=Script de detección de matrículas
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/dsermar/control-acceso-matriculas/raspberry-pi/procesar_matricula.py
+WorkingDirectory=/home/dsermar/control-acceso-matriculas/raspberry-pi
+StandardOutput=append:/var/log/matricula.log
+StandardError=append:/var/log/matricula.log
+Restart=always
+User=dsermar
+
+[Install]
+WantedBy=multi-user.target

@@ -330,6 +330,36 @@ else:
 
 > Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L42-L51).
 
+#### 5. ¿Cómo se ejecuta automáticamente?
+
+Se configura como **servicio `systemd`**, es decir, se inicia solo cuando se enciende la Raspberry.
+
+Este es el archivo de configuración [matricula.service](systemd/matricula.service).
+
+```service
+[Unit]
+Description=Script de detección de matrículas
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/dsermar/control-acceso-matriculas/raspberry-pi/procesar_matricula.py
+WorkingDirectory=/home/dsermar/control-acceso-matriculas/raspberry-pi
+StandardOutput=append:/var/log/matricula.log
+StandardError=append:/var/log/matricula.log
+Restart=always
+User=dsermar
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### 6. Ventajas de este diseño
+
+- **Descentralizado**: la Raspberry Pi toma decisiones rápidamente sin depender de cámaras IP complejas.
+    
+- **Flexible**: puedes cambiar la lógica del servidor sin tocar el script.
+    
+- **Escalable**: puedes añadir más Raspberrys en otras entradas fácilmente.
 
 
 --- 
