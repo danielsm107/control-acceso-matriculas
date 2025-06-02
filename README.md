@@ -177,11 +177,11 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido en mi proyecto con Flask. Divide la lógica de una aplicación en tres componentes separados:
 
-- **Modelos**: Gestión en `db_utils.py` y base de datos MySQL.
+- **Modelos**: Gestión en [db_utils.py](backend/utils/db_utils.py) y base de datos MySQL.
     
 - **Vistas**: Plantillas HTML renderizadas con Jinja2 (`templates/`).
     
-- **Controladores**: Blueprints organizados en [routes/](backend/routes/) ([auth.py](backend/routes/auth.py), `admin.py`, `main.py`, `matriculas.py`, `api.py`).
+- **Controladores**: Blueprints organizados en [routes/](backend/routes/) ([auth.py](backend/routes/auth.py), [admin.py](backend/routes/admin.py), [main.py](backend/routes/main.py), [matriculas.py](backend/routes/matriculas.py), [api.py](backend/routes/api.py)).
     
 
 ### 3. **Autenticación y Roles**
