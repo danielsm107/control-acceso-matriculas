@@ -264,7 +264,7 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 ### **4. Componente Raspberry Pi**
 
 Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
-#### 1. Funcionamiento paso a paso:
+#### 1. Funcionamiento paso a paso
 
 - La Raspberry Pi utiliza una [cámara](https://www.amazon.es/dp/B081Q8ZT9J) conectada físicamente.
     
@@ -278,7 +278,7 @@ fswebcam -r 1280x720 --no-banner {CAPTURA}
 
 Y con ese comando, se guarda una imagen de la matricula que está frente a la cámara.
 
-#### 2. Reconocimiento de matrícula:
+#### 2. Reconocimiento de matrícula
 
 - Se analiza la imagen usando **OpenALPR**, un sistema de reconocimiento automático de matrículas.
 
@@ -329,6 +329,7 @@ else:
 ```
 
 > Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L42-L51).
+
 
 
 --- 
