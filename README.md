@@ -177,7 +177,7 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido en mi proyecto con Flask. Divide la lógica de una aplicación en tres componentes separados:
 
-- **Modelos**: Gestión en [db_utils.py](backend/utils/db_utils.py) y base de datos MySQL ([control_acceso.sql](db_tfg/control_acceso.sql)).
+- **Modelos**: Gestión en y base de datos MySQL 
 	
 	- ¿Qué es?
 	
@@ -186,7 +186,7 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 
 	- En mi proyecto:
 	
-		- Se gestiona con funciones de acceso a la base de datos en `db_utils.py`.
+		- Se gestiona con funciones de acceso a la [base de datos](db_tfg/control_acceso.sql) en [db_utils.py](backend/utils/db_utils.py).
 		    
 		- Se encarga de:
 		    
@@ -197,7 +197,7 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		**Ejemplo:**
 		
 		```python
-		def conectar_db():
+			def conectar_db():
 		
 		    return mysql.connector.connect(
 		        host="localhost",
@@ -210,14 +210,14 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
  		> Ejemplo extraído del archivo: [db_utils.py](backend/utils/db_utils.py#L6-L12)
 	
 
-- **Vistas**: Plantillas HTML renderizadas con Jinja2 ([templates](backend/templates/)).
+- **Vistas**
 
 
 	- ¿Qué es?
 	
 		Es la **interfaz visual** con la que interactúa el usuario: HTML, CSS y Flask (Python).
 	
-	 - En tu proyecto:
+	 - En mi proyecto:
 	
 		- Están en la carpeta [templates](backend/templates/).
 		    
@@ -225,8 +225,6 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		    
 		- Muestran matrículas, formularios de login, tablas de usuarios, etc.
 		    
-		- **Controladores**: Blueprints organizados en [routes/](backend/routes/) ([auth.py](backend/routes/auth.py), [admin.py](backend/routes/admin.py), [main.py](backend/routes/main.py), [matriculas.py](backend/routes/matriculas.py), [api.py](backend/routes/api.py)).
-
 	    **Ejemplo:**
 
 		```html
@@ -240,6 +238,31 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		```
 
  		> Ejemplo extraído del archivo: [index.html](backend/templates/index.html#L80-L109)
+
+- **Controladores**
+
+	- ¿Qué es?
+	
+		Es el **puente entre el Modelo y la Vista**. Gestiona la lógica de la aplicación: recibe peticiones del usuario, actualiza modelos y decide qué vista mostrar.
+	
+	-  En mi proyecto:
+	
+		- Están en [routes/](backend/routes/): [auth.py](backend/routes/auth.py), [main.py](backend/routes/main.py), [admin.py](backend/routes/admin.py), etc.
+		    
+		- Cada archivo define rutas (`@app.route`) y qué hacer cuando se accede a ellas.
+			
+	    **Ejemplo:**
+
+		```python
+		@main.route("/")
+		@login_required
+		def index():
+		    conexion = conectar_db()
+		    cursor = conexion.cursor()
+		...
+		```
+
+		> Ejemplo extraído del archivo: [main.py](backend/routes/main.py#L12)
 ### 3. **Autenticación y Roles**
 
 - Basada en `Flask-Login`.
