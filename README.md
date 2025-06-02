@@ -178,35 +178,37 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido en mi proyecto con Flask. Divide la lógica de una aplicación en tres componentes separados:
 
 - **Modelos**: Gestión en [db_utils.py](backend/utils/db_utils.py) y base de datos MySQL ([control_acceso.sql](db_tfg/control_acceso.sql)).
-##### 1. Modelos
-###### ¿Qué es?
+	
+	- ¿Qué es?
+	
+		Representa **los datos** y la lógica de la aplicación.
 
-Representa **los datos** y la lógica de la aplicación.
 
-###### En mi proyecto:
-
-- Se gestiona con funciones de acceso a la base de datos en `db_utils.py`.
-    
-- Se encarga de:
-    
-    - Conectarse a MySQL.
-        
-    - Recuperar y guardar información sobre usuarios, matrículas, accesos.
-
-**Ejemplo:**
-
-```python
-def conectar_db():
-
-    return mysql.connector.connect(
-        host="localhost",
-        user="flask_user",
-        password="flask_user",
-        database="control_acceso"
-    )
-```
-
-> Ejemplo extraído del archivo: [db_utils.py](backend/utils/db_utils.py#L6-L12)
+	- En mi proyecto:
+	
+		- Se gestiona con funciones de acceso a la base de datos en `db_utils.py`.
+		    
+		- Se encarga de:
+		    
+		    - Conectarse a MySQL.
+		        
+		    - Recuperar y guardar información sobre usuarios, matrículas, accesos.
+		
+		**Ejemplo:**
+		
+		```python
+		def conectar_db():
+		
+		    return mysql.connector.connect(
+		        host="localhost",
+		        user="flask_user",
+		        password="flask_user",
+		        database="control_acceso"
+		    )
+		```
+		
+ 		> Ejemplo extraído del archivo: [db_utils.py](backend/utils/db_utils.py#L6-L12)
+	
 
 - **Vistas**: Plantillas HTML renderizadas con Jinja2 ([templates/](backend/templates/)).
 
