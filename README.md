@@ -181,8 +181,7 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 	
 	- ¿Qué es?
 	
-		Representa **los datos** y la lógica de la aplicación.
-
+		Representa **los datos** y la lógica de la base de datos de la aplicación.
 
 	- En mi proyecto:
 	
@@ -197,7 +196,7 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		**Ejemplo:**
 		
 		```python
-			def conectar_db():
+		def conectar_db():
 		
 		    return mysql.connector.connect(
 		        host="localhost",
@@ -207,11 +206,9 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		    )
 		```
 		
- 		> Ejemplo extraído del archivo: [db_utils.py](backend/utils/db_utils.py#L6-L12)
-	
+ 		> Código extraído del archivo: [db_utils.py](backend/utils/db_utils.py#L6-L12).
 
 - **Vistas**
-
 
 	- ¿Qué es?
 	
@@ -237,7 +234,7 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		{% endfor %}
 		```
 
- 		> Ejemplo extraído del archivo: [index.html](backend/templates/index.html#L80-L109)
+ 		> Código extraído del archivo: [index.html](backend/templates/index.html#L80-L109).
 
 - **Controladores**
 
@@ -262,7 +259,23 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 		...
 		```
 
-		> Ejemplo extraído del archivo: [main.py](backend/routes/main.py#L12)
+		> Código extraído del archivo: [main.py](backend/routes/main.py#L12-L16).
+
+### **4. Componente Raspberry Pi**
+
+Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
+#### Funcionamiento paso a paso:
+
+- La Raspberry Pi utiliza una [cámara](https://www.amazon.es/dp/B081Q8ZT9J) conectada físicamente.
+    
+- El script [procesar_matricula.py](raspberry-pi/procesar_matricula.py) ejecuta continuamente este comando.
+
+
+
+
+
+
+--- 
 ### 3. **Autenticación y Roles**
 
 - Basada en `Flask-Login`.
