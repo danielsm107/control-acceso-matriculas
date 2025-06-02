@@ -188,4 +188,4 @@ Si la compilación falla, asegúrate de que todas las dependencias estén instal
 - Recorta la imagen para que la matrícula ocupe la mayor parte del frame.
 - Ajusta el contraste y el brillo de la imagen.
 
-a
+

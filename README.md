@@ -142,16 +142,15 @@ Para llevar a cabo este proyecto, se necesitará:
 - [x] Añadir imágenes en historial.html.
 - [x] Crear una página con todas las matriculas existentes.
 - [x] Arreglar las imagenes en historial.
-- [ ] Arreglar fechas.
 - [x] Añadir columna de acciones en matriculas_admin.
 - [x] Añadir filtros en matriculas_admin.
 - [x] Añadir botón de limpiar historial en historial.html.
 - [x] Arreglar mensaje de fallo de contraseña en el login.
 - [x] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.
 - [ ] Añadir filtro historial.html
-- [ ] Arreglar que cuando un admin registre una nueva matricula en admin_matriculas esté como autorizada automáticamente.
+- [x] Arreglar que cuando un admin registre una nueva matricula en admin_matriculas esté como autorizada automáticamente.
 - [x] Modificar pagina index.html para que muestre la información del usuario actual. (**PRIORITARIO**)
-- [ ] Creación de gráficas para matriculas. (**PRIORITARIO**)
+- [x] Creación de gráficas para matriculas. (**PRIORITARIO**)
 - [x] Arreglar que no se puedan cambiar permisos admin principal
 - [x] Cambiar estilos mensajes flash
 
@@ -172,7 +171,61 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 - **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
 
-### **3. Componentes Principales**
+### **3. Aplicación Web**
+
+#### Arquitectura MVC:
+
+La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido en mi proyecto con Flask. Divide la lógica de una aplicación en tres componentes separados:
+
+- **Modelos**: Gestión en `db_utils.py` y base de datos MySQL.
+    
+- **Vistas**: Plantillas HTML renderizadas con Jinja2 (`templates/`).
+    
+- **Controladores**: Blueprints organizados en [routes/](backend/routes/) ([auth.py](backend/routes/auth.py), `admin.py`, `main.py`, `matriculas.py`, `api.py`).
+    
+
+### 3. **Autenticación y Roles**
+
+- Basada en `Flask-Login`.
+    
+- Al iniciar sesión, el usuario recibe su rol (`admin` o `usuario`) que determina qué puede hacer y ver.
+    
+- Las sesiones se protegen con un `secret_key` y validaciones de acceso en cada vista.
+    
+
+### 4. **Funcionalidades de Usuario**
+
+- Solicita nuevas matrículas (validación por regex).
+    
+- Visualiza:
+    
+    - Estado de sus matrículas (pendiente, autorizada, denegada).
+        
+    - Historial de accesos con imágenes y fechas.
+        
+    - Gráfico de accesos diarios (`Chart.js`).
+        
+- Puede eliminar sus matrículas si están denegadas o pendientes.
+    
+- Cambia su foto de perfil.
+    
+
+### 5. **Funcionalidades de Administrador**
+
+- Visualiza todas las matrículas del sistema.
+    
+- Puede aprobar o rechazar nuevas solicitudes.
+    
+- Edita matrículas ya autorizadas.
+    
+- Crea y modifica usuarios.
+    
+- Limpia el historial completo.
+    
+- Usa filtros para buscar por estado o usuario en el panel.
+
+
+### **4. Componentes Principales**
 
 #### **1. Sistema de Autenticación**  
 
@@ -184,7 +237,7 @@ El sistema implementa un control de acceso basado en roles con dos roles princip
    
 La autenticación se gestiona a través de **Flask-Login**, con rutas definidas en el _blueprint_ de autenticación ([auth.py](backend/routes/auth.py)).
 
-### **4. Gestión de Matrículas** 
+### **5. Gestión de Matrículas** 
 
 El sistema permite a los usuarios solicitar el registro de sus matrículas, los cuales deben ser **aprobadas por los administradores** antes de conceder acceso. Las matrículas siguen un formato estándar español de **cuatro números seguidos de tres letras** (por ejemplo: `1234ABC`).
 
