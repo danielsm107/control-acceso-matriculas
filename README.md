@@ -8,6 +8,46 @@
 
 **Curso: 2024/2025**
 
+---
+
+## Índice
+
+1. [Resumen](#resumen)  
+   1.1 [Introducción](#1-introducción)  
+   1.2 [Finalidad](#2-finalidad)  
+   1.3 [Objetivos](#3-objetivos)  
+   1.4 [Medios Utilizados](#4-medios-utilizados)  
+   1.5 [Estructura del repositorio](#5-estructura-del-repositorio)  
+
+2. [Arquitectura del Sistema](#arquitectura-del-sistema)  
+   2.1 [Arquitectura MVC](#1-arquitectura-mvc)
+
+3. [Componentes del Backend](#componentes-del-backend)  
+   3.1 [Sistema de Autenticación](#1-sistema-de-autenticación)  
+   3.2 [Control de acceso basado en roles](#control-de-acceso-basado-en-roles)  
+   3.3 [Gestión de Matrículas](#2-gestión-de-matrículas)
+
+4. [Comunicación en Tiempo Real](#comunicación-en-tiempo-real)  
+   4.1 [Visión General](#visión-general)  
+   4.2 [Arquitectura de Implementación](#arquitectura-de-implementación)  
+   4.3 [Implementación en el Servidor](#implementación-en-el-servidor)  
+   4.4 [Implementación en el Cliente](#implementación-en-el-cliente)  
+   4.5 [Flujo de Datos del Evento](#flujo-de-datos-del-evento)  
+   4.6 [Integración con la Interfaz de Historial](#integración-con-la-interfaz-de-historial)
+
+5. [Interfaz Web](#interfaz-web)  
+   5.1 [Para usuarios normales](#para-usuarios-normales)  
+   5.2 [Para administradores](#para-administradores)
+
+6. [Componente Raspberry Pi](#componente-raspberry-pi)  
+   6.1 [Funcionamiento paso a paso](#funcionamiento-paso-a-paso)  
+   6.2 [Reconocimiento de matrícula](#reconocimiento-de-matrícula)  
+   6.3 [Comunicación con el servidor](#comunicación-con-el-servidor)  
+   6.4 [Repetición automática](#repetición-automática)  
+   6.5 [¿Cómo se ejecuta automáticamente?](#cómo-se-ejecuta-automáticamente)  
+   6.6 [Ventajas de este diseño](#ventajas-de-este-diseño)
+
+---
 ## **Resumen**
 ### **1. Introducción**
 
@@ -632,111 +672,23 @@ socket.on(canal, (acceso) => {
 - **Estilos visuales según estado**: Se colorea y etiqueta según esté autorizado, pendiente o denegado
 
 ---
-### **5. Componente Raspberry Pi**
+## **Interfaz web**
 
-Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
-#### 1. Funcionamiento paso a paso
-
-- La Raspberry Pi utiliza una [cámara](https://www.amazon.es/dp/B081Q8ZT9J) conectada físicamente.
-    
-- El script [procesar_matricula.py](raspberry-pi/procesar_matricula.py) ejecuta continuamente este comando:
-
-```python
-fswebcam -r 1280x720 --no-banner {CAPTURA}
-```
-
-> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L12).
-
-Y con ese comando, se guarda una imagen de la matricula que está frente a la cámara.
-
-#### 2. Reconocimiento de matrícula
-
-- Se analiza la imagen usando **OpenALPR**, un sistema de reconocimiento automático de matrículas.
-
-```python
-resultado = subprocess.run(["alpr", "-c", "eu", imagen], capture_output=True, text=True)
-```
-
-> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L16).
-
-OpenALPR detecta si hay una matrícula en la imagen y extrae el texto, por ejemplo `1234ABC`.
-
-#### 3. Comunicación con el servidor
-
-- Si se detecta una matrícula válida, la Raspberry Pi **envía la matrícula y la imagen** al servidor web (Flask) mediante una petición **HTTP POST**:
-
-```python
-SERVIDOR="https://matriculas.dsermar0808.tech/recibir_matricula"
-...
-respuesta = requests.post(SERVIDOR, files=archivos, data=datos, timeout=5)
-```
-
-> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L27).
-
-El servidor se encarga de comprobar si esa matrícula está autorizada o no.
-
-#### 4. Repetición automática
-
-- Este proceso se ejecuta [cada segundo](raspberry-pi/procesar_matricula.py#L53) en un bucle infinito.
-
-- También se evita repetir matrículas si son consecutivas.
-
-```python
-if matricula_detectada:
-
-	print(f"🚗 Matrícula detectada: {matricula_detectada}")
-
-	if matricula_detectada != ultima_matricula:
-		enviar_matricula(matricula_detectada, imagen)
-		ultima_matricula = matricula_detectada
-	else:
-
-		print("⏩ Matrícula repetida, no se envía de nuevo.")
-
-	
-else:
-	print("⚠️ No se detectó ninguna matrícula.")
-	ultima_matricula = None
-```
-
-> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L42-L51).
-
-#### 5. ¿Cómo se ejecuta automáticamente?
-
-Se configura como **servicio `systemd`**, es decir, se inicia solo cuando se enciende la Raspberry.
-
-Este es el archivo de configuración [matricula.service](systemd/matricula.service).
-
-```service
-[Unit]
-Description=Script de detección de matrículas
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/python3 /home/dsermar/control-acceso-matriculas/raspberry-pi/procesar_matricula.py
-WorkingDirectory=/home/dsermar/control-acceso-matriculas/raspberry-pi
-StandardOutput=append:/var/log/matricula.log
-StandardError=append:/var/log/matricula.log
-Restart=always
-User=dsermar
-
-[Install]
-WantedBy=multi-user.target
-```
-
-#### 6. Ventajas de este diseño
-
-- **Descentralizado**: la Raspberry Pi toma decisiones rápidamente sin depender de cámaras IP complejas.
-    
-- **Flexible**: puedes cambiar la lógica del servidor sin tocar el script.
-    
-- **Escalable**: puedes añadir más Raspberrys en otras entradas fácilmente.
-
-### **3. Interfaz web**
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="backend/templates/base.html">base.html</a></li>
+	<li><a href="backend/templates/index.html">index.html</a></li>
+	<li><a href="backend/templates/historial.html">historial.html</a></li>
+	<li><a href="backend/templates/admin_panel.html">admin_panel.html</a></li>
+	<li><a href="backend/templates/admin_matriculas.html">admin_matriculas.html</a></li>
+</ul>
+</details>
 
 La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Bootstrap también), y el motor de plantillas Jinja2 integrado en Flask. Su diseño adapta dinámicamente los elementos mostrados según el rol del usuario: `admin` o `usuario`.
 
-**Para usuarios normales:**
+---
+### **Para usuarios normales**
 
 - Página principal ([`/`](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([`autorizadas`](backend/routes/main.py#L26-L32), [`pendientes`](backend/routes/main.py#L42-L48), [`denegadas`](backend/routes/main.py#L34-L40)).
 
@@ -818,8 +770,8 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 	![historial](capturas/historial.png)
 	
-
-**Para administradores:**
+---
+### **Para administradores**
 
 - Acceso a [`/admin`](backend/routes/admin.py) con un panel que muestra todos los usuarios registrados y todas las matrículas del sistema.
 
@@ -836,6 +788,118 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 - Vistas filtradas y editables de matrículas existentes.
 - Modales para crear [nuevos usuarios](backend/templates/admin_panel.html#L100-L131) y [editar usuarios existentes](backend/templates/admin_panel.html#L133-L171).
 - Botones de acción rápida para [gestionar roles](backend/routes/admin.py#L20-L39), [limpiar historial](backend/routes/admin.py#L175-L189), o [eliminar registros](backend/routes/admin.py#L114-L125).
+
+---
+## **Componente Raspberry Pi**
+
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="docs/Raspberry/ExplicacionProcesarMatricula.md">ExplicacionProcesarMatricula.md</a></li>
+	<li><a href="docs/Raspberry/OpenALPR/ExplicacionProcesarMatricula.md">InstalacionOpenALPR.md</a></li>
+	<li><a href="raspberry-pi/procesar_matricula.py">procesar_matricula.py</a></li>
+</ul>
+</details>
+
+Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
+### Funcionamiento paso a paso
+
+- La Raspberry Pi utiliza una [cámara](https://www.amazon.es/dp/B081Q8ZT9J) conectada físicamente.
+    
+- El script [procesar_matricula.py](raspberry-pi/procesar_matricula.py) ejecuta continuamente este comando:
+
+```python
+fswebcam -r 1280x720 --no-banner {CAPTURA}
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L12).
+
+Y con ese comando, se guarda una imagen de la matricula que está frente a la cámara.
+
+### Reconocimiento de matrícula
+
+- Se analiza la imagen usando **OpenALPR**, un sistema de reconocimiento automático de matrículas.
+
+```python
+resultado = subprocess.run(["alpr", "-c", "eu", imagen], capture_output=True, text=True)
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L16).
+
+OpenALPR detecta si hay una matrícula en la imagen y extrae el texto, por ejemplo `1234ABC`.
+
+### Comunicación con el servidor
+
+- Si se detecta una matrícula válida, la Raspberry Pi **envía la matrícula y la imagen** al servidor web (Flask) mediante una petición **HTTP POST**:
+
+```python
+SERVIDOR="https://matriculas.dsermar0808.tech/recibir_matricula"
+...
+respuesta = requests.post(SERVIDOR, files=archivos, data=datos, timeout=5)
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L27).
+
+El servidor se encarga de comprobar si esa matrícula está autorizada o no.
+
+### Repetición automática
+
+- Este proceso se ejecuta [cada segundo](raspberry-pi/procesar_matricula.py#L53) en un bucle infinito.
+
+- También se evita repetir matrículas si son consecutivas.
+
+```python
+if matricula_detectada:
+
+	print(f"🚗 Matrícula detectada: {matricula_detectada}")
+
+	if matricula_detectada != ultima_matricula:
+		enviar_matricula(matricula_detectada, imagen)
+		ultima_matricula = matricula_detectada
+	else:
+
+		print("⏩ Matrícula repetida, no se envía de nuevo.")
+
+	
+else:
+	print("⚠️ No se detectó ninguna matrícula.")
+	ultima_matricula = None
+```
+
+> Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L42-L51).
+
+### ¿Cómo se ejecuta automáticamente?
+
+Se configura como **servicio `systemd`**, es decir, se inicia solo cuando se enciende la Raspberry.
+
+Este es el archivo de configuración [matricula.service](systemd/matricula.service).
+
+```service
+[Unit]
+Description=Script de detección de matrículas
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/dsermar/control-acceso-matriculas/raspberry-pi/procesar_matricula.py
+WorkingDirectory=/home/dsermar/control-acceso-matriculas/raspberry-pi
+StandardOutput=append:/var/log/matricula.log
+StandardError=append:/var/log/matricula.log
+Restart=always
+User=dsermar
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Ventajas de este diseño
+
+- **Descentralizado**: la Raspberry Pi toma decisiones rápidamente sin depender de cámaras IP complejas.
+    
+- **Flexible**: puedes cambiar la lógica del servidor sin tocar el script.
+    
+- **Escalable**: puedes añadir más Raspberrys en otras entradas fácilmente.
+
+
 
 
 
