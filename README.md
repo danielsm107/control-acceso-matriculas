@@ -416,6 +416,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 	 ![panel de administración](capturas/admin_panel.png)
 
+	![Todas las matrículas](backend/routes/main.py#L12)
 
 
 
