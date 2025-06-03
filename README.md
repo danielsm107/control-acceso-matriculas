@@ -11,49 +11,49 @@
 ---
 ## Índice
 
-1. [Resumen](#resumen)  
-   1.1 [Introduccion](#1.1-introduccion)  
-   1.2 [Finalidad](#finalidad)  
-   1.3 [Objetivos](#objetivos)  
-   1.4 [Medios utilizados](#medios-utilizados)  
-   1.5 [Estructura del repositorio](#estructura-del-repositorio)
+1. [Resumen](#1-resumen)  
+   1.1 [Introducción](#11-introducción)  
+   1.2 [Finalidad](#12-finalidad)  
+   1.3 [Objetivos](#13-objetivos)  
+   1.4 [Medios utilizados](#14-medios-utilizados)  
+   1.5 [Estructura del repositorio](#15-estructura-del-repositorio)
 
-2. [Arquitectura del sistema](#arquitectura-del-sistema)  
-   2.1 [Arquitectura mvc](#arquitectura-mvc)
+2. [Arquitectura del sistema](#2-arquitectura-del-sistema)  
+   2.1 [Arquitectura MVC](#21-arquitectura-mvc)
 
-3. [Componentes del backend](#componentes-del-backend)  
-   3.1 [Sistema de autenticacion](#sistema-de-autenticacion)  
-   3.2 [Control de acceso basado en roles](#control-de-acceso-basado-en-roles)  
-   3.3 [Gestion de matriculas](#gestion-de-matriculas)
+3. [Componentes del backend](#3-componentes-del-backend)  
+   3.1 [Sistema de autenticación](#31-sistema-de-autenticación)  
+   3.2 [Control de acceso basado en roles](#32-control-de-acceso-basado-en-roles)  
+   3.3 [Gestión de matrículas](#33-gestión-de-matrículas)
 
-4. [Comunicacion en tiempo real](#comunicacion-en-tiempo-real)  
-   4.1 [Vision general](#vision-general)  
-   4.2 [Arquitectura de implementacion](#arquitectura-de-implementacion)  
-   4.3 [Implementacion en el servidor](#implementacion-en-el-servidor)  
-   4.4 [Implementacion en el cliente](#implementacion-en-el-cliente)  
-   4.5 [Flujo de datos del evento](#flujo-de-datos-del-evento)  
-   4.6 [Integracion con la interfaz de historial](#integracion-con-la-interfaz-de-historial)
+4. [Comunicación en tiempo real](#4-comunicación-en-tiempo-real)  
+   4.1 [Visión general](#41-visión-general)  
+   4.2 [Arquitectura de implementación](#42-arquitectura-de-implementación)  
+   4.3 [Implementación en el servidor](#43-implementación-en-el-servidor)  
+   4.4 [Implementación en el cliente](#44-implementación-en-el-cliente)  
+   4.5 [Flujo de datos del evento](#45-flujo-de-datos-del-evento)  
+   4.6 [Integración con la interfaz de historial](#46-integración-con-la-interfaz-de-historial)
 
-5. [Interfaz web](#interfaz-web)  
-   5.1 [Para usuarios normales](#para-usuarios-normales)  
-   5.2 [Para administradores](#para-administradores)
+5. [Interfaz web](#5-interfaz-web)  
+   5.1 [Para usuarios normales](#51-para-usuarios-normales)  
+   5.2 [Para administradores](#52-para-administradores)
 
-6. [Componente raspberry pi](#componente-raspberry-pi)  
-   6.1 [Funcionamiento paso a paso](#funcionamiento-paso-a-paso)  
-   6.2 [Reconocimiento de matricula](#reconocimiento-de-matricula)  
-   6.3 [Comunicacion con el servidor](#comunicacion-con-el-servidor)  
-   6.4 [Repeticion automatica](#repeticion-automatica)  
-   6.5 [Como se ejecuta automaticamente](#como-se-ejecuta-automaticamente)  
-   6.6 [Ventajas de este diseno](#ventajas-de-este-diseno)
+6. [Componente Raspberry Pi](#6-componente-raspberry-pi)  
+   6.1 [Funcionamiento paso a paso](#61-funcionamiento-paso-a-paso)  
+   6.2 [Reconocimiento de matrícula](#62-reconocimiento-de-matrícula)  
+   6.3 [Comunicación con el servidor](#63-comunicación-con-el-servidor)  
+   6.4 [Repetición automática](#64-repetición-automática)  
+   6.5 [Cómo se ejecuta automáticamente](#65-cómo-se-ejecuta-automáticamente)  
+   6.6 [Ventajas de este diseño](#66-ventajas-de-este-diseño)
 
 
 ---
-## **1. Resumen**
-### **1.1 Introducción**
+## 1. Resumen
+### 1.1 Introducción
 
 Este documento ofrece una visión general completa del sistema **Control Acceso Matrículas**, una solución de control de acceso de vehículos basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento usando OpenALPR y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan dichos componentes.
 
-### **1.2 Finalidad**
+### 1.2 Finalidad
 
 El objetivo principal es mejorar la **automatización del acceso** mediante el reconocimiento de matrículas.
 
@@ -67,7 +67,7 @@ El objetivo principal es mejorar la **automatización del acceso** mediante el r
 
 - **Registro detallado** de todos los accesos.
 
-### **1.3 Objetivos**
+### 1.3 Objetivos
 
 Desde un punto de vista técnico, el proyecto se centra en:
 
@@ -85,7 +85,7 @@ Desde un punto de vista técnico, el proyecto se centra en:
 
 - **Implementación un panel de administración** donde se aprueben o rechacen matrículas.
 
-### **1.4 Medios Utilizados**
+### 1.4 Medios Utilizados
 
 Para llevar a cabo este proyecto, se necesitará:
 
@@ -111,7 +111,7 @@ Para llevar a cabo este proyecto, se necesitará:
 - Servidor web.
     
 
-### **1.5 Estructura del repositorio**
+### 1.5 Estructura del repositorio
 
 ```
 /control-acceso-matriculas
@@ -141,7 +141,7 @@ Para llevar a cabo este proyecto, se necesitará:
 ```
 
 ---
-## **2. Arquitectura del Sistema**
+## 2. Arquitectura del Sistema
 
 El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
@@ -151,7 +151,7 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 - **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
 
-### **2.1 Arquitectura MVC**
+### 2.1 Arquitectura MVC
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -251,9 +251,9 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 
 
 ---
-## **3. Componentes del Backend**
+## 3. Componentes del Backend
 
-### **3.1 Sistema de Autenticación**
+### 3.1 Sistema de Autenticación
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -345,7 +345,7 @@ Usa Flask-Login para:
 
 ---
 
-### **3.2 Control de acceso basado en roles**
+### 3.2 Control de acceso basado en roles
 
 Se definen dos roles:
 
@@ -424,7 +424,7 @@ Puede cambiar nombre, apellidos y email, verificando que no esté duplicado.
 
 ---
 
-### **2. Gestión de Matrículas**
+### 3.3. Gestión de Matrículas
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -526,7 +526,7 @@ Cuando una matrícula es detectada:
 
 ---
 
-## **4 Comunicación en Tiempo Real**
+## 4. Comunicación en Tiempo Real
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -663,7 +663,7 @@ socket.on(canal, (acceso) => {
 - **Estilos visuales según estado**: Se colorea y etiqueta según esté autorizado, pendiente o denegado
 
 ---
-## **5. Interfaz web**
+## 5. Interfaz web
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -781,7 +781,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 - Botones de acción rápida para [gestionar roles](backend/routes/admin.py#L20-L39), [limpiar historial](backend/routes/admin.py#L175-L189), o [eliminar registros](backend/routes/admin.py#L114-L125).
 
 ---
-## **6. Componente Raspberry Pi**
+## 6. Componente Raspberry Pi
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
