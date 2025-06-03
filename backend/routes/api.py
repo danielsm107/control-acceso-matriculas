@@ -43,6 +43,7 @@ def recibir_matricula():
         ruta_imagen = os.path.join("static/imagenes", nombre_imagen)
         imagen.save(ruta_imagen)
 
+    # Verificar última matrícula para evitar duplicado inmediato
     cursor.execute("""
         SELECT matricula FROM registros_accesos
         ORDER BY fecha DESC LIMIT 1
@@ -53,21 +54,43 @@ def recibir_matricula():
         conexion.close()
         return jsonify({"mensaje": "Matrícula ya registrada como última. Ignorada."}), 200
 
+    # Fecha formateada para zona horaria española
     fecha_actual = datetime.now(pytz.timezone("Europe/Madrid")).strftime("%Y-%m-%d %H:%M:%S")
 
+    # Insertar registro de acceso
     cursor.execute("""
         INSERT INTO registros_accesos (matricula, estado, imagen, fecha, usuario_id)
         VALUES (%s, %s, %s, %s, %s)
     """, (matricula, estado, nombre_imagen, fecha_actual, usuario_id))
-
     conexion.commit()
 
-    socketio.emit("nuevo_acceso", {
+    # Obtener info del usuario para el canal admin
+    cursor.execute("SELECT nombre, apellidos, email FROM usuarios WHERE id = %s", (usuario_id,))
+    user_data = cursor.fetchone()
+    nombre, apellidos, email = user_data if user_data else ("", "", "")
+
+    # Emitir a usuario individual
+    socketio.emit(f"nuevo_acceso_{usuario_id}", {
         "matricula": matricula,
         "estado": estado,
         "fecha": fecha_actual,
-        "imagen": nombre_imagen
+        "imagen": nombre_imagen,
+        "usuario_id": usuario_id
+    })
+
+    # Emitir a canal de admin con datos de usuario
+    socketio.emit("nuevo_acceso_admin", {
+        "matricula": matricula,
+        "estado": estado,
+        "fecha": fecha_actual,
+        "imagen": nombre_imagen,
+        "usuario_id": usuario_id,
+        "nombre": nombre,
+        "apellidos": apellidos,
+        "email": email
     })
 
     conexion.close()
     return jsonify({"acceso": estado, "imagen": nombre_imagen})
+
+

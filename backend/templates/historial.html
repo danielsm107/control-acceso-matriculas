@@ -93,6 +93,11 @@
   const estadoWS = document.getElementById("estado-ws");
   const tabla = document.getElementById("tabla-accesos");
 
+  const userId = {{ current_user.id }};
+  const esAdmin = "{{ current_user.rol }}" === "admin";
+
+  const canal = esAdmin ? "nuevo_acceso_admin" : `nuevo_acceso_${userId}`;
+
   const socket = io({
     path: "/socket.io",
     transports: ["websocket"]
@@ -108,9 +113,9 @@
     estadoWS.className = "badge connection-badge bg-danger";
   });
 
-  socket.on("nuevo_acceso", (acceso) => {
+  socket.on(canal, (acceso) => {
     const fila = document.createElement("tr");
-    
+
     let statusClass, statusIcon, estadoTexto, mensaje;
 
     if (acceso.estado === 'autorizada') {
@@ -129,10 +134,17 @@
       estadoTexto = 'Denegado';
       mensaje = 'Acceso denegado';
     }
-    
+
     const imagenHtml = acceso.imagen
       ? `<img src="/static/imagenes/${acceso.imagen}" width="120">`
       : `Sin imagen`;
+
+    const columnaUsuario = esAdmin
+      ? `<td>${
+    acceso.nombre ? `${acceso.nombre} ${acceso.apellidos}<br><small>${acceso.email}</small>` : 'Usuario desconocido'
+  }</td>`
+
+      : '';
 
     fila.innerHTML = `
       <td>${acceso.matricula}</td>
@@ -140,9 +152,11 @@
       <td><span class="status-badge ${statusClass}"><i class="${statusIcon}"></i> ${estadoTexto}</span></td>
       <td>${mensaje}</td>
       <td>${imagenHtml}</td>
+      ${columnaUsuario}
     `;
 
     tabla.prepend(fila);
   });
 </script>
 {% endblock %}
+
