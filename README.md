@@ -48,12 +48,12 @@
    6.6 [Ventajas de este diseño](#ventajas-de-este-diseño)
 
 ---
-## **Resumen**
-### **1. Introducción**
+## **1. Resumen**
+### **1.1 Introducción**
 
 Este documento ofrece una visión general completa del sistema **Control Acceso Matrículas**, una solución de control de acceso de vehículos basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento usando OpenALPR y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan dichos componentes.
 
-### **2. Finalidad**
+### **1.2 Finalidad**
 
 El objetivo principal es mejorar la **automatización del acceso** mediante el reconocimiento de matrículas.
 
@@ -67,8 +67,7 @@ El objetivo principal es mejorar la **automatización del acceso** mediante el r
 
 - **Registro detallado** de todos los accesos.
 
-
-### **3. Objetivos**
+### **1.3 Objetivos**
 
 Desde un punto de vista técnico, el proyecto se centra en:
 
@@ -86,8 +85,7 @@ Desde un punto de vista técnico, el proyecto se centra en:
 
 - **Implementación un panel de administración** donde se aprueben o rechacen matrículas.
 
-
-### **4. Medios Utilizados**
+### **1.4 Medios Utilizados**
 
 Para llevar a cabo este proyecto, se necesitará:
 
@@ -113,7 +111,7 @@ Para llevar a cabo este proyecto, se necesitará:
 - Servidor web.
     
 
-### **5. Estructura del repositorio**
+### **1.5 Estructura del repositorio**
 
 ```
 /control-acceso-matriculas
@@ -143,7 +141,7 @@ Para llevar a cabo este proyecto, se necesitará:
 ```
 
 ---
-## **Arquitectura del Sistema**
+## **2. Arquitectura del Sistema**
 
 El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
@@ -153,7 +151,7 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 - **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
 
-### **1. Arquitectura MVC**
+### **2.1 Arquitectura MVC**
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -253,9 +251,9 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 
 
 ---
-## **Componentes del Backend**
+## **3. Componentes del Backend**
 
-### **1. Sistema de Autenticación**
+### **3.1 Sistema de Autenticación**
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -347,7 +345,7 @@ Usa Flask-Login para:
 
 ---
 
-### Control de acceso basado en roles
+### **3.2 Control de acceso basado en roles**
 
 Se definen dos roles:
 
@@ -377,13 +375,13 @@ Se usa un decorador [`@solo_admin`](backend/routes/admin.py#L66) para:
 
 ---
 
-### Integración en la interfaz
+#### Integración en la interfaz
 
-#### Navegación condicional
+**Navegación condicional**
 
 La barra de navegación muestra enlaces distintos según el rol y estado de autenticación.
 
-#### Formularios
+ **Formularios**
 
 - **Login**: solicita email y contraseña.
     
@@ -392,19 +390,19 @@ La barra de navegación muestra enlaces distintos según el rol y estado de aute
 
 ---
 
-### Funciones de administración
+#### Funciones de administración
 
-#### Crear usuarios
+**Crear usuarios**
 
 El administrador puede crear nuevos usuarios desde el panel.
 
-#### Editar usuarios
+**Editar usuarios**
 
 Puede cambiar nombre, apellidos y email, verificando que no esté duplicado.
 
 ---
 
-### Seguridad
+#### Seguridad
 
 1. **Contraseñas**:
     
@@ -452,7 +450,7 @@ Este documento describe el modelo de datos, el flujo de estados, las operaciones
 
 ---
 
-### Operaciones de usuario
+#### Operaciones de usuario
 
 Los usuarios normales pueden:
 
@@ -481,7 +479,7 @@ Regex del formato aceptado: `\d{4}[A-Z]{3}` (ejemplo: `1234ABC`)
 
 ---
 
-### Operaciones administrativas
+#### Operaciones administrativas
 
 Los administradores tienen funciones ampliadas:
 
@@ -497,10 +495,7 @@ Los administradores tienen funciones ampliadas:
     
 - Añadir matrículas directamente (ya autorizadas)
     
-
----
-
-### Integración con el sistema de control de accesos
+#### Integración con el sistema de control de accesos
 
 Cuando una matrícula es detectada:
 
@@ -513,11 +508,8 @@ Cuando una matrícula es detectada:
 4. Se registra el intento
     
 5. Se emite un evento WebSocket en tiempo real
-    
-
----
-
-### Seguridad y validaciones
+   
+#### Seguridad y validaciones
 
 - Todas las operaciones requieren usuario autenticado
     
@@ -534,7 +526,7 @@ Cuando una matrícula es detectada:
 
 ---
 
-## **Comunicación en Tiempo Real**
+## **4 Comunicación en Tiempo Real**
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -549,13 +541,13 @@ Este documento describe el sistema de comunicación en tiempo real usado en la a
 
 ---
 
-### Visión General
+### 4.1 Visión General
 
 El sistema usa WebSockets (mediante Socket.IO) para enviar en tiempo real los eventos de acceso por matrícula a los clientes web. Esto permite a los administradores y usuarios monitorizar intentos de acceso en el momento en que ocurren, sin tener que recargar la página de historial.
 
 ---
 
-### Arquitectura de Implementación
+### 4.2 Arquitectura de Implementación
 
 El sistema de comunicación en tiempo real se compone de:
 
@@ -566,7 +558,7 @@ El sistema de comunicación en tiempo real se compone de:
 
 ---
 
-### Implementación en el Servidor
+### 4.3 Implementación en el Servidor
 
 #### Inicialización de Socket.IO
 
@@ -596,7 +588,7 @@ socketio.emit(f"nuevo_acceso_{usuario_id}", {
 
 ---
 
-### Implementación en el Cliente
+### 4.4 Implementación en el Cliente
 
 #### Conexión WebSocket (cliente JS)
 
@@ -651,8 +643,7 @@ socket.on(canal, (acceso) => {
 
 > Código extraído del archivo: [historial.html](backend/templates/historial.html#L116-L159).
 
----
-### Flujo de Datos del Evento
+### 4.5 Flujo de Datos del Evento
 
 1. La Raspberry Pi detecta una matrícula y envía un POST a `/recibir_matricula`
     
@@ -663,7 +654,7 @@ socket.on(canal, (acceso) => {
 4. Los clientes conectados reciben el evento y actualizan la interfaz
 
 ---
-### Integración con la Interfaz de Historial
+### 4.6 Integración con la Interfaz de Historial
 
 - **Indicador de conexión WebSocket**: Muestra si está conectado
     
@@ -672,7 +663,7 @@ socket.on(canal, (acceso) => {
 - **Estilos visuales según estado**: Se colorea y etiqueta según esté autorizado, pendiente o denegado
 
 ---
-## **Interfaz web**
+## **5. Interfaz web**
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -688,7 +679,7 @@ socket.on(canal, (acceso) => {
 La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Bootstrap también), y el motor de plantillas Jinja2 integrado en Flask. Su diseño adapta dinámicamente los elementos mostrados según el rol del usuario: `admin` o `usuario`.
 
 ---
-### **Para usuarios normales**
+### 5.1 Para usuarios normales
 
 - Página principal ([`/`](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([`autorizadas`](backend/routes/main.py#L26-L32), [`pendientes`](backend/routes/main.py#L42-L48), [`denegadas`](backend/routes/main.py#L34-L40)).
 
@@ -771,7 +762,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 	![historial](capturas/historial.png)
 	
 ---
-### **Para administradores**
+### 5.2 Para administradores
 
 - Acceso a [`/admin`](backend/routes/admin.py) con un panel que muestra todos los usuarios registrados y todas las matrículas del sistema.
 
@@ -790,7 +781,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 - Botones de acción rápida para [gestionar roles](backend/routes/admin.py#L20-L39), [limpiar historial](backend/routes/admin.py#L175-L189), o [eliminar registros](backend/routes/admin.py#L114-L125).
 
 ---
-## **Componente Raspberry Pi**
+## **6. Componente Raspberry Pi**
 
 <details>
 <summary>Archivos fuente de esta parte</summary>
@@ -802,7 +793,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 </details>
 
 Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
-### Funcionamiento paso a paso
+### 6.1 Funcionamiento paso a paso
 
 - La Raspberry Pi utiliza una [cámara](https://www.amazon.es/dp/B081Q8ZT9J) conectada físicamente.
     
@@ -816,7 +807,7 @@ fswebcam -r 1280x720 --no-banner {CAPTURA}
 
 Y con ese comando, se guarda una imagen de la matricula que está frente a la cámara.
 
-### Reconocimiento de matrícula
+### 6.2 Reconocimiento de matrícula
 
 - Se analiza la imagen usando **OpenALPR**, un sistema de reconocimiento automático de matrículas.
 
@@ -828,7 +819,7 @@ resultado = subprocess.run(["alpr", "-c", "eu", imagen], capture_output=True, te
 
 OpenALPR detecta si hay una matrícula en la imagen y extrae el texto, por ejemplo `1234ABC`.
 
-### Comunicación con el servidor
+### 6.3 Comunicación con el servidor
 
 - Si se detecta una matrícula válida, la Raspberry Pi **envía la matrícula y la imagen** al servidor web (Flask) mediante una petición **HTTP POST**:
 
@@ -842,7 +833,7 @@ respuesta = requests.post(SERVIDOR, files=archivos, data=datos, timeout=5)
 
 El servidor se encarga de comprobar si esa matrícula está autorizada o no.
 
-### Repetición automática
+### 6.4 Repetición automática
 
 - Este proceso se ejecuta [cada segundo](raspberry-pi/procesar_matricula.py#L53) en un bucle infinito.
 
@@ -868,7 +859,7 @@ else:
 
 > Código extraído del archivo: [procesar_matricula.py](raspberry-pi/procesar_matricula.py#L42-L51).
 
-### ¿Cómo se ejecuta automáticamente?
+### 6.5 ¿Cómo se ejecuta automáticamente?
 
 Se configura como **servicio `systemd`**, es decir, se inicia solo cuando se enciende la Raspberry.
 
@@ -891,7 +882,7 @@ User=dsermar
 WantedBy=multi-user.target
 ```
 
-### Ventajas de este diseño
+### 6.6 Ventajas de este diseño
 
 - **Descentralizado**: la Raspberry Pi toma decisiones rápidamente sin depender de cámaras IP complejas.
     
