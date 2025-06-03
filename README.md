@@ -330,7 +330,9 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 **Para usuarios normales:**
 
 - Página principal ([/](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([autorizadas](backend/routes/main.py#L26-L32), [pendientes](backend/routes/main.py#L42-L48), [denegadas](backend/routes/main.py#L34-L40)).
-    
+
+	![tabla de matriculas registradas](capturas/matriculas_registradas.png)
+
 - Un gráfico con sus accesos diarios, generado con **Chart.js**.
 
 	![gráfico entradas por dia](capturas/graficaentradas.png)
@@ -386,10 +388,23 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 	</script>
 	```
 	
-> 	Código extraído del archivo: [index.html](backend/templates/index.html#L215-L251).
+	> Código extraído del archivo: [index.html](backend/templates/index.html#L215-L251).
 
-- Formularios intuitivos para solicitar nuevas matrículas.
-    
+
+- Formulario para solicitar nuevas matrículas.
+
+	![solicitar matricula](capturas/solicitar_matricula.png)
+
+	- Código del backend para solicitar matricula:
+
+	```python
+	@matriculas.route('/solicitar_matricula', methods=['GET', 'POST'])
+	@login_required
+	def solicitar_matricula():
+		...
+	```
+	> Código extraído del archivo: [matriculas.py](backend/routes/matriculas.py#L21-L78).
+
 - Página de historial con filtros de fechas y visualización de imágenes asociadas a cada acceso.
 
 --- 

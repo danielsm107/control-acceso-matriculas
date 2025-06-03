@@ -92,6 +92,18 @@ def historial():
             query += " WHERE DATE(ra.fecha) = CURDATE()"
         elif filtro == "ultimos7":
             query += " WHERE ra.fecha >= NOW() - INTERVAL 7 DAY"
+
+        query += " ORDER BY ra.fecha DESC LIMIT 50"
+        cursor.execute(query)
+        historial = cursor.fetchall()
+        conexion.close()
+
+        historial_format = [
+            (m, f.strftime("%d/%m/%Y %H:%M"), e, i, n, a, em)
+            for m, f, e, i, n, a, em in historial
+        ]
+        return render_template("historial.html", historial=historial_format, filtro=filtro)
+
     else:
         query = """
             SELECT matricula, fecha, estado, imagen
@@ -99,31 +111,22 @@ def historial():
             WHERE usuario_id = %s
         """
         params = [current_user.id]
+
         if filtro == "hoy":
             query += " AND DATE(fecha) = CURDATE()"
         elif filtro == "ultimos7":
             query += " AND fecha >= NOW() - INTERVAL 7 DAY"
+
         query += " ORDER BY fecha DESC LIMIT 50"
         cursor.execute(query, tuple(params))
-
         historial = cursor.fetchall()
         conexion.close()
 
-        historial_format = [(m, f.strftime("%d/%m/%Y %H:%M"), e, i) for m, f, e, i in historial]
+        historial_format = [
+            (m, f.strftime("%d/%m/%Y %H:%M"), e, i)
+            for m, f, e, i in historial
+        ]
         return render_template("historial.html", historial=historial_format, filtro=filtro)
-
-    # Solo para admin
-    query += " ORDER BY ra.fecha DESC LIMIT 50"
-    cursor.execute(query)
-    historial = cursor.fetchall()
-    conexion.close()
-
-    historial_format = [
-        (m, f.strftime("%d/%m/%Y %H:%M"), e, i, n, a, em)
-        for m, f, e, i, n, a, em in historial
-    ]
-    return render_template("historial.html", historial=historial_format, filtro=filtro)
-
 
 
 @main.route("/api/historial")
