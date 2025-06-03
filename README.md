@@ -493,6 +493,145 @@ Cuando una matrícula es detectada:
 
 
 ---
+
+## **Comunicación en Tiempo Real**
+
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="backend/app.py">app.py</a></li>
+	<li><a href="backend/templates/historial.html">historial.html</a></li>
+</ul>
+</details>
+
+
+Este documento describe el sistema de comunicación en tiempo real usado en la aplicación Control Acceso Matrículas. Detalla cómo se implementa la tecnología WebSocket para proporcionar actualizaciones instantáneas sobre eventos de acceso de matrículas a los clientes conectados, sin necesidad de refrescar la página.
+
+---
+
+### Visión General
+
+El sistema usa WebSockets (mediante Socket.IO) para enviar en tiempo real los eventos de acceso por matrícula a los clientes web. Esto permite a los administradores y usuarios monitorizar intentos de acceso en el momento en que ocurren, sin tener que recargar la página de historial.
+
+---
+
+### Arquitectura de Implementación
+
+El sistema de comunicación en tiempo real se compone de:
+
+1. **Servidor**: Aplicación Flask con integración de Socket.IO para emitir eventos.
+    
+2. **Cliente**: Cliente JavaScript de Socket.IO que se conecta al servidor y actualiza la interfaz según los eventos.
+    
+
+---
+
+### Implementación en el Servidor
+
+#### Inicialización de Socket.IO
+
+```python
+app = Flask(__name__) 
+app.secret_key = "clave_segura" 
+socketio = SocketIO(app)
+```
+
+> Código extraído del archivo: [app.py](backend/app.py#L6-L10).
+
+Se utiliza el objeto `socketio` para emitir eventos y correr la aplicación Flask con soporte WebSocket.
+
+Cuando se recibe una matrícula desde la Raspberry Pi, se emite un evento `nuevo_acceso` con los datos:
+
+```python
+socketio.emit(f"nuevo_acceso_{usuario_id}", {
+    "matricula": matricula,
+    "estado": estado,
+    "fecha": fecha_actual,
+    "imagen": nombre_imagen,
+    "usuario_id": usuario_id
+})
+```
+
+> Código extraído del archivo: [api.py](backend/routes/api.py#L73-L79).
+
+---
+
+### Implementación en el Cliente
+
+#### Conexión WebSocket (cliente JS)
+
+```javascript
+const socket = io({
+  path: "/socket.io",
+  transports: ["websocket"]
+});
+```
+
+> Código extraído del archivo: [historial.html](backend/templates/historial.html#L101-L104).
+
+Se configura para usar solo WebSocket.
+
+#### Indicador de Conexión
+
+```html
+<h2 class="mb-4 text-white">
+	Historial de Accesos
+	<span id="estado-ws" class="badge connection-badge bg-secondary">
+	Conectando...
+	</span>
+</h2>
+```
+
+> Código extraído del archivo: [historial.html](backend/templates/historial.html#L7-L10).
+
+Actualizado por JavaScript:
+
+```javascript
+socket.on("connect", () => {
+  estadoWS.textContent = "🟢 Conectado";
+  estadoWS.className = "badge connection-badge bg-success";
+});
+
+socket.on("disconnect", () => {
+  estadoWS.textContent = "🔴 Desconectado";
+  estadoWS.className = "badge connection-badge bg-danger";
+});
+```
+
+> Código extraído del archivo: [historial.html](backend/templates/historial.html#L106-L114).
+
+Escucha de eventos:
+
+```javascript
+socket.on(canal, (acceso) => {
+
+	const fila = document.createElement("tr");
+	...
+```
+
+> Código extraído del archivo: [historial.html](backend/templates/historial.html#L116-L159).
+
+---
+### Flujo de Datos del Evento
+
+1. La Raspberry Pi detecta una matrícula y envía un POST a `/recibir_matricula`
+    
+2. El servidor valida la matrícula y registra el acceso
+    
+3. Se emite el evento `nuevo_acceso` con los datos del intento
+    
+4. Los clientes conectados reciben el evento y actualizan la interfaz
+
+---
+### Integración con la Interfaz de Historial
+
+- **Indicador de conexión WebSocket**: Muestra si está conectado
+    
+- **Actualización dinámica de la tabla**: Nuevos accesos se agregan al principio sin recargar
+    
+- **Estilos visuales según estado**: Se colorea y etiqueta según esté autorizado, pendiente o denegado
+
+---
 ### **5. Componente Raspberry Pi**
 
 Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
