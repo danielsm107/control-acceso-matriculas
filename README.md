@@ -9,43 +9,42 @@
 **Curso: 2024/2025**
 
 ---
-
 ## Índice
 
 1. [Resumen](#resumen)  
-   - [Introducción](#introducción)  
-   - [Finalidad](#finalidad)  
-   - [Objetivos](#objetivos)  
-   - [Medios Utilizados](#medios-utilizados)  
-   - [Estructura del repositorio](#estructura-del-repositorio)  
+   1.1 [Introduccion](#1.1-introduccion)  
+   1.2 [Finalidad](#finalidad)  
+   1.3 [Objetivos](#objetivos)  
+   1.4 [Medios utilizados](#medios-utilizados)  
+   1.5 [Estructura del repositorio](#estructura-del-repositorio)
 
-2. [Arquitectura del Sistema](#arquitectura-del-sistema)  
-   - [Arquitectura MVC](#arquitectura-mvc)
+2. [Arquitectura del sistema](#arquitectura-del-sistema)  
+   2.1 [Arquitectura mvc](#arquitectura-mvc)
 
-3. [Componentes del Backend](#componentes-del-backend)  
-   - [Sistema de Autenticación](#sistema-de-autenticación)  
-   - [Control de acceso basado en roles](#control-de-acceso-basado-en-roles)  
-   - [Gestión de Matrículas](#gestión-de-matrículas)
+3. [Componentes del backend](#componentes-del-backend)  
+   3.1 [Sistema de autenticacion](#sistema-de-autenticacion)  
+   3.2 [Control de acceso basado en roles](#control-de-acceso-basado-en-roles)  
+   3.3 [Gestion de matriculas](#gestion-de-matriculas)
 
-4. [Comunicación en Tiempo Real](#comunicación-en-tiempo-real)  
-   - [Visión General](#visión-general)  
-   - [Arquitectura de Implementación](#arquitectura-de-implementación)  
-   - [Implementación en el Servidor](#implementación-en-el-servidor)  
-   - [Implementación en el Cliente](#implementación-en-el-cliente)  
-   - [Flujo de Datos del Evento](#flujo-de-datos-del-evento)  
-   - [Integración con la Interfaz de Historial](#integración-con-la-interfaz-de-historial)
+4. [Comunicacion en tiempo real](#comunicacion-en-tiempo-real)  
+   4.1 [Vision general](#vision-general)  
+   4.2 [Arquitectura de implementacion](#arquitectura-de-implementacion)  
+   4.3 [Implementacion en el servidor](#implementacion-en-el-servidor)  
+   4.4 [Implementacion en el cliente](#implementacion-en-el-cliente)  
+   4.5 [Flujo de datos del evento](#flujo-de-datos-del-evento)  
+   4.6 [Integracion con la interfaz de historial](#integracion-con-la-interfaz-de-historial)
 
-5. [Interfaz Web](#interfaz-web)  
-   - [Para usuarios normales](#para-usuarios-normales)  
-   - [Para administradores](#para-administradores)
+5. [Interfaz web](#interfaz-web)  
+   5.1 [Para usuarios normales](#para-usuarios-normales)  
+   5.2 [Para administradores](#para-administradores)
 
-6. [Componente Raspberry Pi](#componente-raspberry-pi)  
-   - [Funcionamiento paso a paso](#funcionamiento-paso-a-paso)  
-   - [Reconocimiento de matrícula](#reconocimiento-de-matricula)  
-   - [Comunicación con el servidor](#comunicacion-con-el-servidor)  
-   - [Repetición automática](#repeticion-automatica)  
-   - [¿Cómo se ejecuta automáticamente?](#cómo-se-ejecuta-automáticamente)  
-   - [Ventajas de este diseño](#ventajas-de-este-diseño)
+6. [Componente raspberry pi](#componente-raspberry-pi)  
+   6.1 [Funcionamiento paso a paso](#funcionamiento-paso-a-paso)  
+   6.2 [Reconocimiento de matricula](#reconocimiento-de-matricula)  
+   6.3 [Comunicacion con el servidor](#comunicacion-con-el-servidor)  
+   6.4 [Repeticion automatica](#repeticion-automatica)  
+   6.5 [Como se ejecuta automaticamente](#como-se-ejecuta-automaticamente)  
+   6.6 [Ventajas de este diseno](#ventajas-de-este-diseno)
 
 
 ---
