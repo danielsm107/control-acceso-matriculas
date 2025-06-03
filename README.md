@@ -155,7 +155,7 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 	
 	 - En mi proyecto:
 	
-		- Están en la carpeta [templates](backend/templates/).
+		- Están en la carpeta [`templates/`](backend/templates/).
 		    
 		- Se usan con **Jinja2** para insertar dinámicamente datos en las páginas.
 		    
@@ -183,7 +183,7 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 	
 	-  En mi proyecto:
 	
-		- Están en [routes/](backend/routes/): [auth.py](backend/routes/auth.py), [main.py](backend/routes/main.py), [admin.py](backend/routes/admin.py), etc.
+		- Están en [`routes/`](backend/routes/): [auth.py](backend/routes/auth.py), [main.py](backend/routes/main.py), [admin.py](backend/routes/admin.py), etc.
 		    
 		- Cada archivo define rutas (`@app.route`) y qué hacer cuando se accede a ellas.
 			
@@ -209,6 +209,10 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 <summary>Archivos fuente de esta parte</summary>
 <ul>
 	<li><a href="backend/routes/auth.py">auth.py</a></li>
+	<li><a href="backend/templates/base.html">base.html</a></li>
+	<li><a href="backend/templates/login.html">login.html</a></li>
+	<li><a href="backend/templates/register.html">register.html</a></li>
+	<li><a href="backend/utils/db_utils.py">db_utils.py</a></li>
 </ul>
 </details>
 
@@ -221,26 +225,26 @@ El sistema de autenticación gestiona la verificación de identidad de usuarios,
 
 #### Modelo de usuario y almacenamiento de datos
 
-Se utiliza una clase personalizada [User](backend/utils/db_utils.py#L14-L22) que implementa UserMixin de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla [usuarios](db_tfg/control_acceso.sql#L87-L97) de la base de datos MySQL.
+Se utiliza una clase personalizada [`User`](backend/utils/db_utils.py#L14-L22) que implementa UserMixin de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla [`usuarios`](db_tfg/control_acceso.sql#L87-L97) de la base de datos MySQL.
 
-##### Atributos del modelo [User](backend/utils/db_utils.py#L14-L22):
+##### Atributos del modelo [`User`](backend/utils/db_utils.py#L14-L22):
 
-- [id](backend/utils/db_utils.py#L16): identificador único
+- [`id`](backend/utils/db_utils.py#L16): identificador único
     
-- [nombre](backend/utils/db_utils.py#L17): nombre del usuario
+- [`nombre`](backend/utils/db_utils.py#L17): nombre del usuario
     
-- [email](backend/utils/db_utils.py#L18): dirección de correo (para login)
+- [`email`](backend/utils/db_utils.py#L18): dirección de correo (para login)
     
-- [password](backend/utils/db_utils.py#L19): contraseña (hash)
+- [`password`](backend/utils/db_utils.py#L19): contraseña (hash)
     
-- [matrícula](backend/utils/db_utils.py#L20): matrícula asociada
+- [`matrícula`](backend/utils/db_utils.py#L20): matrícula asociada
     
-- [rol](backend/utils/db_utils.py#L21): `admin` o `usuario`
+- [`rol`](backend/utils/db_utils.py#L21): `admin` o `usuario`
 	
-- [foto](backend/utils/db_utils.py#L22): foto del `usuario`
+- [`foto`](backend/utils/db_utils.py#L22): foto del `usuario`
 
 
-Las contraseñas se almacenan con hash seguro usando [generate_password_hash](backend/routes/auth.py#L76), y se verifican con [check_password_hash](backend/routes/auth.py#L28).
+Las contraseñas se almacenan con hash seguro usando [`generate_password_hash`](backend/routes/auth.py#L76), y se verifican con [`check_password_hash`](backend/routes/auth.py#L28).
 
 ---
 
@@ -248,7 +252,7 @@ Las contraseñas se almacenan con hash seguro usando [generate_password_hash](ba
 
 **Inicio de sesión:**
 
-1. El usuario envía email y contraseña al endpoint [/login](backend/routes/auth.py#L11-L46).
+1. El usuario envía email y contraseña al endpoint [`/login`](backend/routes/auth.py#L11-L46).
     
 2. El sistema consulta el usuario por email.
     
@@ -256,7 +260,7 @@ Las contraseñas se almacenan con hash seguro usando [generate_password_hash](ba
     
 4. Si coincide:
     
-    - Se inicia sesión con [login_user()](backend/routes/auth.py#L36).
+    - Se inicia sesión con [`login_user()`](backend/routes/auth.py#L36).
         
     - Se guarda el rol en la sesión.
         
@@ -284,9 +288,9 @@ Usa Flask-Login para:
 
 - Verificar si el usuario está autenticado.
     
-- Proteger rutas con [@login_required](backend/routes/auth.py#L13).
+- Proteger rutas con [`@login_required`](backend/routes/auth.py#L13).
     
-- Cerrar sesión correctamente ([logout_user()](backend/routes/auth.py#L89-L94)).
+- Cerrar sesión correctamente ([`logout_user()`](backend/routes/auth.py#L89-L94)).
     
 - Guardar el rol en la sesión para controlar el acceso.
     
@@ -302,7 +306,7 @@ Se definen dos roles:
 - `admin`: acceso completo.
     
 
-Se usa un decorador [@solo_admin](backend/routes/admin.py#L66) para:
+Se usa un decorador [`@solo_admin`](backend/routes/admin.py#L66) para:
 
 1. Verificar si el rol en sesión es `admin`.
     
@@ -477,7 +481,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 **Para usuarios normales:**
 
-- Página principal ([/](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([autorizadas](backend/routes/main.py#L26-L32), [pendientes](backend/routes/main.py#L42-L48), [denegadas](backend/routes/main.py#L34-L40)).
+- Página principal ([`/`](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([`autorizadas`](backend/routes/main.py#L26-L32), [`pendientes`](backend/routes/main.py#L42-L48), [`denegadas`](backend/routes/main.py#L34-L40)).
 
 	![tabla de matriculas registradas](capturas/matriculas_registradas.png)
 
@@ -560,7 +564,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 **Para administradores:**
 
-- Acceso a [/admin](backend/routes/admin.py) con un panel que muestra todos los usuarios registrados y todas las matrículas del sistema.
+- Acceso a [`/admin`](backend/routes/admin.py) con un panel que muestra todos los usuarios registrados y todas las matrículas del sistema.
 
 	 ![panel de administración](capturas/admin_panel.png)
 
