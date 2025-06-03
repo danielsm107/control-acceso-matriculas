@@ -203,12 +203,12 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 
 ### **1. Sistema de Autenticación**
 
-> [!summary] Enlaces útiles
-> - [Inicio del proyecto](inicio.md)
-> - [Arquitectura del sistema](arquitectura.md)
-> - [Guía de despliegue](despliegue.md)
-> - [Gestión de usuarios](usuarios.md)
-
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="backend/routes/auth.py">auth.py</a></li>
+</ul>
+</details>
 
 
 #### Resumen del sistema
