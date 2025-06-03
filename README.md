@@ -6,21 +6,16 @@
 **Administración de Sistemas Informáticos en Red**
 **Curso: 2024/2025**
 
+## **Resumen**
+### **1. Introducción**
 
-## **1. Introducción**
+Este documento ofrece una visión general completa del sistema **Control Acceso Matrículas**, una solución de control de acceso de vehículos basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento usando OpenALPR y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan dichos componentes.
 
-Este proyecto consiste en un **sistema de control de acceso** basado en el reconocimiento automático de matrículas (LPR - License Plate Recognition).
-
-El sistema capturará imágenes de matrículas mediante una **cámara conectada a una Raspberry Pi**. A través de **OpenALPR**, se detectará la matrícula y se comparará con una **base de datos MySQL** para determinar si el acceso es autorizado o denegado.
-
-Además, los usuarios podrán **solicitar el registro de su matrícula** mediante una aplicación web, y un administrador podrá aprobar o rechazar el acceso.
-
-
-## **2. Finalidad**
+### **2. Finalidad**
 
 El objetivo principal es mejorar la **automatización del acceso** mediante el reconocimiento de matrículas.
 
-### **Beneficios del sistema:**
+#### **Beneficios del sistema:**
 
 - **Acceso automatizado**, eliminando la necesidad de tarjetas o mandos.
 
@@ -31,9 +26,9 @@ El objetivo principal es mejorar la **automatización del acceso** mediante el r
 - **Registro detallado** de todos los accesos.
 
 
-## **3. Objetivos**
+### **3. Objetivos**
 
-Desde un punto de vista técnico, el proyecto se centrará en:
+Desde un punto de vista técnico, el proyecto se centra en:
 
 - **Capturar imágenes de matrículas** con una **cámara en Raspberry Pi 3B**.
 
@@ -41,16 +36,16 @@ Desde un punto de vista técnico, el proyecto se centrará en:
 
 - **Almacenar y gestionar matrículas** en una **base de datos MySQL**.
 
-- **Desarrollar un script en Python** que compare matrículas con la base de datos.
+- **Desarrollo un script en Python** que compare matrículas con la base de datos.
 
-- **Crear una API con Flask** para la gestión de matrículas.
+- Una **API** con Flask para la gestión de matrículas.
 
-- **Desarrollar una interfaz web** para que los usuarios puedan solicitar el registro de su matrícula.
+- **Una interfaz web** para que los usuarios puedan solicitar el registro de su matrícula y otra **interfaz web** para administradores.
 
-- **Implementar un panel de administración** donde se aprueben o rechacen matrículas.
+- **Implementación un panel de administración** donde se aprueben o rechacen matrículas.
 
 
-## **4. Medios Necesarios**
+### **4. Medios Utilizados**
 
 Para llevar a cabo este proyecto, se necesitará:
 
@@ -76,18 +71,7 @@ Para llevar a cabo este proyecto, se necesitará:
 - Servidor web.
     
 
-
-## **5. Planificación**
-
-| **Semanas**   | **Tareas**                                                                                                                                                                                                                  |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2 semanas** | - Instalación y pruebas de OpenALPR en Raspberry Pi.<br>- Creación de la base de datos MySQL con matrículas de prueba.<br>- Desarrollo de un script en Python para capturar imágenes y detectar matrículas.                 |
-| **3 semanas** | - Creación de una API con Flask para gestionar la base de datos.<br>- Desarrollo de una web donde los usuarios puedan solicitar acceso.<br>- Implementación de un panel de administración para aprobar/rechazar matrículas. |
-| **1 semana**  | - Configuración del sistema de notificaciones por Telegram o email. (Opcional)<br>- Implementación del registro de accesos con fotos.<br>- Pruebas de acceso restringido por horario.                                       |
-| **2 semanas** | - Integración final del sistema en la Raspberry Pi.<br>- Pruebas de rendimiento con diferentes condiciones de luz y ángulos de cámara.<br>- Documentación final y optimización del sistema.                                 |
-
-
-## **6. Estructura del repositorio**
+### **5. Estructura del repositorio**
 
 ```
 /control-acceso-matriculas
@@ -116,14 +100,7 @@ Para llevar a cabo este proyecto, se necesitará:
 │   └── procesar_matricula.py
 ```
 
---- 
-## **Documentación del proyecto**
-
-### **1. Propósito**
-
-Este documentación proporciona una visión general completa del sistema _Control Acceso Matrículas_, una solución de control de acceso basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento con **OpenALPR** y la verificación de autorización en una base de datos centralizada.
-
-### **2. Resumen de la Arquitectura del Sistema**
+## **Arquitectura del Sistema**
 
 El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
@@ -133,11 +110,9 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 - **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
 
-### **3. Aplicación Web**
+### **1. Arquitectura MVC**
 
-#### Arquitectura MVC:
-
-La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido en mi proyecto con Flask. Divide la lógica de una aplicación en tres componentes separados:
+El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Modelo-Vista-Controlador). La arquitectura **MVC** es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido. Divide la lógica de una aplicación en tres componentes separados:
 
 - **Modelos** 
 	
@@ -223,7 +198,175 @@ La arquitectura **MVC** (Modelo-Vista-Controlador) es un patrón de diseño muy 
 
 		> Código extraído del archivo: [main.py](backend/routes/main.py#L12-L16).
 
-### **4. Componente Raspberry Pi**
+
+## **Componentes del Backend**
+
+### **1. Sistema de Autenticación**
+
+> [!summary] Enlaces útiles
+> - [Inicio del proyecto](inicio.md)
+> - [Arquitectura del sistema](arquitectura.md)
+> - [Guía de despliegue](despliegue.md)
+> - [Gestión de usuarios](usuarios.md)
+
+
+
+#### Resumen del sistema
+
+El sistema de autenticación gestiona la verificación de identidad de usuarios, mantiene sus sesiones y controla el acceso a las distintas secciones de la aplicación según el rol del usuario (usuario o administrador).
+
+---
+
+#### Modelo de usuario y almacenamiento de datos
+
+Se utiliza una clase personalizada `User` que implementa `UserMixin` de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla `usuarios` de la base de datos MySQL.
+
+##### Atributos del modelo `User`:
+
+- `id`: identificador único
+    
+- `nombre`: nombre del usuario
+    
+- `email`: dirección de correo (para login)
+    
+- `password`: contraseña (hash)
+    
+- `matricula`: matrícula asociada (opcional)
+    
+- `rol`: `admin` o `usuario`
+    
+
+Las contraseñas se almacenan con hash seguro usando `generate_password_hash`, y se verifican con `check_password_hash`.
+
+---
+
+#### Flujo de autenticación
+
+**Inicio de sesión:**
+
+1. El usuario envía email y contraseña al endpoint `/login`.
+    
+2. El sistema consulta el usuario por email.
+    
+3. Se compara el hash de la contraseña.
+    
+4. Si coincide:
+    
+    - Se inicia sesión con `login_user()`.
+        
+    - Se guarda el rol en la sesión.
+        
+    - Se redirige según el rol: dashboard o panel admin.
+        
+
+**Registro:**
+
+1. El usuario completa el formulario.
+    
+2. Se valida:
+    
+    - Coincidencia de contraseñas.
+        
+    - Unicidad del email.
+        
+3. Se guarda el usuario con rol `usuario` y se redirige al login.
+    
+
+---
+
+#### Gestión de sesiones
+
+Usa Flask-Login para:
+
+- Verificar si el usuario está autenticado.
+    
+- Proteger rutas con `@login_required`.
+    
+- Cerrar sesión correctamente (`logout_user()`).
+    
+- Guardar el rol en la sesión para controlar el acceso.
+    
+
+---
+
+### Control de acceso basado en roles
+
+Se definen dos roles:
+
+- `usuario`: permisos limitados.
+    
+- `admin`: acceso completo.
+    
+
+Se usa un decorador `@solo_admin` para:
+
+1. Verificar si el rol en sesión es `admin`.
+    
+2. Redirigir con error si no lo es.
+    
+3. Permitir acceso si lo es.
+    
+
+#### Rutas protegidas para admin:
+
+- `/matriculas_admin`
+    
+- `/admin/editar_matricula`
+    
+- `/admin/eliminar_matricula/<id>`
+    
+
+---
+
+### Integración en la interfaz
+
+#### Navegación condicional
+
+La barra de navegación muestra enlaces distintos según el rol y estado de autenticación.
+
+#### Formularios
+
+- **Login**: solicita email y contraseña.
+    
+- **Registro**: incluye nombre, email, contraseña y confirmación.
+    
+
+---
+
+### Funciones de administración
+
+#### Crear usuarios
+
+El administrador puede crear nuevos usuarios desde el panel.
+
+#### Editar usuarios
+
+Puede cambiar nombre, apellidos y email, verificando que no esté duplicado.
+
+---
+
+### Seguridad
+
+1. **Contraseñas**:
+    
+    - Hash seguro (Werkzeug).
+        
+    - Validación en login y registro.
+        
+2. **Validaciones**:
+    
+    - Emails únicos.
+        
+    - Confirmación de contraseña.
+        
+3. **Sesiones**:
+    
+    - Se borra todo en logout.
+        
+    - Decoradores protegen rutas sensibles.
+
+---
+### **2. Componente Raspberry Pi**
 
 Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
 #### 1. Funcionamiento paso a paso
@@ -323,7 +466,7 @@ WantedBy=multi-user.target
     
 - **Escalable**: puedes añadir más Raspberrys en otras entradas fácilmente.
 
-### **5. Interfaz web**
+### **3. Interfaz web**
 
 La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Bootstrap también), y el motor de plantillas Jinja2 integrado en Flask. Su diseño adapta dinámicamente los elementos mostrados según el rol del usuario: `admin` o `usuario`.
 
@@ -428,27 +571,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 - Modales para crear [nuevos usuarios](backend/templates/admin_panel.html#L100-L131) y [editar usuarios existentes](backend/templates/admin_panel.html#L133-L171).
 - Botones de acción rápida para [gestionar roles](backend/routes/admin.py#L20-L39), [limpiar historial](backend/routes/admin.py#L175-L189), o [eliminar registros](backend/routes/admin.py#L114-L125).
 
-### **6. Instalación de OpenALPR en Raspberry Pi**
 
-**Requisito previo:**
 
-- Es importante que el sistema operativo de la Raspberry Pi sea **Ubuntu Server**. **OpenALPR** solo funciona en ese sistema operativo.
 
-**Paso 1: Actualizar el sistema**
-
-```bash
-sudo apt update && sudo apt upgrade -y
-```
-
-**Paso 2: Instalar dependencias necesarias**
-
-```bash
-sudo apt install -y libopencv-dev libtesseract-dev git cmake build-essential libleptonica-dev liblog4cplus-dev libcurl4-openssl-dev
-```
-
-> Para ver lo que hace cada dependencia, consúltalo aquí: [Instalación OpenALPR](docs/Raspberry/OpenALPR/InstalacionOpenALPR.md#2\-instalar-dependencias)
-
-Prueba
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danielsm107/control-acceso-matriculas)
 
