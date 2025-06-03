@@ -333,7 +333,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
     
 - Un gráfico con sus accesos diarios, generado con Chart.js.
 
-	![[graficaentradas.png]]
+	![[capturas/graficaentradas.png]]
 
 	- Código del gráfico:
 	
