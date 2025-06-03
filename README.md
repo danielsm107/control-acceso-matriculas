@@ -331,9 +331,9 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 - Página principal ([/](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([autorizadas](backend/routes/main.py#L26-L32), [pendientes](backend/routes/main.py#L42-L48), [denegadas](backend/routes/main.py#L34-L40)).
     
-- Un gráfico con sus accesos diarios, generado con Chart.js.
+- Un gráfico con sus accesos diarios, generado con **Chart.js**.
 
-	![[capturas/graficaentradas.png]]
+	![gráfico entradas por dia](capturas/graficaentradas.png)
 
 	- Código del gráfico:
 	
