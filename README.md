@@ -102,6 +102,7 @@ Para llevar a cabo este proyecto, se necesitará:
 │   └── procesar_matricula.py
 ```
 
+---
 ## **Arquitectura del Sistema**
 
 El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
@@ -113,6 +114,16 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 - **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
 
 ### **1. Arquitectura MVC**
+
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="backend/routes/auth.py">auth.py</a></li>
+	<li><a href="backend/routes/main.py">main.py</a></li>
+	<li><a href="backend/templates/index.html">index.html</a></li>
+	<li><a href="backend/utils/db_utils.py">db_utils.py</a></li>
+</ul>
+</details>
 
 El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Modelo-Vista-Controlador). La arquitectura **MVC** es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido. Divide la lógica de una aplicación en tres componentes separados:
 
@@ -201,6 +212,7 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 		> Código extraído del archivo: [main.py](backend/routes/main.py#L12-L16).
 
 
+---
 ## **Componentes del Backend**
 
 ### **1. Sistema de Autenticación**
@@ -215,8 +227,6 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 	<li><a href="backend/utils/db_utils.py">db_utils.py</a></li>
 </ul>
 </details>
-
-
 #### Resumen del sistema
 
 El sistema de autenticación gestiona la verificación de identidad de usuarios, mantiene sus sesiones y controla el acceso a las distintas secciones de la aplicación según el rol del usuario (usuario o administrador).
@@ -378,6 +388,15 @@ Puede cambiar nombre, apellidos y email, verificando que no esté duplicado.
 
 ### **2. Gestión de Matrículas**
 
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="backend/app.py">app.py</a></li>
+	<li><a href="backend/templates/admin_matriculas.html">admin_matriculas.html</a></li>
+	<li><a href="backend/templates/solicitar_matricula.html">solicitar_matricula.html</a></li>
+</ul>
+</details>
+
 El sistema de gestión de matrículas se encarga del ciclo de vida completo de las matrículas de vehículos dentro de la solución de control de accesos. Este módulo administra cómo se solicitan, registran, modifican y autorizan las matrículas, siendo una parte crítica de la infraestructura de acceso de vehículos.
 
 Las matrículas siguen un formato estándar español (4 números y 3 letras, por ejemplo, `1234ABC`) y pueden estar en tres estados:
@@ -393,7 +412,7 @@ Este documento describe el modelo de datos, el flujo de estados, las operaciones
 
 ---
 
-## **Operaciones de usuario**
+### Operaciones de usuario
 
 Los usuarios normales pueden:
 
@@ -422,7 +441,7 @@ Regex del formato aceptado: `\d{4}[A-Z]{3}` (ejemplo: `1234ABC`)
 
 ---
 
-## **Operaciones administrativas**
+### Operaciones administrativas
 
 Los administradores tienen funciones ampliadas:
 
@@ -441,7 +460,7 @@ Los administradores tienen funciones ampliadas:
 
 ---
 
-## **Integración con el sistema de control de accesos**
+### Integración con el sistema de control de accesos
 
 Cuando una matrícula es detectada:
 
@@ -458,7 +477,7 @@ Cuando una matrícula es detectada:
 
 ---
 
-## **Seguridad y validaciones**
+### Seguridad y validaciones
 
 - Todas las operaciones requieren usuario autenticado
     
