@@ -448,6 +448,7 @@ sudo apt install -y libopencv-dev libtesseract-dev git cmake build-essential lib
 
 > Para ver lo que hace cada dependencia, consúltalo aquí: [Instalación OpenALPR](docs/Raspberry/OpenALPR/InstalacionOpenALPR.md#2\-instalar-dependencias)
 
+Prueba
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danielsm107/control-acceso-matriculas)
 
