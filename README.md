@@ -18,7 +18,7 @@ Además, los usuarios podrán **solicitar el registro de su matrícula** mediant
 
 ## **2. Finalidad**
 
-El objetivo principal es mejorar la **seguridad y automatización del acceso** mediante el reconocimiento de matrículas.
+El objetivo principal es mejorar la **automatización del acceso** mediante el reconocimiento de matrículas.
 
 ### **Beneficios del sistema:**
 
@@ -28,7 +28,7 @@ El objetivo principal es mejorar la **seguridad y automatización del acceso** m
 
 - **Gestión eficiente**, con un sistema centralizado para administrar accesos.
 
-- **Registro detallado** de todos los accesos, con fechas y horas.
+- **Registro detallado** de todos los accesos.
 
 
 ## **3. Objetivos**
@@ -56,13 +56,13 @@ Para llevar a cabo este proyecto, se necesitará:
 
 **Hardware:**
 
-- Raspberry Pi 3B con Raspberry Pi OS Lite.
+- Raspberry Pi 3B con Ubuntu Server.
     
-- Cámara Raspberry Pi HQ o cámara USB compatible.
+- Cámara Raspberry Pi HQ.
     
 - MicroSD de al menos 16GB con sistema operativo instalado.
     
-- Servidor o PC para alojar la base de datos y la API.
+- VPS en DigitalOcean para alojar la base de datos y la API.
     
 
 **Software:**
@@ -75,7 +75,6 @@ Para llevar a cabo este proyecto, se necesitará:
     
 - Servidor web.
     
-- Bot de Telegram para alertas de accesos no autorizados (opcional).
 
 
 ## **5. Planificación**
@@ -92,74 +91,37 @@ Para llevar a cabo este proyecto, se necesitará:
 
 ```
 /control-acceso-matriculas
-│── 📁 docs/     # Documentación del Proyecto
-│── 📁 backend/               # API Flask (VPS DigitalOcean)
-│   │── app.py                # Servidor Flask principal
-│   │── database.py            # Conexión a la base de datos
-│   │── config.py              # Configuración de la app
-│   │── requirements.txt       # Dependencias de Python
-│   │── wsgi.py                # Entrada para Gunicorn
-│   ├── 📁 static/             # Archivos estáticos (CSS, JS, imágenes)
-│   ├── 📁 templates/          # Plantillas HTML (Jinja2)
-│   ├── 📁 routes/             # Rutas de la API Flask
-│       ├── auth.py            # Rutas de autenticación
-│       ├── matriculas.py      # Rutas para gestionar matrículas
-│       ├── admin.py           # Rutas de administrador
-│
-│── 📁 frontend/               # Interfaz Web (VPS DigitalOcean)
-│   │── index.html             # Página principal
-│   │── panel.html             # Panel de administración
-│   ├── 📁 assets/             # CSS, imágenes, JS
-│       ├── style.css          # Estilos CSS
-│       ├── app.js             # Código JavaScript
-│
-│── 📁 raspberry-pi/           # Código en la Raspberry Pi
-│   │── procesar_matricula.py  # Captura de imagen y envío al servidor
-│   │── detectar_matricula.py  # Reconocimiento con OpenALPR
-│   │── config.py              # Configuración de la Raspberry
-│
-│── 📁 scripts/                # Scripts útiles para despliegue
-│   │── deploy.sh              # Script para actualizar código en el VPS
-│   │── setup.sh               # Instalación automática en la Raspberry
-│
-│── 📁 docker/                 # Configuración Docker (Opcional)
-│   │── Dockerfile             # Contenedor Flask API
-│   │── docker-compose.yml     # Orquestación (si se usa Docker)
-│
-│── .gitignore                 # Archivos a ignorar en Git
-│── README.md                  # Documentación del proyecto
-│── .github/workflows/deploy.yml # GitHub Actions para despliegue automático (Revisar)
+├── README.md                  # Documentación del proyecto
+├── .gitignore                 # Archivos ignorados por Git
+├── 📁 canvas/                    # Diagrama de rutas en Obsidian Canvas
+│   └── rutasaplicacion.canvas
+├── 📁 docs/                     # Documentación técnica
+│   ├── 📁 capturas_documentacion/
+│   ├── 📁 Raspberry/
+│   │   ├── EjecucionAutomaticaScript.md
+│   │   ├── ExplicacionProcesarMatricula.md
+│   │   └── 📁 OpenALPR/
+│   │       └── InstalacionOpenALPR.md
+│   └── 📁 VPS/
+│       └── DespliegueAplicacionFlaskconGunicorn.md
+├── 📁 backend/                  # Aplicación Flask (API y frontend integrado)
+│   ├── app.py
+│   ├── wsgi.py
+│   ├── requirements.txt
+│   ├── 📁 routes/               # Blueprints Flask: auth, api, admin, main, matriculas
+│   ├── 📁 templates/            # Plantillas HTML
+│   ├── 📁 static/               # CSS, iconos, imágenes
+│   └── 📁 utils/                # db_utils.py y funciones auxiliares
+├── 📁 raspberry-pi/             # Script de captura en Raspberry Pi
+│   └── procesar_matricula.py
 ```
-
-
-## **Por hacer:**
-
-- [x] Arreglar redireccionamiento a la pagina principal cuando eres admin.
-- [x] Añadir botón para modificación de usuarios desde admin.
-- [x] Evitar duplicados de correos electrónicos.
-- [x] Añadir botón para poder crear usuarios desde admin_panel.
-- [x] Cambiar estilos botones admin panel.
-- [x] Añadir imágenes en historial.html.
-- [x] Crear una página con todas las matriculas existentes.
-- [x] Arreglar las imagenes en historial.
-- [x] Añadir columna de acciones en matriculas_admin.
-- [x] Añadir filtros en matriculas_admin.
-- [x] Añadir botón de limpiar historial en historial.html.
-- [x] Arreglar mensaje de fallo de contraseña en el login.
-- [x] Arreglar las matriculas pendientes aparezcan como pendientes en mis_matriculas.html.
-- [ ] Añadir filtro historial.html
-- [x] Arreglar que cuando un admin registre una nueva matricula en admin_matriculas esté como autorizada automáticamente.
-- [x] Modificar pagina index.html para que muestre la información del usuario actual. (**PRIORITARIO**)
-- [x] Creación de gráficas para matriculas. (**PRIORITARIO**)
-- [x] Arreglar que no se puedan cambiar permisos admin principal
-- [x] Cambiar estilos mensajes flash
 
 --- 
 ## **Documentación del proyecto**
 
 ### **1. Propósito**
 
-Este documentación proporciona una visión general completa del sistema _Control Acceso Matrículas_, una solución de control de acceso basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento con **OpenALPR** y la verificación de autorización en una base de datos centralizada. Esta página cubre la arquitectura general, los componentes clave, los flujos de trabajo y cómo interactúan estos componentes.
+Este documentación proporciona una visión general completa del sistema _Control Acceso Matrículas_, una solución de control de acceso basada en el reconocimiento automático de matrículas. El sistema permite una gestión segura del acceso a instalaciones mediante la captura de imágenes de matrículas con una Raspberry Pi, su procesamiento con **OpenALPR** y la verificación de autorización en una base de datos centralizada.
 
 ### **2. Resumen de la Arquitectura del Sistema**
 
@@ -361,6 +323,74 @@ WantedBy=multi-user.target
     
 - **Escalable**: puedes añadir más Raspberrys en otras entradas fácilmente.
 
+### **5. Interfaz web**
+
+La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Bootstrap también), y el motor de plantillas Jinja2 integrado en Flask. Su diseño adapta dinámicamente los elementos mostrados según el rol del usuario: `admin` o `usuario`.
+
+**Para usuarios normales:**
+
+- Página principal ([/](backend/routes/main.py#L12-L71)) que muestra un resumen de sus matrículas registradas, divididas por estado ([autorizadas](backend/routes/main.py#L26-L32), [pendientes](backend/routes/main.py#L42-L48), [denegadas](backend/routes/main.py#L34-L40)).
+    
+- Un gráfico con sus accesos diarios, generado con Chart.js.
+
+	![[graficaentradas.png]]
+
+	- Código del gráfico:
+	
+	```html
+	<script>
+	const ctxEntradas = document.getElementById('graficoEntradas').getContext('2d');
+	
+	new Chart(ctxEntradas, {
+	
+	  type: 'line',
+	  data: {
+	    labels: {{ fechas|tojson }},
+	
+	    datasets: [{
+	      label: 'Entradas por Día',
+	      data: {{ cantidades|tojson }},
+	      fill: true,
+	      backgroundColor: 'rgba(20, 179, 242, 0.15)',
+	      borderColor: '#14b3f2',
+	      tension: 0.4
+	    }]
+	
+	  },
+	
+	  options: {
+	    responsive: true,
+	
+	    plugins: {
+	      legend: { labels: { color: 'white' } },
+	      title: { display: false }
+	    },
+	
+	  scales: {
+	    x: { ticks: { color: '#fff' } },
+	
+	    y: {
+	      beginAtZero: true,
+	
+	      ticks: {
+	        color: '#fff',
+	        stepSize: 1,
+	        callback: function(value) {
+	          return Number.isInteger(value) ? value : null;
+	        }
+	      }
+	    }
+	  }
+	  }
+	});
+	</script>
+	```
+	
+> 	Código extraído del archivo: [index.html](backend/templates/index.html#L215-L251).
+
+- Formularios intuitivos para solicitar nuevas matrículas.
+    
+- Página de historial con filtros de fechas y visualización de imágenes asociadas a cada acceso.
 
 --- 
 ### 3. **Autenticación y Roles**
