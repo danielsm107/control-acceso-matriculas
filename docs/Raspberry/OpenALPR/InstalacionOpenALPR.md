@@ -35,6 +35,7 @@ sudo apt install -y libopencv-dev libtesseract-dev git cmake build-essential lib
 - **liblog4cplus-dev**: Bibliotecas para logging.
 - **libcurl4-openssl-dev**: Bibliotecas para manejar solicitudes HTTP.
 
+
 ---
 
 ## **3\. Clonar el repositorio de OpenALPR**
@@ -187,5 +188,4 @@ Si la compilación falla, asegúrate de que todas las dependencias estén instal
 - Asegúrate de usar imágenes de alta calidad.
 - Recorta la imagen para que la matrícula ocupe la mayor parte del frame.
 - Ajusta el contraste y el brillo de la imagen.
-
 

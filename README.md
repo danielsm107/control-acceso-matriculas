@@ -416,79 +416,38 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 	 ![panel de administración](capturas/admin_panel.png)
 
-	![Todas las matrículas](backend/routes/main.py#L12)
+	![Todas las matrículas](capturas/matriculas_admin.png)
 
 
+- Tabla de matrículas pendientes con botones para aprobar o rechazar solicitudes.
+
+	![matriculas pendientes](capturas/matriculas_pendientes.png)
 
 
+- Vistas filtradas y editables de matrículas existentes.
+- Modales para crear [nuevos usuarios](backend/templates/admin_panel.html#L100-L131) y [editar usuarios existentes](backend/templates/admin_panel.html#L133-L171).
+- Botones de acción rápida para [gestionar roles](backend/routes/admin.py#L20-L39), [limpiar historial](backend/routes/admin.py#L175-L189), o [eliminar registros](backend/routes/admin.py#L114-L125).
+
+### **6. Instalación de OpenALPR en Raspberry Pi**
+
+**Requisito previo:**
+
+- Es importante que el sistema operativo de la Raspberry Pi sea **Ubuntu Server**. **OpenALPR** solo funciona en ese sistema operativo.
+
+**Paso 1: Actualizar el sistema**
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+**Paso 2: Instalar dependencias necesarias**
+
+```bash
+sudo apt install -y libopencv-dev libtesseract-dev git cmake build-essential libleptonica-dev liblog4cplus-dev libcurl4-openssl-dev
+```
+
+> Para ver lo que hace cada dependencia, consúltalo aquí: [Instalación OpenALPR](docs/Raspberry/OpenALPR/InstalacionOpenALPR.md#2\-instalar-dependencias)
 
 
---- 
-### 3. **Autenticación y Roles**
-
-- Basada en `Flask-Login`.
-    
-- Al iniciar sesión, el usuario recibe su rol (`admin` o `usuario`) que determina qué puede hacer y ver.
-    
-- Las sesiones se protegen con un `secret_key` y validaciones de acceso en cada vista.
-    
-
-### 4. **Funcionalidades de Usuario**
-
-- Solicita nuevas matrículas (validación por regex).
-    
-- Visualiza:
-    
-    - Estado de sus matrículas (pendiente, autorizada, denegada).
-        
-    - Historial de accesos con imágenes y fechas.
-        
-    - Gráfico de accesos diarios (`Chart.js`).
-        
-- Puede eliminar sus matrículas si están denegadas o pendientes.
-    
-- Cambia su foto de perfil.
-    
-
-### 5. **Funcionalidades de Administrador**
-
-- Visualiza todas las matrículas del sistema.
-    
-- Puede aprobar o rechazar nuevas solicitudes.
-    
-- Edita matrículas ya autorizadas.
-    
-- Crea y modifica usuarios.
-    
-- Limpia el historial completo.
-    
-- Usa filtros para buscar por estado o usuario en el panel.
-
-
-### **4. Componentes Principales**
-
-#### **1. Sistema de Autenticación**  
-
-El sistema implementa un control de acceso basado en roles con dos roles principales de usuario:
-
-- **Usuario (Usuario Regular):** Puede solicitar el registro de matrículas y ver sus matrículas personales.
-
-- **Admin:** Puede gestionar usuarios, aprobar o rechazar solicitudes de matrícula y acceder a todas las funciones del sistema.
-   
-La autenticación se gestiona a través de **Flask-Login**, con rutas definidas en el _blueprint_ de autenticación ([auth.py](backend/routes/auth.py)).
-
-### **5. Gestión de Matrículas** 
-
-El sistema permite a los usuarios solicitar el registro de sus matrículas, los cuales deben ser **aprobadas por los administradores** antes de conceder acceso. Las matrículas siguen un formato estándar español de **cuatro números seguidos de tres letras** (por ejemplo: `1234ABC`).
-
-#### **Flujos de trabajo clave:**
-
-- **Usuarios:**  
-    Solicitan el registro de su matrícula a través de la interfaz web.
-
-- **Administradores:**  
-    Revisan cada solicitud y pueden **aprobarla o rechazarla** según los criterios establecidos.
-   
-- **Gestión:**  
-    Los administradores pueden consultar, modificar o eliminar matrículas ya registradas en el sistema.
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danielsm107/control-acceso-matriculas)
 
