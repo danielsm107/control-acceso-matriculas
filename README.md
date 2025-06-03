@@ -405,7 +405,22 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 	```
 	> Código extraído del archivo: [matriculas.py](backend/routes/matriculas.py#L21-L78).
 
-- Página de historial con filtros de fechas y visualización de imágenes asociadas a cada acceso.
+- [Página de historial](backend/templates/historial.html) con filtros de fechas y visualización de imágenes asociadas a cada acceso.
+
+	![historial](capturas/historial.png)
+	
+
+**Para administradores:**
+
+- Acceso a [/admin](backend/routes/admin.py) con un panel que muestra todos los usuarios registrados y todas las matrículas del sistema.
+
+	 ![panel de administración](capturas/admin_panel.png)
+
+
+
+
+
+
 
 --- 
 ### 3. **Autenticación y Roles**
