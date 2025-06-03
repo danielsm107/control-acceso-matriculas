@@ -375,7 +375,106 @@ Puede cambiar nombre, apellidos y email, verificando que no esté duplicado.
     - Decoradores protegen rutas sensibles.
 
 ---
-### **2. Componente Raspberry Pi**
+
+### **2. Gestión de Matrículas**
+
+El sistema de gestión de matrículas se encarga del ciclo de vida completo de las matrículas de vehículos dentro de la solución de control de accesos. Este módulo administra cómo se solicitan, registran, modifican y autorizan las matrículas, siendo una parte crítica de la infraestructura de acceso de vehículos.
+
+Las matrículas siguen un formato estándar español (4 números y 3 letras, por ejemplo, `1234ABC`) y pueden estar en tres estados:
+
+- **pendiente**
+    
+- **autorizada**
+    
+- **denegada**
+    
+
+Este documento describe el modelo de datos, el flujo de estados, las operaciones disponibles para el usuario, las funciones administrativas y cómo este subsistema se integra con el resto del sistema.
+
+---
+
+## **Operaciones de usuario**
+
+Los usuarios normales pueden:
+
+1. **Solicitar una nueva matrícula**:
+    
+    - Se valida el formato (regex y validación en HTML).
+        
+    - Se comprueba si ya está registrada.
+        
+    - Se guarda con estado `pendiente`.
+        
+2. **Visualizar sus matrículas**:
+    
+    - Número de matrícula
+        
+    - Estado actual
+        
+    - Acciones disponibles (según estado)
+        
+3. **Cancelar solicitudes pendientes**
+    
+4. **Eliminar matrículas denegadas o pendientes**
+    
+
+Regex del formato aceptado: `\d{4}[A-Z]{3}` (ejemplo: `1234ABC`)
+
+---
+
+## **Operaciones administrativas**
+
+Los administradores tienen funciones ampliadas:
+
+- Ver y gestionar **todas** las matrículas del sistema
+    
+- Filtrar por estado o usuario
+    
+- Aprobar o denegar solicitudes
+    
+- Editar matrículas autorizadas
+    
+- Eliminar matrículas obsoletas
+    
+- Añadir matrículas directamente (ya autorizadas)
+    
+
+---
+
+## **Integración con el sistema de control de accesos**
+
+Cuando una matrícula es detectada:
+
+1. La Raspberry Pi la envía al endpoint [`/recibir_matricula`](backend/routes/api.py#L11-L94)
+    
+2. El sistema consulta su estado
+    
+3. Solo si es `autorizada`, se concede el acceso
+    
+4. Se registra el intento
+    
+5. Se emite un evento WebSocket en tiempo real
+    
+
+---
+
+## **Seguridad y validaciones**
+
+- Todas las operaciones requieren usuario autenticado
+    
+- Las validaciones se aplican en:
+    
+    - Cliente
+        
+    - Servidor
+        
+    - Detección de duplicados
+        
+    - Comprobación de roles
+
+
+---
+### **5. Componente Raspberry Pi**
 
 Es el **sensor inteligente del sistema**. Se encarga de capturar la matrícula de un vehículo en tiempo real y comunicarse con el servidor para validar el acceso.
 #### 1. Funcionamiento paso a paso
