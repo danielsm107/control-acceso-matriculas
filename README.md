@@ -3,7 +3,9 @@
 **Autor:** Daniel Serrano Marín
 
 **I.E.S. Francisco Romero Vargas**
+
 **Administración de Sistemas Informáticos en Red**
+
 **Curso: 2024/2025**
 
 ## **Resumen**
@@ -219,24 +221,26 @@ El sistema de autenticación gestiona la verificación de identidad de usuarios,
 
 #### Modelo de usuario y almacenamiento de datos
 
-Se utiliza una clase personalizada `User` que implementa `UserMixin` de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla `usuarios` de la base de datos MySQL.
+Se utiliza una clase personalizada [User](backend/utils/db_utils.py#L14-L22) que implementa UserMixin de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla [usuarios](db_tfg/control_acceso.sql#L87-L97) de la base de datos MySQL.
 
-##### Atributos del modelo `User`:
+##### Atributos del modelo [User](backend/utils/db_utils.py#L14-L22):
 
-- `id`: identificador único
+- [id](backend/utils/db_utils.py#L16): identificador único
     
-- `nombre`: nombre del usuario
+- [nombre](backend/utils/db_utils.py#L17): nombre del usuario
     
-- `email`: dirección de correo (para login)
+- [email](backend/utils/db_utils.py#L18): dirección de correo (para login)
     
-- `password`: contraseña (hash)
+- [password](backend/utils/db_utils.py#L19): contraseña (hash)
     
-- `matricula`: matrícula asociada (opcional)
+- [matrícula](backend/utils/db_utils.py#L20): matrícula asociada
     
-- `rol`: `admin` o `usuario`
-    
+- [rol](backend/utils/db_utils.py#L21): `admin` o `usuario`
+	
+- [foto](backend/utils/db_utils.py#L22): foto del `usuario`
 
-Las contraseñas se almacenan con hash seguro usando `generate_password_hash`, y se verifican con `check_password_hash`.
+
+Las contraseñas se almacenan con hash seguro usando [generate_password_hash](backend/routes/auth.py#L76), y se verifican con [check_password_hash](backend/routes/auth.py#L28).
 
 ---
 
@@ -244,7 +248,7 @@ Las contraseñas se almacenan con hash seguro usando `generate_password_hash`, y
 
 **Inicio de sesión:**
 
-1. El usuario envía email y contraseña al endpoint `/login`.
+1. El usuario envía email y contraseña al endpoint [/login](backend/routes/auth.py#L11-L46).
     
 2. El sistema consulta el usuario por email.
     
@@ -252,7 +256,7 @@ Las contraseñas se almacenan con hash seguro usando `generate_password_hash`, y
     
 4. Si coincide:
     
-    - Se inicia sesión con `login_user()`.
+    - Se inicia sesión con [login_user()](backend/routes/auth.py#L36).
         
     - Se guarda el rol en la sesión.
         
@@ -280,9 +284,9 @@ Usa Flask-Login para:
 
 - Verificar si el usuario está autenticado.
     
-- Proteger rutas con `@login_required`.
+- Proteger rutas con [@login_required](backend/routes/auth.py#L13).
     
-- Cerrar sesión correctamente (`logout_user()`).
+- Cerrar sesión correctamente ([logout_user()](backend/routes/auth.py#L89-L94)).
     
 - Guardar el rol en la sesión para controlar el acceso.
     
@@ -298,7 +302,7 @@ Se definen dos roles:
 - `admin`: acceso completo.
     
 
-Se usa un decorador `@solo_admin` para:
+Se usa un decorador [@solo_admin](backend/routes/admin.py#L66) para:
 
 1. Verificar si el rol en sesión es `admin`.
     
@@ -309,12 +313,13 @@ Se usa un decorador `@solo_admin` para:
 
 #### Rutas protegidas para admin:
 
-- `/matriculas_admin`
-    
-- `/admin/editar_matricula`
-    
-- `/admin/eliminar_matricula/<id>`
-    
+- [`/matriculas_admin`](backend/routes/admin.py#L64-L86)
+
+- [`/admin/editar_matricula`](backend/routes/admin.py#L88-L112)
+
+- [`/admin/eliminar_matricula/<int:matricula_id>`](backend/routes/admin.py#L114-L125)
+
+- [`/admin/eliminar_matricula/<id>`](backend/routes/admin.py#L88-L112)
 
 ---
 
