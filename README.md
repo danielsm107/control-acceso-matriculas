@@ -265,6 +265,7 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 	<li><a href="backend/utils/db_utils.py">db_utils.py</a></li>
 </ul>
 </details>
+
 #### Resumen del sistema
 
 El sistema de autenticación gestiona la verificación de identidad de usuarios, mantiene sus sesiones y controla el acceso a las distintas secciones de la aplicación según el rol del usuario (usuario o administrador).
