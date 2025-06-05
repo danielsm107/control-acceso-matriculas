@@ -151,6 +151,7 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 - **Interfaz de Usuario**: Interfaces web tanto para usuarios normales como para administradores.
 
+![[infraestructura.png]]
 ### 2.1 Arquitectura MVC
 
 <details>

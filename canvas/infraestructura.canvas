@@ -1,0 +1,34 @@
+{
+	"nodes":[
+		{"id":"2759fba69f0c2331","type":"group","x":-1400,"y":-1220,"width":1900,"height":1300,"label":"Infraestructura de mi proyecto"},
+		{"id":"19eb9d0230f0b4a5","type":"group","x":-1260,"y":-660,"width":1620,"height":660,"color":"#0129a2","label":"Servidor (DigitalOcean)"},
+		{"id":"7cd46846746b1f14","type":"group","x":-960,"y":-430,"width":1200,"height":100,"color":"#28a745","label":"Servicios principales"},
+		{"id":"bce622a16db72329","type":"group","x":-480,"y":-1160,"width":300,"height":340,"color":"#7f00ff","label":"Dispositivo externo"},
+		{"id":"cb7e309dc6080162","type":"group","x":-480,"y":-240,"width":300,"height":180,"label":"Base de datos MySQL"},
+		{"id":"c383a5ed90686d18","type":"group","x":-1260,"y":-1160,"width":300,"height":106,"color":"#f0f0f0","label":"Cliente"},
+		{"id":"0f99520cd811ad4f","type":"text","text":"   **Raspberry Pi**","x":-410,"y":-900,"width":165,"height":50,"color":"#7f00ff"},
+		{"id":"263bd46d3a3a3260","type":"file","file":"control-acceso-matriculas/capturas/raspberry.jpg","x":-437,"y":-1140,"width":220,"height":212,"color":"#7f00ff"},
+		{"id":"b40c481ff9c4008d","type":"text","text":"**Aplicación Flask (app.py)**","x":-449,"y":-620,"width":245,"height":50,"color":"#0d47a1"},
+		{"id":"455e1cb2e1a11fcc","type":"text","text":"**Comunicación en tiempo real (SocketIO)**","x":-1240,"y":-430,"width":253,"height":90,"color":"#ffc107"},
+		{"id":"2721acd56ca7c1fa","type":"text","text":"**Interfaz Web del Cliente\n**","x":-1232,"y":-1140,"width":245,"height":60,"color":"#f0f0f0"},
+		{"id":"098205e86cd2383f","type":"text","text":"**Servicio de Autenticación**","x":-840,"y":-410,"width":250,"height":60,"color":"#28a745"},
+		{"id":"99ea7652e8f7a8a3","type":"text","text":"**Gestión de matrículas**","x":-568,"y":-410,"width":238,"height":60,"color":"#28a745"},
+		{"id":"952cb5f7e69508f7","type":"text","text":"**Sistema de Control de Acceso**","x":-310,"y":-410,"width":212,"height":60,"color":"#28a745"},
+		{"id":"52bafa60a287e625","type":"text","text":"**Servicio de Registro de Acceso**","x":-80,"y":-410,"width":220,"height":60,"color":"#28a745"},
+		{"id":"ad092af3a8c4e1c4","type":"file","file":"control-acceso-matriculas/capturas/basededatos.png","x":-395,"y":-210,"width":130,"height":130}
+	],
+	"edges":[
+		{"id":"8221eb19755af769","fromNode":"0f99520cd811ad4f","fromSide":"bottom","toNode":"b40c481ff9c4008d","toSide":"top","color":"#6f00ff","label":"Solicitud POST a /recibir_matricula"},
+		{"id":"f7d43b9dd648a904","fromNode":"b40c481ff9c4008d","fromSide":"bottom","toNode":"098205e86cd2383f","toSide":"top","color":"#0d47a1"},
+		{"id":"63cdd1e7ff92580e","fromNode":"b40c481ff9c4008d","fromSide":"bottom","toNode":"99ea7652e8f7a8a3","toSide":"top","color":"#0d47a1"},
+		{"id":"a2f9dc9f9256d92e","fromNode":"b40c481ff9c4008d","fromSide":"bottom","toNode":"952cb5f7e69508f7","toSide":"top","color":"#0d47a1"},
+		{"id":"7f458388aa31d661","fromNode":"b40c481ff9c4008d","fromSide":"bottom","toNode":"52bafa60a287e625","toSide":"top","color":"#0d47a1"},
+		{"id":"bce2ca5e35b732ae","fromNode":"b40c481ff9c4008d","fromSide":"left","toNode":"455e1cb2e1a11fcc","toSide":"top","color":"#0d47a1"},
+		{"id":"469ec662add6af92","fromNode":"455e1cb2e1a11fcc","fromSide":"top","toNode":"b40c481ff9c4008d","toSide":"bottom","color":"#ffc107"},
+		{"id":"cd09d795c1ec7764","fromNode":"455e1cb2e1a11fcc","fromSide":"top","toNode":"2721acd56ca7c1fa","toSide":"bottom","color":"#ffc107","label":"Actualización del historial en tiempo real"},
+		{"id":"0fa8332abc91b3cb","fromNode":"098205e86cd2383f","fromSide":"bottom","toNode":"ad092af3a8c4e1c4","toSide":"left","color":"#28a745"},
+		{"id":"3768c6ee7e05c5f6","fromNode":"99ea7652e8f7a8a3","fromSide":"bottom","toNode":"ad092af3a8c4e1c4","toSide":"top","color":"#28a745"},
+		{"id":"030ad55f50dc06a1","fromNode":"952cb5f7e69508f7","fromSide":"bottom","toNode":"ad092af3a8c4e1c4","toSide":"top","color":"#28a745"},
+		{"id":"1e12e49b40204b79","fromNode":"52bafa60a287e625","fromSide":"bottom","toNode":"ad092af3a8c4e1c4","toSide":"right","color":"#28a745"}
+	]
+}
