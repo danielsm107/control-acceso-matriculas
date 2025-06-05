@@ -781,7 +781,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 
 
 - Vistas filtradas y editables de matrículas existentes.
-- Modales para crear [nuevos usuarios](backend/templates/admin_panel.html#L100-L131) y [editar usuarios existentes](backend/templates/admin_panel.html#L133-L171).
+- Modales para crear [nuevos usuarios](backend/templates/admin_panel.html#L133-L171) y [editar usuarios existentes](backend/templates/admin_panel.html#L100-L131).
 - Botones de acción rápida para [gestionar roles](backend/routes/admin.py#L20-L39), [limpiar historial](backend/routes/admin.py#L175-L189), o [eliminar registros](backend/routes/admin.py#L114-L125).
 
 ---
