@@ -897,11 +897,12 @@ WantedBy=multi-user.target
 
 
 
-<footer style="text-align: center; font-size: 0.9em; color: gray;">
-  <strong>Proyecto de Fin de Ciclo Formativo de Grado Superior</strong><br>
-  Ciclo: Administración de Sistemas Informáticos en Red (ASIR)<br>
-  Realizado por <em>Daniel Serrano Marín</em>
- 
-</footer>
+---
+
+**Proyecto de Fin de Ciclo Formativo de Grado Superior**  
+Ciclo: Administración de Sistemas Informáticos en Red (ASIR)
+Realizado por *Daniel Serrano Marín*
+
+
 
 
