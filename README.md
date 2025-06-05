@@ -97,16 +97,16 @@ Para llevar a cabo este proyecto, se necesitará:
     
 - MicroSD de al menos 16GB con sistema operativo instalado.
     
-- VPS en DigitalOcean para alojar la base de datos y la API.
+- VPS en DigitalOcean para alojar la base de datos y el servidor web.
     
 
 **Software:**
 
-- Python, Flask (API), MySQL (base de datos).
+- Python (Raspberry Pi), Flask, MySQL (base de datos).
     
 - OpenALPR para reconocimiento de matrículas.
     
-- HTML + Bootstrap + Flask para la interfaz web.
+- HTML + Bootstrap + CSS + Flask para la interfaz web.
     
 - Servidor web.
     
