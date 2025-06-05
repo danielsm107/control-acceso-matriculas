@@ -174,7 +174,7 @@ El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Mo
 
 	- En mi proyecto:
 	
-		- Se gestiona con funciones de acceso a la [base de datos](db_tfg/control_acceso.sql) en [db_utils.py](backend/utils/db_utils.py).
+		- Se gestiona con funciones de acceso a la [base de datos](control_acceso.sql) en [db_utils.py](backend/utils/db_utils.py).
 		    
 		- Se encarga de:
 		    
@@ -275,7 +275,7 @@ El sistema de autenticación gestiona la verificación de identidad de usuarios,
 
 #### Modelo de usuario y almacenamiento de datos
 
-Se utiliza una clase personalizada [`User`](backend/utils/db_utils.py#L14-L22) que implementa UserMixin de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla [`usuarios`](db_tfg/control_acceso.sql#L87-L97) de la base de datos MySQL.
+Se utiliza una clase personalizada [`User`](backend/utils/db_utils.py#L14-L22) que implementa UserMixin de Flask-Login para representar a los usuarios autenticados. Los datos se almacenan en la tabla [`usuarios`](control_acceso.sql#L87-L97) de la base de datos MySQL.
 
 ##### Atributos del modelo [`User`](backend/utils/db_utils.py#L14-L22):
 
@@ -295,6 +295,8 @@ Se utiliza una clase personalizada [`User`](backend/utils/db_utils.py#L14-L22) q
 
 
 Las contraseñas se almacenan con hash seguro usando [`generate_password_hash`](backend/routes/auth.py#L76), y se verifican con [`check_password_hash`](backend/routes/auth.py#L28).
+
+![estructura base de datos](db-tfg/control-acceso-db.png)
 
 ---
 
