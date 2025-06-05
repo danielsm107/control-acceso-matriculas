@@ -143,6 +143,16 @@ Para llevar a cabo este proyecto, se necesitará:
 ---
 ## 2. Arquitectura del Sistema
 
+<details>
+<summary>Archivos fuente de esta parte</summary>
+<ul>
+	<li><a href="backend/routes/auth.py">auth.py</a></li>
+	<li><a href="backend/routes/main.py">main.py</a></li>
+	<li><a href="backend/templates/index.html">index.html</a></li>
+	<li><a href="backend/utils/db_utils.py">db_utils.py</a></li>
+</ul>
+</details>
+
 El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 - **Aplicación Web**: Un servidor basado en Flask que gestiona la autenticación de usuarios, la gestión de matrículas y la lógica de control de acceso.
@@ -153,16 +163,6 @@ El sistema _Control Acceso Matrículas_ consta de tres componentes principales:
 
 ![infraestructura](canvas/infraestructura.png)
 ### 2.1 Arquitectura MVC
-
-<details>
-<summary>Archivos fuente de esta parte</summary>
-<ul>
-	<li><a href="backend/routes/auth.py">auth.py</a></li>
-	<li><a href="backend/routes/main.py">main.py</a></li>
-	<li><a href="backend/templates/index.html">index.html</a></li>
-	<li><a href="backend/utils/db_utils.py">db_utils.py</a></li>
-</ul>
-</details>
 
 El patrón de diseñó utilizado en este proyecto es la arquitectura **MVC** (Modelo-Vista-Controlador). La arquitectura **MVC** es un patrón de diseño muy común en el desarrollo de aplicaciones web, incluido. Divide la lógica de una aplicación en tres componentes separados:
 
@@ -793,6 +793,7 @@ La interfaz de usuario está desarrollada con HTML, CSS (combinándolo con Boots
 	<li><a href="docs/Raspberry/ExplicacionProcesarMatricula.md">ExplicacionProcesarMatricula.md</a></li>
 	<li><a href="docs/Raspberry/OpenALPR/ExplicacionProcesarMatricula.md">InstalacionOpenALPR.md</a></li>
 	<li><a href="raspberry-pi/procesar_matricula.py">procesar_matricula.py</a></li>
+	 <li><a href="systemd/matricula.service">matricula.service</a></li>
 </ul>
 </details>
 
