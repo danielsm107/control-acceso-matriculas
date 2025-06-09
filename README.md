@@ -117,8 +117,8 @@ Para llevar a cabo este proyecto, se necesitará:
 /control-acceso-matriculas
 ├── README.md                  # Documentación del proyecto
 ├── .gitignore                 # Archivos ignorados por Git
-├── 📁 canvas/                    # Diagrama de rutas en Obsidian Canvas
-│   └── rutasaplicacion.canvas
+├── 📁 canvas/                    # Diagrama de la infraestructura de mi proyecto en Obsidian Canvas
+│   └── infraestructura.canvas
 ├── 📁 docs/                     # Documentación técnica
 │   ├── 📁 capturas_documentacion/
 │   ├── 📁 Raspberry/
@@ -138,6 +138,9 @@ Para llevar a cabo este proyecto, se necesitará:
 │   └── 📁 utils/                # db_utils.py y funciones auxiliares
 ├── 📁 raspberry-pi/             # Script de captura en Raspberry Pi
 │   └── procesar_matricula.py
+├── 📁 db-tfg/             # Base de datos del proyecto
+├── 📁 systemd/            # Archivos de configuración de systemd
+├── 📁 capturas/            # Capturas del README
 ```
 
 ---
