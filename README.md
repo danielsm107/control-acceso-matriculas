@@ -2,12 +2,6 @@
 
 **Autor:** Daniel Serrano Marín
 
-**I.E.S. Francisco Romero Vargas**
-
-**Administración de Sistemas Informáticos en Red**
-
-**Curso: 2024/2025**
-
 ---
 ## Índice
 
